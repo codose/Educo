@@ -24,11 +24,13 @@
         <item name="android:paddingTop">12dp</item>
         <item name="android:paddingBottom">12dp</item>
         <item name="cornerRadius">8dp</item>
+        <item name="backgroundTint">@color/bg_selector_primary</item>
         <item name="rippleColor">@color/textColorPrimary</item>
     </style>
 
     <style name="Button.CustomSecondary" parent="Button.CustomPrimary">
         <item name="android:textColor">@color/textColorPrimary</item>
+        <item name="backgroundTint">@color/bg_selector_secondary</item>
     </style>
 
     <style name="TextBox" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">

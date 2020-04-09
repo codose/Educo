@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-    <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".views.registration.ui.RegisterFragment">
@@ -11,7 +11,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout3"
+                android:id="@+id/lastNameTextInputLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -27,7 +27,8 @@
                     android:id="@+id/fragment_register_last_name_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="text" />
+                    android:maxLines="1"
+                    android:inputType="textPersonName" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
@@ -56,7 +57,7 @@
                 android:text="@string/last_name"
                 style="@style/textAppearance.text"
                 app:layout_constraintStart_toStartOf="@+id/textView4"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayout5" />
+                app:layout_constraintTop_toBottomOf="@+id/firstNameTextInputLayout" />
 
             <TextView
                 android:id="@+id/textView6"
@@ -65,8 +66,18 @@
                 android:layout_marginTop="8dp"
                 style="@style/textAppearance.text"
                 android:text="@string/email"
-                app:layout_constraintStart_toStartOf="@+id/textInputLayout3"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayout3" />
+                app:layout_constraintStart_toStartOf="@+id/lastNameTextInputLayout"
+                app:layout_constraintTop_toBottomOf="@+id/lastNameTextInputLayout" />
+
+            <TextView
+                android:id="@+id/textView66"
+                style="@style/textAppearance.text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/phone_number"
+                app:layout_constraintStart_toStartOf="@+id/lastNameTextInputLayout"
+                app:layout_constraintTop_toBottomOf="@+id/emailNameTextInputLayout" />
 
             <TextView
                 android:id="@+id/textView7"
@@ -75,18 +86,18 @@
                 android:layout_marginTop="@dimen/standard_margin"
                 android:text="@string/first_name"
                 style="@style/textAppearance.text"
-                app:layout_constraintStart_toStartOf="@+id/textInputLayout3"
+                app:layout_constraintStart_toStartOf="@+id/lastNameTextInputLayout"
                 app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
             <TextView
                 android:id="@+id/textView8"
+                style="@style/textAppearance.text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/password"
-                style="@style/textAppearance.text"
-                app:layout_constraintStart_toStartOf="@+id/textInputLayout6"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayout4" />
+                app:layout_constraintStart_toStartOf="@+id/passwordTextInputLayout"
+                app:layout_constraintTop_toBottomOf="@+id/phoneTextInputLayout" />
 
             <TextView
                 android:id="@+id/textView9"
@@ -95,12 +106,12 @@
                 android:layout_marginTop="8dp"
                 android:text="@string/confirm_password"
                 style="@style/textAppearance.text"
-                app:layout_constraintStart_toStartOf="@+id/textInputLayout7"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayout6" />
+                app:layout_constraintStart_toStartOf="@+id/confirmPasswordTextInputLayout"
+                app:layout_constraintTop_toBottomOf="@+id/passwordTextInputLayout" />
 
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout4"
+                android:id="@+id/emailNameTextInputLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -121,13 +132,13 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout5"
+                android:id="@+id/firstNameTextInputLayout"
+                style="@style/TextBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="@dimen/standard_margin"
                 app:errorEnabled="true"
-                style="@style/TextBox"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/textView4"
                 app:layout_constraintTop_toBottomOf="@+id/textView7"
@@ -136,11 +147,12 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/frgment_register_first_name_edit_text"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:inputType="textPersonName" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout6"
+                android:id="@+id/passwordTextInputLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -151,17 +163,16 @@
                 app:layout_constraintStart_toStartOf="@+id/textView4"
                 app:layout_constraintTop_toBottomOf="@+id/textView8"
                 app:passwordToggleEnabled="false">
-
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/frgment_register_password_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="textPassword"
-                    />
+                    android:inputType="textPassword" />
+
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout7"
+                android:id="@+id/confirmPasswordTextInputLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -180,8 +191,29 @@
                     android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/phoneTextInputLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="@dimen/standard_margin"
+                style="@style/TextBox"
+                app:errorEnabled="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/textView4"
+                app:layout_constraintTop_toBottomOf="@+id/textView66"
+                app:passwordToggleEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/frgment_register_phone_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="phone" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/fragment_register_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
@@ -189,9 +221,25 @@
                 style="@style/Button.CustomPrimary"
                 android:text="@string/register"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/textInputLayout7"
-                app:layout_constraintStart_toStartOf="@+id/textInputLayout7"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayout7" />
+                app:layout_constraintEnd_toEndOf="@+id/confirmPasswordTextInputLayout"
+                app:layout_constraintStart_toStartOf="@+id/confirmPasswordTextInputLayout"
+                app:layout_constraintTop_toBottomOf="@+id/confirmPasswordTextInputLayout" />
+
+            <ProgressBar
+                android:id="@+id/registerProgress"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:elevation="12dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/fragment_register_button"
+                app:layout_constraintEnd_toEndOf="@+id/fragment_register_button"
+                app:layout_constraintStart_toStartOf="@+id/fragment_register_button"
+                app:layout_constraintTop_toTopOf="@+id/fragment_register_button" />
+
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
