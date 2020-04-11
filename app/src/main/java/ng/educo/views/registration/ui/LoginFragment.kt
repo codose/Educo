@@ -10,10 +10,15 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.firestore.ktx.toObject
 import kotlinx.android.synthetic.main.fragment_login.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import ng.educo.DataStoreArchitecture.UserRepo
 
 import ng.educo.R
 import ng.educo.databinding.FragmentLoginBinding
 import ng.educo.models.User
+import ng.educo.utils.App
 import ng.educo.views.base.BaseFragment
 import ng.educo.views.categories.CategoryActivity
 import ng.educo.views.main.MainActivity
@@ -80,14 +85,23 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     }
 
     private fun updateAppUser() {
-        userRef.document(auth.currentUser!!.uid).get().addOnCompleteListener {
-            if(it.isSuccessful){
-                val user = it.result?.toObject<User>()
-                setAppUser(user!!)
-                buttonEnabled()
-                val intent = Intent(context,CategoryActivity::class.java)
-                startActivity(intent)
-                activity?.finish()
+        val userRepo = UserRepo()
+        App.applicationScope.launch {
+            withContext(Dispatchers.IO){
+                try{
+                    App.appUser = userRepo.getUser()
+                    if(App.appUser?.accountSetup == 0){
+                        val intent = Intent(context,CategoryActivity::class.java)
+                        startActivity(intent)
+                        activity?.finish()
+                    }else{
+                        val intent = Intent(context,MainActivity::class.java)
+                        startActivity(intent)
+                        activity?.finish()
+                    }
+                }catch (e : Exception){
+                    showSnackBar(e.message!!)
+                }
             }
         }
     }

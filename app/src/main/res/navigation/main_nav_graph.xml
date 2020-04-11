@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav_graph"
+    app:startDestination="@id/studyPartnerFragment">
+
+    <fragment
+        android:id="@+id/studyGroupFragment"
+        android:name="ng.educo.views.main.ui.StudyGroupFragment"
+        android:label="fragment_study_group"
+        tools:layout="@layout/fragment_study_group" />
+    <fragment
+        android:id="@+id/studyPartnerFragment"
+        android:name="ng.educo.views.main.ui.StudyPartnerFragment"
+        android:label="fragment_study_partner"
+        tools:layout="@layout/fragment_study_partner" />
+    <fragment
+        android:id="@+id/tutorialCentresFragment"
+        android:name="ng.educo.views.main.ui.TutorialCentresFragment"
+        android:label="fragment_tutorial_centres"
+        tools:layout="@layout/fragment_tutorial_centres" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="ng.educo.views.main.ui.SettingsFragment"
+        android:label="SettingsFragment" />
+</navigation>

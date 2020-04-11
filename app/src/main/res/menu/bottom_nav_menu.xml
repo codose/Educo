@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/studyPartnerFragment"
+        android:icon="@drawable/partner"
+        android:title="Partner" />
+    <item
+        android:id="@+id/studyGroupFragment"
+        android:icon="@drawable/group"
+        android:title="Group" />
+    <item
+        android:id="@+id/tutorialCentresFragment"
+        android:icon="@drawable/tutor"
+        android:title="Tutorial Centres" />
+    <item
+        android:id="@+id/settingsFragment"
+        android:icon="@drawable/ic_settings"
+        android:title="Settings" />
+</menu>

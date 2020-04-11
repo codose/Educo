@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Pressed state -->
+    <item
+        android:state_enabled="true"
+        android:state_pressed="true">
+        <set>
+            <objectAnimator
+                android:duration="0"
+                android:propertyName="translationZ"
+                android:valueTo="0dp"
+                android:valueType="floatType"/>
+            <objectAnimator
+                android:duration="0"
+                android:propertyName="elevation"
+                android:valueTo="0dp"
+                android:valueType="floatType"/>
+        </set>
+    </item>
+</selector>

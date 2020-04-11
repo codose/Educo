@@ -6,22 +6,20 @@
     <application
         android:name=".utils.App"
         android:allowBackup="true"
-        android:icon="@drawable/educo_1"
+        android:icon="@drawable/educo_logo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup">
-        <activity android:name=".views.categories.CategoryActivity">
-
-        </activity>
-        <activity android:name=".views.registration.RegistrationActivity">
+        <activity android:name=".views.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".views.categories.CategoryActivity" />
+        <activity android:name=".views.registration.RegistrationActivity" />
         <activity android:name=".views.main.MainActivity" />
         <activity android:name=".views.base.BaseActivity" />
     </application>
