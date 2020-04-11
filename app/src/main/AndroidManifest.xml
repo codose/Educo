@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup">
+        <activity android:name=".views.categories.CategoryActivity">
+
+        </activity>
         <activity android:name=".views.registration.RegistrationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".views.main.MainActivity" />
-        <activity android:name=".views.BaseActivity" />
+        <activity android:name=".views.base.BaseActivity" />
     </application>
 
 </manifest>

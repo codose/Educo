@@ -7,11 +7,10 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import ng.educo.views.BaseFragment
+import ng.educo.views.base.BaseFragment
 import ng.educo.R
 import ng.educo.databinding.FragmentRegisterBinding
 import ng.educo.models.User
-import java.util.regex.Pattern
 
 /**
  * A simple [Fragment] subclass.
@@ -23,6 +22,8 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
     private lateinit var phone :String
     private lateinit var password :String
     private lateinit var confirmPassword :String
+    private var accountSetup : Int = 0
+    private lateinit var interests : List<Long>
 
     private lateinit var newUser : User
 
@@ -54,8 +55,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
         password = binding.frgmentRegisterPasswordEditText.text.toString()
         confirmPassword = binding.frgmentRegisterConfirmPasswordEditText.text.toString()
         phone = binding.frgmentRegisterPhoneEditText.text.toString()
-
-        newUser = User(firstName, lastName, email, phone)
+        interests  = listOf()
 
         if(!validateInputs()){
             binding.fragmentRegisterButton.apply {
@@ -65,7 +65,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
             return
         }else{
             binding.registerProgress.visibility = View.VISIBLE
-            newUser = User(firstName, lastName, email, phone)
+            newUser = User(firstName, lastName, email, phone, accountSetup, interests)
             registerUser(newUser)
         }
 
@@ -137,27 +137,6 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
         }
         return true
     }
-
-    private fun isValidUserName(userName: String): Boolean {
-        return userName.isNotEmpty()
-    }
-
-    private fun isValidEmail(email: String): Boolean {
-        val regex = ("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")
-        val pattern = Pattern.compile(regex)
-        val matcher = pattern.matcher(email)
-        return matcher.matches()
-    }
-
-    private fun isValidPhoneNo(phoneNo: String?): Boolean {
-        return phoneNo != null && phoneNo.length >= 10
-    }
-
-    private fun isValidPassword(pass: String?): Boolean {
-        return pass != null && pass.length >= 8
-    }
-
     private fun isValidConfirmPassword(): Boolean {
         return password == confirmPassword
     }
