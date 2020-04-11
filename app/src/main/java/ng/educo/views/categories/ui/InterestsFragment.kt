@@ -1,5 +1,6 @@
 package ng.educo.views.categories.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +20,7 @@ import ng.educo.views.categories.CategoryViewModel
 import ng.educo.views.categories.CategoryViewModelFactory
 import ng.educo.views.categories.InterestsAdapter
 import ng.educo.views.categories.MyItemDetailsLookup
+import ng.educo.views.main.MainActivity
 
 
 class InterestsFragment : BaseFragment<FragmentInterestsBinding>() {
@@ -37,11 +39,23 @@ class InterestsFragment : BaseFragment<FragmentInterestsBinding>() {
 
         val viewModel = ViewModelProvider(this, viewModelFactory).get(CategoryViewModel::class.java)
 
+        binding.viewModel = viewModel
+
         binding.lifecycleOwner = this
 
         adapter.tracker = viewModel.tracker
 
         adapter.submitList(viewModel.list.value)
+
+        viewModel.completed.observe(viewLifecycleOwner, Observer {
+            if(it){
+                val intent = Intent(context,MainActivity::class.java)
+                startActivity(intent)
+                activity?.finish()
+                viewModel.navigationCompleted()
+            }
+        })
+
         return binding.root
     }
 

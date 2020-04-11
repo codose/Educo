@@ -72,7 +72,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
             if(it.isSuccessful){
                 updateAppUser()
-                buttonEnabled()
             }else{
                 showToast("${it.exception?.message}")
                 buttonEnabled()
@@ -85,12 +84,12 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
             if(it.isSuccessful){
                 val user = it.result?.toObject<User>()
                 setAppUser(user!!)
+                buttonEnabled()
                 val intent = Intent(context,CategoryActivity::class.java)
                 startActivity(intent)
                 activity?.finish()
             }
         }
-
     }
 
     private fun validateInputs(): Boolean {

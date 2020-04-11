@@ -64,6 +64,8 @@ abstract class BaseFragment<DB :ViewDataBinding> : Fragment(){
         App().setAppUser(user)
     }
 
+    fun getAppUser() : User? = App().getAppUser()
+
     fun checkNetworkState(): Boolean {
         if (!App().checkNetwork(context!!)) {
             showSnackBar("You do not have a network connection")

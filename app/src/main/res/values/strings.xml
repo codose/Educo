@@ -16,4 +16,5 @@
     <string name="interests">Interests</string>
     <string name="confirm">Confirm</string>
     <string name="technology">Technology</string>
+    <string name="please_select_your_location">Please select your Location</string>
 </resources>

@@ -12,8 +12,11 @@ import ng.educo.models.User
 
 class App : Application() {
 
-    lateinit var firestore: FirebaseFirestore
-    private lateinit var appUser : User
+
+    companion object {
+        lateinit var firestore: FirebaseFirestore
+        var appUser: User? = null
+    }
 
     override fun onCreate() {
         super.onCreate()
@@ -31,12 +34,11 @@ class App : Application() {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected
     }
 
-    fun getAppUser() : User{
+    fun getAppUser(): User? {
         return appUser
     }
 
-    fun setAppUser(newUser : User){
-        appUser = newUser
+    fun setAppUser(appUser: User) {
+        App.appUser = appUser
     }
-
 }

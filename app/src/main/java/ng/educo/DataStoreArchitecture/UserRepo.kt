@@ -9,9 +9,9 @@ import ng.educo.utils.App
 import ng.educo.utils.Constants
 
 class UserRepo {
-    val auth = FirebaseAuth.getInstance()
-    val database = App().firestore
-    val userRef = database.collection(Constants.COLLECTION_USERS)
+    private val auth = FirebaseAuth.getInstance()
+    private val database = App.firestore
+    private val userRef = database.collection(Constants.COLLECTION_USERS)
     suspend fun updateUser(user : User) : Boolean{
         return try {
             userRef.document(auth.currentUser!!.uid).set(user, SetOptions.merge()).await()

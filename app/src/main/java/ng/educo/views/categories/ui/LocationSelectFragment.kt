@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 
 import ng.educo.R
 import ng.educo.databinding.FragmentLocationSelectBinding
+import ng.educo.utils.Constants.states
 import ng.educo.views.base.BaseFragment
 
 
@@ -23,12 +24,16 @@ class LocationSelectFragment : BaseFragment<FragmentLocationSelectBinding>() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, getLayoutRes(), container, false)
-        val items = listOf("Nigeria", "Togo", "Benin", "Zimbabwe",  "United Kingdom")
-        val adapter = ArrayAdapter(requireContext(), R.layout.list_item, items)
+        val countries = listOf("Nigeria")
+        val adapter = ArrayAdapter(requireContext(), R.layout.list_item, countries)
+        val mAdapter = ArrayAdapter(requireContext(), R.layout.list_item, states)
        (binding.countrySpinner as? AutoCompleteTextView)?.setAdapter(adapter)
+        (binding.stateSpinner as? AutoCompleteTextView)?.setAdapter(mAdapter)
         binding.fragmentLocationNextButton.setOnClickListener {
+            getAppUser()?.state = binding.stateSpinner.text.toString()
             it.findNavController().navigate(R.id.action_locationSelectFragment_to_interestsFragment)
         }
+        binding.fragmentLocationNameTextView.text = getAppUser()?.firstName
         return binding.root
     }
 

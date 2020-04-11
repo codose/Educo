@@ -17,14 +17,15 @@ class CategoryViewModel(
     private val job = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + job)
 
-    private val appUser = App().getAppUser()
-
+    private val appUser = App.appUser
+    val completed = MutableLiveData<Boolean>()
     val list = MutableLiveData<List<String>>()
     lateinit var tracker : SelectionTracker<Long>
-    val selectedList = MutableLiveData<List<Long>>()
+    val selectedList = MutableLiveData<ArrayList<Long>>()
     init {
         list.value = listOf("Technology","Art","Science","Law","Social Science","Architecture","Economics","Clinical Science","Education","Agricuture","Pharmacy")
         initTracker()
+        completed.value = false
     }
 
     private fun initTracker() {
@@ -40,8 +41,9 @@ class CategoryViewModel(
         tracker.addObserver( object : SelectionTracker.SelectionObserver<Long>(){
             override fun onSelectionChanged() {
                 super.onSelectionChanged()
-                selectedList.value = tracker.selection.toList()
-                appUser.interest = selectedList.value as List<Long>
+                selectedList.value = tracker.selection.toList() as ArrayList<Long>
+                selectedList.value?.remove(-111L)
+                appUser?.interest = selectedList.value as List<Long>
             }
         })
     }
@@ -52,11 +54,19 @@ class CategoryViewModel(
             updateProfile()
         }
     }
+    private fun navigateToNextScreen(){
+        completed.postValue(true)
+    }
+
+    fun navigationCompleted(){
+        completed.value = false
+    }
 
     private suspend fun updateProfile() {
         withContext(Dispatchers.IO){
-            appUser.accountSetup = 1
-            UserRepo().updateUser(appUser)
+            appUser?.accountSetup = 1
+            UserRepo().updateUser(appUser!!)
+            navigateToNextScreen()
         }
     }
 
