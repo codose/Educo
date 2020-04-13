@@ -10,6 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.*
 import ng.educo.DataStoreArchitecture.UserRepo
 import ng.educo.utils.App
+import ng.educo.utils.Resource
+import java.lang.Exception
+import kotlin.Long as Long1
 
 class CategoryViewModel(
     private val adapter: InterestsAdapter,
@@ -17,19 +20,21 @@ class CategoryViewModel(
     private val job = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + job)
 
+    private val userRepo = UserRepo()
+
     private val appUser = App.appUser
-    val completed = MutableLiveData<Boolean>()
+    val completed = MutableLiveData<Resource<Boolean>>()
     val list = MutableLiveData<List<String>>()
-    lateinit var tracker : SelectionTracker<Long>
-    val selectedList = MutableLiveData<ArrayList<Long>>()
+    lateinit var tracker : SelectionTracker<Long1>
+    val selectedList = MutableLiveData<MutableList<Long1>>()
     init {
         list.value = listOf("Technology","Art","Science","Law","Social Science","Architecture","Economics","Clinical Science","Education","Agricuture","Pharmacy")
+        selectedList.value = mutableListOf()
         initTracker()
-        completed.value = false
     }
 
     private fun initTracker() {
-        tracker = SelectionTracker.Builder<Long>("mySelection", recyclerView,
+        tracker = SelectionTracker.Builder<Long1>("mySelection", recyclerView,
             MyItemKeyProvider(recyclerView), MyItemDetailsLookup(recyclerView),
             StorageStrategy.createLongStorage()).withSelectionPredicate(
             SelectionPredicates.createSelectAnything()
@@ -38,12 +43,12 @@ class CategoryViewModel(
         tracker.select(ghostKey)
         tracker.hasSelection()
 
-        tracker.addObserver( object : SelectionTracker.SelectionObserver<Long>(){
+        tracker.addObserver( object : SelectionTracker.SelectionObserver<Long1>(){
             override fun onSelectionChanged() {
                 super.onSelectionChanged()
-                selectedList.value = tracker.selection.toList() as ArrayList<Long>
-                selectedList.value?.remove(-111L)
-                appUser?.interest = selectedList.value as List<Long>
+                selectedList.value = tracker.selection.toMutableList()
+                selectedList.value?.remove(ghostKey)
+                appUser?.interest = selectedList.value!!
             }
         })
     }
@@ -51,24 +56,14 @@ class CategoryViewModel(
 
     fun onProfileComplete(){
         uiScope.launch {
-            updateProfile()
+            completed.value = Resource.Loading()
+            completed.value = withContext(Dispatchers.IO){
+                appUser?.accountSetup = 1
+                userRepo.updateUser(appUser!!)
+            }
         }
     }
-    private fun navigateToNextScreen(){
-        completed.postValue(true)
-    }
 
-    fun navigationCompleted(){
-        completed.value = false
-    }
-
-    private suspend fun updateProfile() {
-        withContext(Dispatchers.IO){
-            appUser?.accountSetup = 1
-            UserRepo().updateUser(appUser!!)
-            navigateToNextScreen()
-        }
-    }
 
 
     override fun onCleared() {

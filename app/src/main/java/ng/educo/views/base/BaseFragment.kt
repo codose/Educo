@@ -27,7 +27,7 @@ abstract class BaseFragment<DB :ViewDataBinding> : Fragment(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        FirebaseApp.initializeApp(context!!);
+        FirebaseApp.initializeApp(context!!)
         database = FirebaseFirestore.getInstance()
         userRef = database.collection(COLLECTION_USERS)
         auth = FirebaseAuth.getInstance()

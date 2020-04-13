@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.firestore.ktx.toObject
 import kotlinx.android.synthetic.main.fragment_login.*
@@ -19,9 +21,11 @@ import ng.educo.R
 import ng.educo.databinding.FragmentLoginBinding
 import ng.educo.models.User
 import ng.educo.utils.App
+import ng.educo.utils.Resource
 import ng.educo.views.base.BaseFragment
 import ng.educo.views.categories.CategoryActivity
 import ng.educo.views.main.MainActivity
+import ng.educo.views.registration.viewModels.RegistrationViewModel
 
 /**
  * A simple [Fragment] subclass.
@@ -30,22 +34,68 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     private lateinit var email : String
     private lateinit var password : String
+    private lateinit var viewModel : RegistrationViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_login,container,false)
+        viewModel = ViewModelProvider(this).get(RegistrationViewModel::class.java)
+
+        binding.lifecycleOwner = viewLifecycleOwner
+
         binding.frgmentLoginRegisterButton.setOnClickListener {
             openRegister()
         }
+
         binding.fragmentLoginButton.setOnClickListener {
             if(checkNetworkState()){
                 loginUser()
             }
         }
+
+        viewModel.login.observe(viewLifecycleOwner, Observer {
+            when(it){
+                is Resource.Loading -> buttonNotEnabled()
+
+                is Resource.Success -> viewModel.getUser()
+
+                is Resource.Failure -> {
+                    showToast(it.message)
+                    buttonEnabled()
+                }
+            }
+        })
+
+        viewModel.appUser.observe(viewLifecycleOwner, Observer {
+            when(it){
+                is Resource.Loading -> buttonNotEnabled()
+
+                is Resource.Success -> {
+                    setAppUser(it.data)
+                    if(App.appUser?.accountSetup == 0){
+                        val intent = Intent(context,CategoryActivity::class.java)
+                        startActivity(intent)
+                        activity?.finish()
+                    }else{
+                        val intent = Intent(context,MainActivity::class.java)
+                        startActivity(intent)
+                        activity?.finish()
+                    }
+                }
+
+                is Resource.Failure -> {
+                    showToast(it.message)
+                    buttonEnabled()
+                }
+            }
+        })
+
+
         return binding.root
     }
+
 
     private fun buttonEnabled(){
         binding.apply {
@@ -64,45 +114,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     }
 
     private fun loginUser() {
-        
         email = binding.fragmentLoginEmailEditText.text.toString()
         password = binding.fragmentLoginPasswordEditText.text.toString()
         if(validateInputs()){
-           login()
-        }
-    }
-
-    private fun login() {
-        buttonNotEnabled()
-        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
-            if(it.isSuccessful){
-                updateAppUser()
-            }else{
-                showToast("${it.exception?.message}")
-                buttonEnabled()
-            }
-        }
-    }
-
-    private fun updateAppUser() {
-        val userRepo = UserRepo()
-        App.applicationScope.launch {
-            withContext(Dispatchers.IO){
-                try{
-                    App.appUser = userRepo.getUser()
-                    if(App.appUser?.accountSetup == 0){
-                        val intent = Intent(context,CategoryActivity::class.java)
-                        startActivity(intent)
-                        activity?.finish()
-                    }else{
-                        val intent = Intent(context,MainActivity::class.java)
-                        startActivity(intent)
-                        activity?.finish()
-                    }
-                }catch (e : Exception){
-                    showSnackBar(e.message!!)
-                }
-            }
+            viewModel.loginUser(email, password)
         }
     }
 

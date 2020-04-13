@@ -6,6 +6,6 @@ data class User(
     var email : String = "",
     var phone : String = "",
     var accountSetup : Int = 0,
-    var interest : List<Long> = listOf(),
+    var interest : MutableList<Long> = mutableListOf(),
     var state : String = "Lagos"
 )

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -15,6 +16,7 @@ import androidx.recyclerview.selection.StorageStrategy
 
 import ng.educo.R
 import ng.educo.databinding.FragmentInterestsBinding
+import ng.educo.utils.Resource
 import ng.educo.views.base.BaseFragment
 import ng.educo.views.categories.CategoryViewModel
 import ng.educo.views.categories.CategoryViewModelFactory
@@ -47,16 +49,42 @@ class InterestsFragment : BaseFragment<FragmentInterestsBinding>() {
 
         adapter.submitList(viewModel.list.value)
 
+        viewModel.selectedList.observe(viewLifecycleOwner, Observer {
+            binding.fragmentsInterestsConfirmBtn.isEnabled = it.size > 1
+        })
+
         viewModel.completed.observe(viewLifecycleOwner, Observer {
-            if(it){
-                val intent = Intent(context,MainActivity::class.java)
-                startActivity(intent)
-                activity?.finish()
-                viewModel.navigationCompleted()
+            when (it) {
+                is Resource.Loading -> {
+                    buttonNotEnabled()
+                }
+                is Resource.Success -> {
+                    val intent = Intent(context,MainActivity::class.java)
+                    startActivity(intent)
+                    activity?.finish()
+                    buttonEnabled()
+                }
+                is Resource.Failure -> {
+                    buttonEnabled()
+                    showToast("${it.message} + Please try again")
+                }
             }
         })
 
         return binding.root
+    }
+    private fun buttonEnabled(){
+        binding.apply {
+            completeProgress.visibility = View.GONE
+            fragmentsInterestsConfirmBtn.isEnabled = true
+        }
+    }
+
+    private fun buttonNotEnabled(){
+        binding.apply {
+            completeProgress.visibility = View.VISIBLE
+            fragmentsInterestsConfirmBtn.isEnabled = false
+        }
     }
 
     override fun getLayoutRes(): Int {

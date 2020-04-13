@@ -31,12 +31,7 @@ class App : Application() {
         firestore.firestoreSettings = firestoreSettings {
             isPersistenceEnabled = true
         }
-        val userRepo = UserRepo()
-        applicationScope.launch {
-            withContext(Dispatchers.IO){
-                appUser = userRepo.getUser()
-            }
-        }
+
         initPrefLib()
     }
 

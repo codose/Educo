@@ -5,10 +5,18 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.animation.AnimationUtils
 import androidx.databinding.DataBindingUtil
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FirebaseFirestore
 import com.pixplicity.easyprefs.library.Prefs
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import ng.educo.DataStoreArchitecture.UserRepo
 import ng.educo.R
 import ng.educo.databinding.ActivitySplashBinding
 import ng.educo.utils.App
+import ng.educo.utils.Resource
 import ng.educo.views.base.BaseActivity
 import ng.educo.views.categories.CategoryActivity
 import ng.educo.views.main.MainActivity
@@ -43,18 +51,30 @@ class SplashActivity : BaseActivity() {
                     startActivity(Intent(applicationContext, RegistrationActivity::class.java))
                     finish()
                 }
-                App.appUser == null -> {
+                auth.currentUser == null -> {
                     startActivity(Intent(applicationContext, RegistrationActivity::class.java))
                     finish()
                 }
-                App.appUser!!.accountSetup == 1 ->{
-                    startActivity(Intent(applicationContext, MainActivity::class.java))
-                    finish()
+                auth.currentUser != null ->{
+                    val userRepo = UserRepo()
+                    App.applicationScope.launch {
+                        withContext(Dispatchers.IO){
+                            val userResource = userRepo.getUser()
+                            App.appUser = when(userResource){
+                                is Resource.Success -> userResource.data
+                                else -> null
+                            }
+                            if(App.appUser?.accountSetup == 0){
+                                startActivity(Intent(applicationContext, CategoryActivity::class.java))
+                                finish()
+                            }else{
+                                startActivity(Intent(applicationContext, MainActivity::class.java))
+                                finish()
+                            }
+                        }
+                    }
                 }
-                else -> { //Should goto MainActivity
-                    startActivity(Intent(applicationContext, CategoryActivity::class.java))
-                    finish()
-                }
+
             }
         }, 3000)
     }

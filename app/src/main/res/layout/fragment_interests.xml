@@ -51,5 +51,19 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/fragments_interests_rv"
             app:layout_constraintStart_toStartOf="@+id/fragments_interests_rv" />
+
+        <ProgressBar
+            android:id="@+id/completeProgress"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:elevation="12dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/fragments_interests_confirm_btn"
+            app:layout_constraintEnd_toEndOf="@+id/fragments_interests_confirm_btn"
+            app:layout_constraintStart_toStartOf="@+id/fragments_interests_confirm_btn"
+            app:layout_constraintTop_toTopOf="@+id/fragments_interests_confirm_btn" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
