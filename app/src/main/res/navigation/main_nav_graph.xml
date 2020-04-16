@@ -23,5 +23,17 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="ng.educo.views.main.ui.SettingsFragment"
-        android:label="SettingsFragment" />
+        android:label="SettingsFragment" >
+        <action
+            android:id="@+id/action_settingsFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/requestStudyFragment"
+        android:name="ng.educo.views.main.ui.RequestStudyFragment"
+        android:label="RequestStudyFragment" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="ng.educo.views.main.ui.ProfileFragment"
+        android:label="ProfileFragment" />
 </navigation>

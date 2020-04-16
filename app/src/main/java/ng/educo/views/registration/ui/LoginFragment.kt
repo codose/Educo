@@ -1,5 +1,6 @@
 package ng.educo.views.registration.ui
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,22 +11,17 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.firestore.ktx.toObject
-import kotlinx.android.synthetic.main.fragment_login.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import ng.educo.DataStoreArchitecture.UserRepo
 
 import ng.educo.R
 import ng.educo.databinding.FragmentLoginBinding
-import ng.educo.models.User
 import ng.educo.utils.App
 import ng.educo.utils.Resource
 import ng.educo.views.base.BaseFragment
 import ng.educo.views.categories.CategoryActivity
 import ng.educo.views.main.MainActivity
+import ng.educo.views.registration.RegistrationActivity
 import ng.educo.views.registration.viewModels.RegistrationViewModel
+import javax.inject.Inject
 
 /**
  * A simple [Fragment] subclass.
@@ -34,14 +30,21 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     private lateinit var email : String
     private lateinit var password : String
-    private lateinit var viewModel : RegistrationViewModel
+
+    @Inject
+    lateinit var viewModel : RegistrationViewModel
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (requireActivity() as RegistrationActivity).registrationComponent.inject(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_login,container,false)
-        viewModel = ViewModelProvider(this).get(RegistrationViewModel::class.java)
+        //viewModel = ViewModelProvider(this).get(RegistrationViewModel::class.java)
 
         binding.lifecycleOwner = viewLifecycleOwner
 

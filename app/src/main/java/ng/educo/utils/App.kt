@@ -11,10 +11,11 @@ import com.google.firebase.firestore.ktx.firestoreSettings
 import com.google.firebase.ktx.Firebase
 import com.pixplicity.easyprefs.library.Prefs
 import kotlinx.coroutines.*
-import ng.educo.DataStoreArchitecture.UserRepo
+import ng.educo.di.components.AppComponent
+import ng.educo.di.components.DaggerAppComponent
 import ng.educo.models.User
 
-class App : Application() {
+open class App : Application() {
 
 
     companion object {
@@ -23,6 +24,11 @@ class App : Application() {
         var job = Job()
         var applicationScope = CoroutineScope(job + Dispatchers.Main)
     }
+
+    val appComponent : AppComponent by lazy {
+        DaggerAppComponent.factory().create(applicationContext)
+    }
+
 
     override fun onCreate() {
         super.onCreate()

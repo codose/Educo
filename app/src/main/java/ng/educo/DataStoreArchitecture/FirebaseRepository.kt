@@ -11,11 +11,13 @@ import ng.educo.models.User
 import ng.educo.utils.App
 import ng.educo.utils.Constants
 import ng.educo.utils.Resource
+import javax.inject.Inject
 
-class UserRepo {
+class FirebaseRepository @Inject constructor() {
     private val auth = FirebaseAuth.getInstance()
     private val database = App.firestore
     private val userRef = database.collection(Constants.COLLECTION_USERS)
+
     suspend fun updateUser(user : User) : Resource<Boolean> {
         return try {
             userRef.document(auth.currentUser!!.uid).set(user, SetOptions.merge()).await()

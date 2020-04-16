@@ -1,9 +1,9 @@
-package ng.educo.views.main
+package ng.educo.views.main.viewmodels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.*
-import ng.educo.DataStoreArchitecture.UserRepo
+import ng.educo.DataStoreArchitecture.FirebaseRepository
 import ng.educo.utils.App
 import java.lang.Exception
 
@@ -20,7 +20,7 @@ class MainViewModel  : ViewModel(){
         uiScope.launch {
             withContext(Dispatchers.IO){
                 try{
-                    UserRepo().logOut()
+                    FirebaseRepository().logOut()
                     App.appUser = null
                     loggedOut.postValue(true)
                 }catch (e : Exception){

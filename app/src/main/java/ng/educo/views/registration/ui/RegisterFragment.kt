@@ -1,5 +1,6 @@
 package ng.educo.views.registration.ui
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,7 +19,9 @@ import ng.educo.utils.App
 import ng.educo.utils.Resource
 import ng.educo.views.categories.CategoryActivity
 import ng.educo.views.main.MainActivity
+import ng.educo.views.registration.RegistrationActivity
 import ng.educo.views.registration.viewModels.RegistrationViewModel
+import javax.inject.Inject
 
 /**
  * A simple [Fragment] subclass.
@@ -32,9 +35,15 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
     private lateinit var confirmPassword :String
     private var accountSetup : Int = 0
     private lateinit var interests : List<Long>
-    private lateinit var viewModel : RegistrationViewModel
     private lateinit var newUser : User
 
+    @Inject
+    lateinit var viewModel : RegistrationViewModel
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (requireActivity() as RegistrationActivity).registrationComponent.inject(this)
+    }
 
 
     override fun onCreateView(
@@ -42,7 +51,6 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_register,container,false)
-        viewModel = ViewModelProvider(this).get(RegistrationViewModel::class.java)
 
         binding.lifecycleOwner = viewLifecycleOwner
 

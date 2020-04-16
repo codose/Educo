@@ -2,7 +2,6 @@
 <set xmlns:android="http://schemas.android.com/apk/res/android"
     android:fillAfter="true"
     android:interpolator="@android:anim/bounce_interpolator">
-
     <scale
         android:interpolator="@android:anim/accelerate_decelerate_interpolator"
         android:fromXScale="0.8"
@@ -13,5 +12,4 @@
         android:pivotY="50%"
         android:fillAfter="false"
         android:duration="2000" />
-
 </set>

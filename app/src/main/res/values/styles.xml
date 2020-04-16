@@ -34,6 +34,24 @@
         <item name="fontFamily">@font/quicksand</item>
         <item name="android:textColor">@color/textColorPrimary</item>
     </style>
+    <style name="textAppearance.text.desc" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="fontFamily">@font/quicksand</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/textColorSecondary</item>
+        <item name="android:maxLines">3</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+    <style name="textAppearance.text.bold" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="fontFamily">@font/quicksand_bold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/textColorPrimary</item>
+    </style>
+
+    <style name="textAppearance.text.Large" parent="textAppearance.text">
+        <item name="android:textSize">20sp</item>
+        <item name="fontFamily">@font/quicksand</item>
+        <item name="android:textColor">@color/textColorPrimary</item>
+    </style>
 
     <style name="textAppearance.nav" parent="TextAppearance.MaterialComponents.Subtitle2">
         <item name="fontFamily">@font/quicksand</item>
@@ -63,11 +81,22 @@
         <item name="android:textColor">@color/textColorPrimary</item>
         <item name="backgroundTint">@color/bg_selector_secondary</item>
     </style>
+
+    <style name="Button.CustomCurved" parent="Button.CustomPrimary">
+        <item name="android:textColor">@color/textColorPrimary</item>
+        <item name="backgroundTint">@color/colorPrimaryLight</item>
+        <item name="cornerRadius">24dp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="fontFamily">@font/quicksand_light</item>
+    </style>
+
     <style name="Button.Transparent" parent="Button.CustomPrimary">
         <item name="android:textColor">@color/textColorPrimary</item>
         <item name="cornerRadius">0dp</item>
         <item name="rippleColor">@color/colorPrimaryLight</item>
-        <item name="strokeWidth">1dp</item>
+        <item name="strokeWidth">0.1dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
         <item name="strokeColor">@color/colorPrimaryLight</item>
         <item name="backgroundTint">@android:color/transparent</item>
         <item name="android:textAlignment">viewStart</item>

@@ -1,28 +1,26 @@
 package ng.educo.views.registration.viewModels
 
-import android.app.Application
-import android.text.Editable
-import android.text.TextWatcher
-import androidx.databinding.BaseObservable
-import androidx.databinding.Observable
-import androidx.databinding.ObservableField
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.*
-import ng.educo.DataStoreArchitecture.UserRepo
-import ng.educo.databinding.FragmentRegisterBinding
+import ng.educo.DataStoreArchitecture.FirebaseRepository
+import ng.educo.di.scope.ActivityScope
 import ng.educo.models.User
 import ng.educo.utils.Resource
+import javax.inject.Inject
 
-class RegistrationViewModel : ViewModel() {
+
+@ActivityScope
+class RegistrationViewModel @Inject constructor() : ViewModel() {
     private val job = Job()
     private val uiScope = CoroutineScope(job + Dispatchers.Main)
     val registration = MutableLiveData<Resource<Boolean>>()
     val login = MutableLiveData<Resource<Boolean>>()
     val appUser = MutableLiveData<Resource<User>>()
     val firestoreCreate = MutableLiveData<Resource<Boolean>>()
-    private val userRepo = UserRepo()
+
+    @Inject
+    lateinit var userRepo : FirebaseRepository
 
 
     fun registerUser(email: String, password : String){

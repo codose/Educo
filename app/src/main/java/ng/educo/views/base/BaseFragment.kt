@@ -21,16 +21,10 @@ import java.util.regex.Pattern
 
 abstract class BaseFragment<DB :ViewDataBinding> : Fragment(){
     open lateinit var binding: DB
-    lateinit var database : FirebaseFirestore
-    lateinit var userRef: CollectionReference
-    lateinit var auth : FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         FirebaseApp.initializeApp(context!!)
-        database = FirebaseFirestore.getInstance()
-        userRef = database.collection(COLLECTION_USERS)
-        auth = FirebaseAuth.getInstance()
     }
 
     override fun onCreateView(
@@ -64,7 +58,7 @@ abstract class BaseFragment<DB :ViewDataBinding> : Fragment(){
         App().setAppUser(user)
     }
 
-    fun getAppUser() : User? = App().getAppUser()
+    fun getAppUser() : User? = App.appUser
 
     fun checkNetworkState(): Boolean {
         if (!App().checkNetwork(context!!)) {

@@ -31,7 +31,7 @@ class LocationSelectFragment : BaseFragment<FragmentLocationSelectBinding>() {
         (binding.stateSpinner as? AutoCompleteTextView)?.setAdapter(mAdapter)
         binding.fragmentLocationNextButton.setOnClickListener {
             getAppUser()?.state = binding.stateSpinner.text.toString()
-            it.findNavController().navigate(R.id.action_locationSelectFragment_to_interestsFragment)
+            this.findNavController().navigate(R.id.action_locationSelectFragment_to_interestsFragment)
         }
         binding.fragmentLocationNameTextView.text = getAppUser()?.firstName
         return binding.root

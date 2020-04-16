@@ -5,14 +5,11 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.animation.AnimationUtils
 import androidx.databinding.DataBindingUtil
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.FirebaseFirestore
 import com.pixplicity.easyprefs.library.Prefs
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ng.educo.DataStoreArchitecture.UserRepo
+import ng.educo.DataStoreArchitecture.FirebaseRepository
 import ng.educo.R
 import ng.educo.databinding.ActivitySplashBinding
 import ng.educo.utils.App
@@ -56,7 +53,7 @@ class SplashActivity : BaseActivity() {
                     finish()
                 }
                 auth.currentUser != null ->{
-                    val userRepo = UserRepo()
+                    val userRepo = FirebaseRepository()
                     App.applicationScope.launch {
                         withContext(Dispatchers.IO){
                             val userResource = userRepo.getUser()

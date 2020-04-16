@@ -21,17 +21,19 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
+import javax.inject.Inject
+import javax.inject.Provider
+
 /**
  * This is pretty much boiler plate code for a ViewModel Factory.
  *
  * Provides the SleepDatabaseDao and context to the ViewModel.
  */
-class CategoryViewModelFactory(private val adapter: InterestsAdapter,
-                               private val recyclerView: RecyclerView) : ViewModelProvider.Factory {
+class CategoryViewModelFactory @Inject constructor(private val viewModelProvider: Provider<CategoryViewModel>) : ViewModelProvider.Factory {
     @Suppress("unchecked_cast")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(CategoryViewModel::class.java)) {
-            return CategoryViewModel(adapter, recyclerView) as T
+            return viewModelProvider.get() as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
