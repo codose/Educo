@@ -2,8 +2,9 @@ package ng.educo.utils
 
 
 object Constants {
-   const val COLLECTION_USERS = "Users"
-   val states = listOf(  "Abia",
+     const val COLLECTION_USERS = "Users"
+     const val COLLECTION_REQUESTS = "Educo"
+     val states = listOf(  "Abia",
         "Adamawa",
         "Akwa Ibom",
         "Anambra",
@@ -40,5 +41,5 @@ object Constants {
         "Taraba",
         "Yobe",
         "Zamfara")
-   val interests = listOf("Technology","Art","Science","Law","Social Science","Architecture","Economics","Clinical Science","Education","Agricuture","Pharmacy")
+     val interests = listOf("Technology","Art","Science","Law","Social Science","Architecture","Economics","Clinical Science","Education","Agriculture","Pharmacy")
 }

@@ -5,7 +5,6 @@ import dagger.BindsInstance
 import dagger.Component
 import ng.educo.di.modules.AppModule
 import ng.educo.di.modules.ViewModelModule
-import ng.educo.views.registration.ui.LoginFragment
 import javax.inject.Singleton
 
 
@@ -21,6 +20,6 @@ interface AppComponent{
 
     fun registrationComponent() : RegistrationComponent.Factory
     fun categoryComponent() : CategoryComponent.Factory
-    fun profileComponent() : ProfileComponent.Factory
+    fun profileComponent() : MainComponent.Factory
 
 }

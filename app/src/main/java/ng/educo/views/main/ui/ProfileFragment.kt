@@ -6,21 +6,17 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.INVISIBLE
-import android.view.View.VISIBLE
+import android.view.View.*
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 
 import ng.educo.R
 import ng.educo.databinding.FragmentProfileBinding
-import ng.educo.utils.App
 import ng.educo.utils.Resource
 import ng.educo.views.base.BaseFragment
-import ng.educo.views.categories.CategoryViewModel
 import ng.educo.views.main.MainActivity
 import ng.educo.views.main.adapters.ProfileAdapter
 import ng.educo.views.main.viewmodels.ProfileViewModel
@@ -38,7 +34,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (requireActivity() as MainActivity).profileComponent.inject(this)
+        (requireActivity() as MainActivity).mainComponent.inject(this)
     }
 
     @SuppressLint("SetTextI18n")
@@ -60,8 +56,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
             adapter = profileAdapter
         }
 
-
-
         viewModel.getUserProfile.observe(viewLifecycleOwner, Observer {
             when(it){
                 is Resource.Loading -> showProgress()
@@ -70,13 +64,13 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                     val data = it.data
                     profileAdapter.submitList(data.interest)
                     binding.fullNameTxtView.text = data.firstName + " " + data.lastName
-                    binding.titleTextView.text = data.state
+                    binding.titleTextView.text = data.state + " state"
                     hideProgress()
                 }
 
                 is Resource.Failure -> {
                     showToast(it.message)
-                    hideProgress()
+                    showProgress()
                 }
             }
         })
@@ -84,11 +78,17 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
     }
 
     private fun showProgress() {
-        binding.profileProgressBar.visibility = VISIBLE
+        binding.mainLayout.visibility = INVISIBLE
+        binding.shimmerLinearLayout.visibility = VISIBLE
+        binding.shimmerLayout.visibility = VISIBLE
+        binding.shimmerLayout.startShimmer()
     }
 
     private fun hideProgress() {
-        binding.profileProgressBar.visibility = INVISIBLE
+        binding.mainLayout.visibility = VISIBLE
+        binding.shimmerLinearLayout.visibility = GONE
+        binding.shimmerLayout.visibility = GONE
+        binding.shimmerLayout.stopShimmer()
     }
 
     override fun getLayoutRes(): Int = R.layout.fragment_profile

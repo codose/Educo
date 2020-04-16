@@ -7,6 +7,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.toObject
 import kotlinx.coroutines.tasks.await
+import ng.educo.models.Educo
 import ng.educo.models.User
 import ng.educo.utils.App
 import ng.educo.utils.Constants
@@ -17,7 +18,7 @@ class FirebaseRepository @Inject constructor() {
     private val auth = FirebaseAuth.getInstance()
     private val database = App.firestore
     private val userRef = database.collection(Constants.COLLECTION_USERS)
-
+    private val educoRef = database.collection(Constants.COLLECTION_REQUESTS)
     suspend fun updateUser(user : User) : Resource<Boolean> {
         return try {
             userRef.document(auth.currentUser!!.uid).set(user, SetOptions.merge()).await()
@@ -46,7 +47,16 @@ class FirebaseRepository @Inject constructor() {
         }
     }
 
-    suspend fun logOut() : Boolean {
+    suspend fun  createNewRequest(educo : Educo) : Resource<Boolean>{
+        return try{
+            educoRef.document().set(educo, SetOptions.merge()).await()
+            Resource.Success(true)
+        }catch (e : FirebaseFirestoreException){
+            Resource.Failure(e.message!!)
+        }
+    }
+
+    fun logOut() : Boolean {
            return try {
                auth.signOut()
                App.appUser = null

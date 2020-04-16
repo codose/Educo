@@ -9,6 +9,7 @@ import ng.educo.di.providers.ViewModelFactory
 import ng.educo.di.providers.ViewModelKey
 import ng.educo.views.categories.CategoryViewModel
 import ng.educo.views.main.viewmodels.ProfileViewModel
+import ng.educo.views.main.viewmodels.RequestStudyViewModel
 
 @Module
 abstract class ViewModelModule {
@@ -25,6 +26,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ProfileViewModel::class)
     internal abstract fun profileViewModel(viewModel: ProfileViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(RequestStudyViewModel::class)
+    internal abstract fun requestStudyViewModel(viewModel: RequestStudyViewModel): ViewModel
 
 
 }

@@ -52,7 +52,7 @@ open class App : Application() {
         return appUser
     }
 
-    fun initPrefLib() {
+    private fun initPrefLib() {
         Prefs.Builder()
             .setContext(this)
             .setMode(ContextWrapper.MODE_PRIVATE)

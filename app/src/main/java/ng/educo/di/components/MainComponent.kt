@@ -4,18 +4,19 @@ import dagger.Subcomponent
 import ng.educo.di.scope.ActivityScope
 import ng.educo.views.main.MainActivity
 import ng.educo.views.main.ui.ProfileFragment
-import javax.inject.Singleton
+import ng.educo.views.main.ui.RequestStudyFragment
 
 
 @ActivityScope
 @Subcomponent
-interface ProfileComponent {
+interface MainComponent {
 
     @Subcomponent.Factory
     interface Factory {
-        fun create(): ProfileComponent
+        fun create(): MainComponent
     }
 
     fun inject(fragment : ProfileFragment)
     fun inject(activity: MainActivity)
+    fun inject(fragment: RequestStudyFragment)
 }

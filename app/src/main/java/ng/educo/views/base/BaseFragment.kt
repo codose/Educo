@@ -21,10 +21,13 @@ import java.util.regex.Pattern
 
 abstract class BaseFragment<DB :ViewDataBinding> : Fragment(){
     open lateinit var binding: DB
+    lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         FirebaseApp.initializeApp(context!!)
+        auth = FirebaseAuth.getInstance()
+
     }
 
     override fun onCreateView(
