@@ -1,5 +1,17 @@
 package ng.educo.utils
 
+import ng.educo.models.Educo
+import ng.educo.models.User
+
+
+fun convertInterestList(user: User) : List<String>{
+    val list = ArrayList<String>()
+    for (i in user.interest){
+        val data = longInterestToString(i.toInt())
+        list.add(data)
+    }
+    return list
+}
 
 fun longInterestToString(id : Int) : String {
     return when(id){
@@ -45,4 +57,24 @@ fun typeStringToInt(id : String) : Int {
         "Study Partner" -> 1
         else -> 2
     }
+}
+
+fun checkPartnerEduco(educo: Educo) : Boolean{
+    if (educo.uid != App.auth.currentUser?.uid
+        && App.appUser?.interest!!.contains(educo.category.toLong())
+        && App.appUser!!.state == educo.location
+        && educo.type == 1){
+        return true
+    }
+    return false
+}
+
+fun checkGroupEduco(educo: Educo) : Boolean{
+    if (educo.uid != App.auth.currentUser?.uid
+        && App.appUser?.interest!!.contains(educo.category.toLong())
+        && App.appUser!!.state == educo.location
+        && educo.type == 2){
+        return true
+    }
+    return false
 }

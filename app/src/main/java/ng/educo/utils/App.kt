@@ -6,6 +6,7 @@ import android.content.ContextWrapper
 import android.net.ConnectivityManager
 import androidx.lifecycle.LiveData
 import com.google.firebase.FirebaseApp
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.firestoreSettings
@@ -24,6 +25,7 @@ open class App : Application() {
         var appUser: User? = null
         var job = Job()
         var applicationScope = CoroutineScope(job + Dispatchers.Main)
+        lateinit var auth: FirebaseAuth
     }
 
     val appComponent : AppComponent by lazy {
@@ -35,6 +37,7 @@ open class App : Application() {
         super.onCreate()
         FirebaseApp.initializeApp(this)
         firestore = Firebase.firestore
+        auth = FirebaseAuth.getInstance()
         firestore.firestoreSettings = firestoreSettings {
             isPersistenceEnabled = true
         }

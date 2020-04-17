@@ -60,7 +60,7 @@ class RequestStudyFragment : BaseFragment<FragmentRequestStudyBinding>() {
         binding.backButton.setOnClickListener {
             activity?.onBackPressed()
         }
-        val adapter = ArrayAdapter(requireContext(), R.layout.list_item, interests)
+        val adapter = ArrayAdapter(requireContext(), R.layout.list_item, convertInterestList(App.appUser!!))
         (binding.categoryEditText as? AutoCompleteTextView)?.setAdapter(adapter)
 
         val adapter1 = ArrayAdapter(requireContext(), R.layout.list_item, listOf("Study Partner", "Study Group"))

@@ -2,6 +2,7 @@ package ng.educo.views.main.adapters
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View.GONE
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ng.educo.databinding.ItemInterestItemBinding
 import ng.educo.databinding.ItemRequestItemBinding
 import ng.educo.models.Educo
+import ng.educo.utils.App
 import ng.educo.utils.longInterestToString
 import ng.educo.utils.typeIntToString
 
@@ -37,7 +39,7 @@ class MainAdapter : ListAdapter<Educo, MainAdapter.MyViewHolder>(MainDiffCallbac
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val id = getItem(position)
-        holder.bind(id)
+            holder.bind(id)
     }
 }
 

@@ -1,8 +1,6 @@
 package ng.educo.DataStoreArchitecture
 
-import com.google.api.Authentication
 import com.google.firebase.auth.*
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.toObject
@@ -13,6 +11,7 @@ import ng.educo.models.User
 import ng.educo.utils.App
 import ng.educo.utils.Constants
 import ng.educo.utils.Resource
+import ng.educo.utils.checkPartnerEduco
 import javax.inject.Inject
 
 class FirebaseRepository @Inject constructor() {
@@ -61,7 +60,13 @@ class FirebaseRepository @Inject constructor() {
         return try{
             val educo = educoRef.get().await()
             val allPartners = educo.toObjects<Educo>()
-            Resource.Success(allPartners)
+            val otherPartners : ArrayList<Educo> = ArrayList()
+            for(i in allPartners){
+                if(checkPartnerEduco(i)){
+                    otherPartners.add(i)
+                }
+            }
+            Resource.Success(otherPartners)
         }catch(e : FirebaseFirestoreException){
             Resource.Failure(e.message!!)
         }
