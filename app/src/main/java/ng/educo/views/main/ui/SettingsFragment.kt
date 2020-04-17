@@ -1,5 +1,6 @@
 package ng.educo.views.main.ui
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -17,13 +18,25 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import ng.educo.R
 import ng.educo.databinding.FragmentSettingsBinding
 import ng.educo.views.base.BaseFragment
+import ng.educo.views.main.MainActivity
 import ng.educo.views.main.viewmodels.MainViewModel
 import ng.educo.views.registration.RegistrationActivity
+import javax.inject.Inject
 
 /**
  * A simple [Fragment] subclass.
  */
 class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
+
+    @Inject
+    lateinit var factory: ViewModelProvider.Factory
+
+    lateinit var viewModel : MainViewModel
+
+    override fun onAttach(context: Context) {
+            super.onAttach(context)
+            (requireActivity() as MainActivity).mainComponent.inject(this)
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,7 +46,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
         val bottomNavigationView : BottomNavigationView = activity!!.findViewById(R.id.bottomNavigationView)
         bottomNavigationView.visibility = View.VISIBLE
         val fab = activity?.findViewById<FloatingActionButton>(R.id.search_new_btn)
-        val viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this, factory).get(MainViewModel::class.java)
         fab?.visibility = GONE
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner

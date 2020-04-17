@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.ContextWrapper
 import android.net.ConnectivityManager
+import androidx.lifecycle.LiveData
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -37,7 +38,6 @@ open class App : Application() {
         firestore.firestoreSettings = firestoreSettings {
             isPersistenceEnabled = true
         }
-
         initPrefLib()
     }
 

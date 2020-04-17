@@ -16,7 +16,7 @@ class MainActivity : BaseActivity() {
     lateinit var mainComponent: MainComponent
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        mainComponent = (application as App).appComponent.profileComponent().create()
+        mainComponent = (application as App).appComponent.mainComponent().create()
         mainComponent.inject(this)
         super.onCreate(savedInstanceState)
         val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)

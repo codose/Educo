@@ -8,6 +8,7 @@ import dagger.multibindings.IntoMap
 import ng.educo.di.providers.ViewModelFactory
 import ng.educo.di.providers.ViewModelKey
 import ng.educo.views.categories.CategoryViewModel
+import ng.educo.views.main.viewmodels.MainViewModel
 import ng.educo.views.main.viewmodels.ProfileViewModel
 import ng.educo.views.main.viewmodels.RequestStudyViewModel
 
@@ -31,6 +32,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(RequestStudyViewModel::class)
     internal abstract fun requestStudyViewModel(viewModel: RequestStudyViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MainViewModel::class)
+    internal abstract fun mainViewModel(viewModel: MainViewModel): ViewModel
 
 
 }

@@ -21,11 +21,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import ng.educo.R
 import ng.educo.databinding.FragmentRequestStudyBinding
 import ng.educo.models.Educo
-import ng.educo.utils.App
+import ng.educo.utils.*
 import ng.educo.utils.Constants.interests
-import ng.educo.utils.Resource
-import ng.educo.utils.longInterestToString
-import ng.educo.utils.longStringToInt
 import ng.educo.views.base.BaseFragment
 import ng.educo.views.main.MainActivity
 import ng.educo.views.main.viewmodels.RequestStudyViewModel
@@ -42,7 +39,7 @@ class RequestStudyFragment : BaseFragment<FragmentRequestStudyBinding>() {
 
     private lateinit var title : String
     private lateinit var category : String
-    private var type : Int = 1
+    private lateinit var type : String
     private var users : Int = 1
     private lateinit var description : String
 
@@ -115,11 +112,12 @@ class RequestStudyFragment : BaseFragment<FragmentRequestStudyBinding>() {
     private fun createNewRequest() {
         title = binding.titleEditText.text.toString()
         category = binding.categoryEditText.text.toString()
-        type = Integer.parseInt(binding.typeText.text.toString())
+        type = binding.typeText.text.toString()
         users = Integer.parseInt(binding.usersText.text.toString())
         description = binding.descriptionEditText.text.toString()
+        val location = App.appUser?.state
         if(validateInputs()){
-            val educo = Educo(title, longStringToInt(category), type, users, description, auth.currentUser!!.uid)
+            val educo = Educo(title, longStringToInt(category), typeStringToInt(type), users, description, location!!, auth.currentUser!!.uid)
             viewModel.createNewRequest(educo)
         }
     }

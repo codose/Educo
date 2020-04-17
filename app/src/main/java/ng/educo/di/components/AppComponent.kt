@@ -20,6 +20,6 @@ interface AppComponent{
 
     fun registrationComponent() : RegistrationComponent.Factory
     fun categoryComponent() : CategoryComponent.Factory
-    fun profileComponent() : MainComponent.Factory
+    fun mainComponent() : MainComponent.Factory
 
 }

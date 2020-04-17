@@ -6,6 +6,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.firestore.ktx.toObjects
 import kotlinx.coroutines.tasks.await
 import ng.educo.models.Educo
 import ng.educo.models.User
@@ -54,6 +55,17 @@ class FirebaseRepository @Inject constructor() {
         }catch (e : FirebaseFirestoreException){
             Resource.Failure(e.message!!)
         }
+    }
+
+    suspend fun getAllStudyPartners() : Resource<List<Educo>>{
+        return try{
+            val educo = educoRef.get().await()
+            val allPartners = educo.toObjects<Educo>()
+            Resource.Success(allPartners)
+        }catch(e : FirebaseFirestoreException){
+            Resource.Failure(e.message!!)
+        }
+
     }
 
     fun logOut() : Boolean {

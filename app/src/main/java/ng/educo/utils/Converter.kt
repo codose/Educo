@@ -32,3 +32,17 @@ fun longStringToInt(id : String) : Int {
         else -> 10
     }
 }
+
+fun typeIntToString(id : Int) : String {
+    return when(id){
+        1 -> "Study Partner"
+        else -> "Study Group"
+    }
+}
+
+fun typeStringToInt(id : String) : Int {
+    return when(id){
+        "Study Partner" -> 1
+        else -> 2
+    }
+}
