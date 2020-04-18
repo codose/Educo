@@ -23,7 +23,11 @@ class MainAdapter : ListAdapter<Educo, MainAdapter.MyViewHolder>(MainDiffCallbac
             binding.titleTxtview.text = educo.title
             binding.descTextView.text = educo.description
             binding.catTextView.text =  longInterestToString(educo.category)
-            binding.typeTextView.text = typeIntToString(educo.type) + " : " + "${educo.users}"
+            if(educo.type == 1){
+                binding.typeTextView.text = typeIntToString(educo.type)
+            }else{
+                binding.typeTextView.text = typeIntToString(educo.type) + " : " + "${educo.users}"
+            }
             binding.locationTextView.text = educo.location
         }
     }

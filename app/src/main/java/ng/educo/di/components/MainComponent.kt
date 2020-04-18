@@ -3,10 +3,7 @@ package ng.educo.di.components
 import dagger.Subcomponent
 import ng.educo.di.scope.ActivityScope
 import ng.educo.views.main.MainActivity
-import ng.educo.views.main.ui.ProfileFragment
-import ng.educo.views.main.ui.RequestStudyFragment
-import ng.educo.views.main.ui.SettingsFragment
-import ng.educo.views.main.ui.StudyPartnerFragment
+import ng.educo.views.main.ui.*
 
 
 @ActivityScope
@@ -22,6 +19,7 @@ interface MainComponent {
     fun inject(activity: MainActivity)
     fun inject(fragment: RequestStudyFragment)
     fun inject(fragment: StudyPartnerFragment)
+    fun inject(fragment: StudyGroupFragment)
     fun inject(fragment: SettingsFragment)
 
 }

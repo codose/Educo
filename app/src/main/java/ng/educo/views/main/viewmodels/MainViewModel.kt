@@ -4,27 +4,44 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.*
 import ng.educo.DataStoreArchitecture.FirebaseRepository
+import ng.educo.di.scope.ActivityScope
 import ng.educo.models.Educo
 import ng.educo.utils.App
 import ng.educo.utils.Resource
-import java.lang.Exception
 import javax.inject.Inject
+import javax.inject.Singleton
+
+
 
 class MainViewModel @Inject constructor(private val firebaseRepository: FirebaseRepository)  : ViewModel(){
 
     val loggedOut = MutableLiveData<Boolean>()
-    val studyData = MutableLiveData<Resource<List<Educo>>>()
+    val studyPartnerData = MutableLiveData<Resource<List<Educo>>>()
+    val studyGroupData = MutableLiveData<Resource<List<Educo>>>()
+
 
     init {
         loggedOut.value = false
+        getStudyGroupData()
+        getStudyPartnerData()
     }
 
-    fun getUsers(){
-        studyData.value = Resource.Loading()
+    fun getStudyPartnerData(){
+        studyPartnerData.value = Resource.Loading()
         App.applicationScope.launch {
             withContext(Dispatchers.IO){
                 val data = firebaseRepository.getAllStudyPartners()
-                studyData.postValue(data)
+                studyPartnerData.postValue(data)
+            }
+        }
+    }
+
+    fun getStudyGroupData(){
+        studyGroupData.value = Resource.Loading()
+        App.applicationScope.launch {
+            withContext(Dispatchers.IO){
+                val data = firebaseRepository.getAllStudyGroups()
+                studyGroupData.postValue(data)
             }
         }
     }

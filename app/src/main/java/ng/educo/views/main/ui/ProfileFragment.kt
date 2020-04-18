@@ -11,7 +11,9 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import kotlinx.android.synthetic.main.fragment_profile.*
 
 import ng.educo.R
 import ng.educo.databinding.FragmentProfileBinding
@@ -43,17 +45,20 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_profile, container, false)
-        viewModel = ViewModelProvider(this, factory)[ProfileViewModel::class.java]
+        viewModel = ViewModelProvider(activity!!, factory)[ProfileViewModel::class.java]
 
         val profileAdapter = ProfileAdapter()
 
         val gridLayoutManager = GridLayoutManager(context, 4)
 
-        viewModel.getUserData()
-
         binding.profileRv.apply{
             layoutManager = gridLayoutManager
             adapter = profileAdapter
+        }
+
+        binding.apply {
+            backButton.setOnClickListener { activity!!.onBackPressed() }
+            editButton.setOnClickListener { findNavController().navigate(R.id.action_profileFragment_to_editProfileFragment) }
         }
 
         viewModel.getUserProfile.observe(viewLifecycleOwner, Observer {
@@ -64,7 +69,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                     val data = it.data
                     profileAdapter.submitList(data.interest)
                     binding.fullNameTxtView.text = data.firstName + " " + data.lastName
-                    binding.titleTextView.text = data.state + " state"
+                    binding.stateTextView.text = data.state + " state"
                     hideProgress()
                 }
 

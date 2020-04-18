@@ -2,6 +2,7 @@ package ng.educo.views.main
 
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import kotlinx.android.synthetic.main.activity_main.*
@@ -10,8 +11,18 @@ import ng.educo.databinding.ActivityMainBinding
 import ng.educo.di.components.MainComponent
 import ng.educo.utils.App
 import ng.educo.views.base.BaseActivity
+import ng.educo.views.main.viewmodels.MainViewModel
+import ng.educo.views.main.viewmodels.ProfileViewModel
+import javax.inject.Inject
 
 class MainActivity : BaseActivity() {
+
+    @Inject
+    lateinit var factory: ViewModelProvider.Factory
+
+    lateinit var viewModel : MainViewModel
+
+    lateinit var profileViewModel : ProfileViewModel
 
     lateinit var mainComponent: MainComponent
 
@@ -20,6 +31,9 @@ class MainActivity : BaseActivity() {
         mainComponent.inject(this)
         super.onCreate(savedInstanceState)
         val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+        viewModel = ViewModelProvider(this, factory)[MainViewModel::class.java]
+
+        profileViewModel = ViewModelProvider(this, factory)[ProfileViewModel::class.java]
 
         val navController = this.findNavController(R.id.navHostFragment)
         NavigationUI.setupWithNavController(bottomNavigationView, navController)
@@ -27,6 +41,5 @@ class MainActivity : BaseActivity() {
         binding.searchNewBtn.setOnClickListener{
             navController.navigate(R.id.requestStudyFragment)
         }
-
     }
 }

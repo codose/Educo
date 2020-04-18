@@ -8,10 +8,7 @@ import com.google.firebase.firestore.ktx.toObjects
 import kotlinx.coroutines.tasks.await
 import ng.educo.models.Educo
 import ng.educo.models.User
-import ng.educo.utils.App
-import ng.educo.utils.Constants
-import ng.educo.utils.Resource
-import ng.educo.utils.checkPartnerEduco
+import ng.educo.utils.*
 import javax.inject.Inject
 
 class FirebaseRepository @Inject constructor() {
@@ -63,6 +60,23 @@ class FirebaseRepository @Inject constructor() {
             val otherPartners : ArrayList<Educo> = ArrayList()
             for(i in allPartners){
                 if(checkPartnerEduco(i)){
+                    otherPartners.add(i)
+                }
+            }
+            Resource.Success(otherPartners)
+        }catch(e : FirebaseFirestoreException){
+            Resource.Failure(e.message!!)
+        }
+
+    }
+
+    suspend fun getAllStudyGroups() : Resource<List<Educo>>{
+        return try{
+            val educo = educoRef.get().await()
+            val allPartners = educo.toObjects<Educo>()
+            val otherPartners : ArrayList<Educo> = ArrayList()
+            for(i in allPartners){
+                if(checkGroupEduco(i)){
                     otherPartners.add(i)
                 }
             }

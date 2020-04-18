@@ -21,7 +21,6 @@ import ng.educo.views.base.BaseFragment
 import ng.educo.views.main.MainActivity
 import ng.educo.views.main.adapters.MainAdapter
 import ng.educo.views.main.viewmodels.MainViewModel
-import ng.educo.views.main.viewmodels.ProfileViewModel
 import javax.inject.Inject
 
 /**
@@ -44,17 +43,13 @@ class StudyPartnerFragment : BaseFragment<FragmentStudyPartnerBinding>() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(layoutInflater,getLayoutRes(),container,false)
+        viewModel = ViewModelProvider(activity!!,factory)[MainViewModel::class.java]
+//        viewModel.getStudyPartnerData()
         navVisibility()
-
-        viewModel = ViewModelProvider(this,factory)[MainViewModel::class.java]
-
-        viewModel.getUsers()
-
         val adapter = MainAdapter()
-
         binding.studyPartnerRv.adapter = adapter
 
-        viewModel.studyData.observe(viewLifecycleOwner, Observer {
+        viewModel.studyPartnerData.observe(viewLifecycleOwner, Observer {
             when(it){
                 is Resource.Loading -> {
                     showShimmer()

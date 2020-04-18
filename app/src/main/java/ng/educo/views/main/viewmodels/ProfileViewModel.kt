@@ -9,15 +9,18 @@ import ng.educo.utils.Resource
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
+
 class ProfileViewModel @Inject constructor(private val firebaseRepository: FirebaseRepository) : ViewModel(){
 
     val getUserProfile = MutableLiveData<Resource<User>>()
 
     val job = Job()
     val uiScope = CoroutineScope(job + Dispatchers.Main)
+    init {
+        getUserData()
+    }
 
-    fun getUserData(){
+    private fun getUserData(){
         getUserProfile.value = Resource.Loading()
         uiScope.launch {
             withContext(Dispatchers.IO){

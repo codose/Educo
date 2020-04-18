@@ -7,10 +7,12 @@ import dagger.Module
 import dagger.multibindings.IntoMap
 import ng.educo.di.providers.ViewModelFactory
 import ng.educo.di.providers.ViewModelKey
+import ng.educo.di.scope.ActivityScope
 import ng.educo.views.categories.CategoryViewModel
 import ng.educo.views.main.viewmodels.MainViewModel
 import ng.educo.views.main.viewmodels.ProfileViewModel
 import ng.educo.views.main.viewmodels.RequestStudyViewModel
+
 
 @Module
 abstract class ViewModelModule {
