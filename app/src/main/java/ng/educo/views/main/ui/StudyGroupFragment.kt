@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -61,6 +62,12 @@ class StudyGroupFragment : BaseFragment<FragmentStudyGroupBinding>() {
                 is Resource.Success ->{
                     hideShimmer()
                     adapter.submitList(it.data)
+                    if(it.data.isEmpty()){
+                        binding.apply {
+                            nothingImage.visibility = VISIBLE
+                            nothingText.visibility = VISIBLE
+                        }
+                    }
                 }
 
                 is Resource.Failure ->{

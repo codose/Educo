@@ -11,6 +11,7 @@ import ng.educo.databinding.ItemInterestItemBinding
 import ng.educo.databinding.ItemRequestItemBinding
 import ng.educo.models.Educo
 import ng.educo.utils.App
+import ng.educo.utils.getTimeAgo
 import ng.educo.utils.longInterestToString
 import ng.educo.utils.typeIntToString
 
@@ -29,6 +30,8 @@ class MainAdapter : ListAdapter<Educo, MainAdapter.MyViewHolder>(MainDiffCallbac
                 binding.typeTextView.text = typeIntToString(educo.type) + " : " + "${educo.users}"
             }
             binding.locationTextView.text = educo.location
+
+            binding.timeStampTxtView.text = getTimeAgo(educo.createdAt!!)
         }
     }
 

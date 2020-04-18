@@ -71,9 +71,8 @@ class SplashActivity : BaseActivity() {
                         }
                     }
                 }
-
             }
-        }, 3000)
+        }, 1000)
     }
 
     override fun onBackPressed() {

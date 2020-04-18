@@ -125,7 +125,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
             return
         }else{
             binding.registerProgress.visibility = View.VISIBLE
-            newUser = User(firstName, lastName, email, phone, accountSetup,
+            newUser = User(firstName, lastName, email, phone, accountSetup, null,
                 interests as MutableList<Long>
             )
             viewModel.registerUser(email,password)

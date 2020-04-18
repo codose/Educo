@@ -58,6 +58,12 @@ class StudyPartnerFragment : BaseFragment<FragmentStudyPartnerBinding>() {
                 is Resource.Success ->{
                     hideShimmer()
                     adapter.submitList(it.data)
+                    if(it.data.isEmpty()){
+                        binding.apply {
+                            nothingImage.visibility = VISIBLE
+                            nothingText.visibility = VISIBLE
+                        }
+                    }
                 }
 
                 is Resource.Failure ->{

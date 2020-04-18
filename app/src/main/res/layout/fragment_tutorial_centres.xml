@@ -6,18 +6,45 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".views.main.ui.TutorialCentresFragment">
-
         <TextView
+            android:id="@+id/textView26"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standard_margin"
+            android:layout_marginTop="@dimen/standard_margin"
+            android:layout_marginEnd="@dimen/standard_margin"
+            android:text="Tutorial centres"
+            android:textAppearance="@style/textAppearance.main.RV"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/nothingImage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:text="Tutorial Centres Fragment"
-            android:textAppearance="@style/textAppearance.customHeadline4"
+            android:layout_marginBottom="32dp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/textView26"
+            app:srcCompat="@drawable/ic_undraw_blank" />
+
+        <TextView
+            android:id="@+id/nothingText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Nothing here ;("
+            android:visibility="gone"
+            android:textAppearance="@style/textAppearance.customHeadline3"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="@+id/nothingImage"
+            app:layout_constraintStart_toStartOf="@+id/nothingImage"
+            app:layout_constraintTop_toBottomOf="@+id/nothingImage" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

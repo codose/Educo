@@ -13,6 +13,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager.HORIZONTAL
+import androidx.recyclerview.widget.StaggeredGridLayoutManager.VERTICAL
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.fragment_profile.*
 
 import ng.educo.R
@@ -49,7 +54,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
         val profileAdapter = ProfileAdapter()
 
-        val gridLayoutManager = GridLayoutManager(context, 4)
+        val gridLayoutManager = StaggeredGridLayoutManager(2, HORIZONTAL)
 
         binding.profileRv.apply{
             layoutManager = gridLayoutManager
@@ -60,6 +65,8 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
             backButton.setOnClickListener { activity!!.onBackPressed() }
             editButton.setOnClickListener { findNavController().navigate(R.id.action_profileFragment_to_editProfileFragment) }
         }
+
+        setUpBottomNav()
 
         viewModel.getUserProfile.observe(viewLifecycleOwner, Observer {
             when(it){
@@ -80,6 +87,13 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
             }
         })
         return binding.root
+    }
+
+    private fun setUpBottomNav() {
+        val bottomNavigationView : BottomNavigationView = activity!!.findViewById(R.id.bottomNavigationView)
+        bottomNavigationView.visibility = GONE
+        val fab = activity?.findViewById<FloatingActionButton>(R.id.search_new_btn)
+        fab?.visibility = GONE
     }
 
     private fun showProgress() {
