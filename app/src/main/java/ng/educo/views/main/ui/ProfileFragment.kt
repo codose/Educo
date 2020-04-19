@@ -23,6 +23,8 @@ import kotlinx.android.synthetic.main.fragment_profile.*
 import ng.educo.R
 import ng.educo.databinding.FragmentProfileBinding
 import ng.educo.utils.Resource
+import ng.educo.utils.formatDateJoined
+import ng.educo.utils.yearToString
 import ng.educo.views.base.BaseFragment
 import ng.educo.views.main.MainActivity
 import ng.educo.views.main.adapters.ProfileAdapter
@@ -69,22 +71,12 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         setUpBottomNav()
 
         viewModel.getUserProfile.observe(viewLifecycleOwner, Observer {
-            when(it){
-                is Resource.Loading -> showProgress()
-
-                is Resource.Success -> {
-                    val data = it.data
-                    profileAdapter.submitList(data.interest)
-                    binding.fullNameTxtView.text = data.firstName + " " + data.lastName
-                    binding.stateTextView.text = data.state + " state"
-                    hideProgress()
-                }
-
-                is Resource.Failure -> {
-                    showToast(it.message)
-                    showProgress()
-                }
-            }
+            profileAdapter.submitList(it.interest)
+            binding.fullNameTxtView.text = it.firstName + " " + it.lastName
+            binding.stateTextView.text = it.state + " state"
+            binding.titleTextView.text = "${it.school } / ${it.dept} / ${yearToString(it.level)}"
+            binding.dateJoinedTextView.text = formatDateJoined(it.accountCreated!!)
+            hideProgress()
         })
         return binding.root
     }

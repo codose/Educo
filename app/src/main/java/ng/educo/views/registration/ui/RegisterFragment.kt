@@ -9,16 +9,12 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import ng.educo.views.base.BaseFragment
 import ng.educo.R
 import ng.educo.databinding.FragmentRegisterBinding
 import ng.educo.models.User
-import ng.educo.utils.App
 import ng.educo.utils.Resource
 import ng.educo.views.categories.CategoryActivity
-import ng.educo.views.main.MainActivity
 import ng.educo.views.registration.RegistrationActivity
 import ng.educo.views.registration.viewModels.RegistrationViewModel
 import javax.inject.Inject
@@ -64,7 +60,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
             when(it){
                 is Resource.Loading -> disableButton()
 
-                is Resource.Success -> viewModel.addToFirestore(newUser)
+                is Resource.Success -> viewModel.addToFireStore(newUser)
 
                 is Resource.Failure -> {
                     enableButton()
@@ -73,7 +69,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
             }
         })
 
-        viewModel.firestoreCreate.observe(viewLifecycleOwner, Observer {
+        viewModel.fireStoreCreate.observe(viewLifecycleOwner, Observer {
             when(it){
                 is Resource.Loading -> disableButton()
 
@@ -132,14 +128,15 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
         }
     }
 
+
     private fun validateInputs(): Boolean {
-        if (!isValidUserName(firstName)) {
+        if (!isValidUserName(firstName.trim())) {
             binding.firstNameTextInputLayout.error = "First name required"
             return false
         } else {
             binding.firstNameTextInputLayout.error = null
         }
-        if (!isValidUserName(lastName)) {
+        if (!isValidUserName(lastName.trim())) {
             binding.lastNameTextInputLayout.error = "Last name required"
             return false
         }else {
@@ -151,13 +148,13 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
         }else {
             binding.emailNameTextInputLayout.error = null
         }
-        if (!isValidPhoneNo(phone)) {
+        if (!isValidPhoneNo(phone.trim())) {
             binding.phoneTextInputLayout.error = "valid phone number Required"
             return false
         }else {
             binding.phoneTextInputLayout.error = null
         }
-        if (!isValidPassword(password)) {
+        if (!isValidPassword(password.trim())) {
             binding.passwordTextInputLayout.error = "Password of 8 characters & above Required"
             return false
         }else {

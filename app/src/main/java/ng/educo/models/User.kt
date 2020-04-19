@@ -1,8 +1,6 @@
 package ng.educo.models
 
 import com.google.firebase.firestore.ServerTimestamp
-import com.google.firebase.ktx.Firebase
-import com.google.firestore.v1.DocumentTransform
 import java.util.*
 
 data class User(
@@ -14,5 +12,9 @@ data class User(
     @ServerTimestamp
     var accountCreated : Date? = null,
     var interest : MutableList<Long> = mutableListOf(),
-    var state : String = "Lagos"
+    var state : String = "Lagos",
+    var school : String = "",
+    var dept : String = "",
+    var level : String = "0",
+    var imageUrl : String = ""
 )

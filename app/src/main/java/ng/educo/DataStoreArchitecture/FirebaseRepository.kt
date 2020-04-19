@@ -16,11 +16,13 @@ class FirebaseRepository @Inject constructor() {
     private val database = App.firestore
     private val userRef = database.collection(Constants.COLLECTION_USERS)
     private val educoRef = database.collection(Constants.COLLECTION_REQUESTS)
-    suspend fun updateUser(user : User) : Resource<Boolean> {
+
+
+    suspend fun updateUser(user : User) : Resource<String> {
         return try {
             userRef.document(auth.currentUser!!.uid).set(user, SetOptions.merge()).await()
             App.appUser = user
-            Resource.Success(true)
+            Resource.Success("Account Updated Successfully")
         } catch(e : FirebaseFirestoreException){
             Resource.Failure(e.message!!)
         }

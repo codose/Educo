@@ -2,6 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -12,15 +13,15 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/standard_margin"
-            android:layout_marginTop="@dimen/standard_margin"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="@dimen/standard_margin"
             android:fontFamily="@font/quicksand_bold"
-            android:text="@string/please_select_your_location"
+            android:text="Please complete your account setup"
             android:textColor="@color/colorPrimary"
-            android:textSize="24sp"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline4" />
+            app:layout_constraintTop_toBottomOf="@+id/textView19" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline4"
@@ -31,11 +32,11 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/fragment_location_country_select_spinner"
+            style="@style/AppTheme.SpinnerTextBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_small"
             android:layout_marginEnd="@dimen/standard_margin"
-            style="@style/AppTheme.SpinnerTextBox"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/textView11"
             app:layout_constraintTop_toBottomOf="@+id/textView12">
@@ -49,6 +50,25 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/fragment_year_spinner"
+            style="@style/AppTheme.SpinnerTextBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/standard_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textView32"
+            app:layout_constraintTop_toBottomOf="@+id/textView32">
+
+            <AutoCompleteTextView
+                android:id="@+id/year_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                android:text="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+
         <TextView
             android:id="@+id/textView12"
             android:layout_width="wrap_content"
@@ -57,7 +77,6 @@
             android:fontFamily="@font/quicksand"
             android:text="Country"
             android:textAppearance="@style/textAppearance.text"
-            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/textView11"
             app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
@@ -66,29 +85,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/standard_margin"
-            android:fontFamily="@font/quicksand"
             android:text="State"
             android:textAppearance="@style/textAppearance.text"
-            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/fragment_location_country_select_spinner"
             app:layout_constraintTop_toBottomOf="@+id/fragment_location_country_select_spinner" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/fragment_location_state_select_spinner"
+            style="@style/AppTheme.SpinnerTextBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_small"
-            style="@style/AppTheme.SpinnerTextBox"
             android:layout_marginEnd="@dimen/standard_margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/textView13"
             app:layout_constraintTop_toBottomOf="@+id/textView13">
+
             <AutoCompleteTextView
                 android:id="@+id/state_spinner"
-                android:inputType="none"
-                android:text="Lagos"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                android:text="Lagos" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
@@ -96,27 +114,28 @@
             style="@style/Button.CustomPrimary"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_large"
             android:fontFamily="@font/quicksand"
             android:text="@string/next"
             app:icon="@drawable/ic_baseline_arrow_forward_ios_24"
             app:iconGravity="end"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/fragment_location_state_select_spinner"
-            app:layout_constraintStart_toStartOf="@+id/fragment_location_state_select_spinner"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_location_state_select_spinner" />
+            app:layout_constraintStart_toStartOf="@+id/fragment_location_state_select_spinner" />
 
         <TextView
             android:id="@+id/textView19"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/standard_margin"
+            android:layout_marginBottom="12dp"
             android:fontFamily="@font/quicksand_bold"
             android:text="Welcome"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/textColorPrimary"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/guideline4"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/fragment_location_name_text_view"
@@ -131,5 +150,75 @@
             app:layout_constraintEnd_toEndOf="@+id/textView11"
             app:layout_constraintStart_toEndOf="@+id/textView19"
             app:layout_constraintTop_toTopOf="@+id/textView19" />
+
+        <TextView
+            android:id="@+id/textView30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/standard_margin"
+            android:text="School"
+            android:textAppearance="@style/textAppearance.text"
+            app:layout_constraintStart_toStartOf="@+id/fragment_location_state_select_spinner"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_location_state_select_spinner" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/schoolTextInputLayout"
+            style="@style/TextBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textView30"
+            app:layout_constraintTop_toBottomOf="@+id/textView30">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/schoolTextInputEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/textView31"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Department"
+            android:textAppearance="@style/textAppearance.text"
+            app:layout_constraintStart_toStartOf="@+id/schoolTextInputLayout"
+            app:layout_constraintTop_toBottomOf="@+id/schoolTextInputLayout" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/deptTextInputLayout"
+            style="@style/TextBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline15"
+            app:layout_constraintStart_toStartOf="@+id/textView31"
+            app:layout_constraintTop_toBottomOf="@+id/textView31">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/deptTextInputEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.7" />
+
+        <TextView
+            android:id="@+id/textView32"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Year"
+            android:textAppearance="@style/textAppearance.text"
+            app:layout_constraintStart_toStartOf="@+id/guideline15"
+            app:layout_constraintTop_toTopOf="@+id/textView31" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

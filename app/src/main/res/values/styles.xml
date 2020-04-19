@@ -149,6 +149,7 @@
     <style name="TextBox" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxStrokeColor">@color/edit_color</item>
         <item name="fontFamily">@font/quicksand</item>
+        <item name="errorEnabled">true</item>
     </style>
 
     <style name="TextBox.Dark" parent="TextBox">

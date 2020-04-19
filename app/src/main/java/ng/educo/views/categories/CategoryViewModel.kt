@@ -15,7 +15,7 @@ class CategoryViewModel @Inject constructor(private val firebaseRepository: Fire
     private val job = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + job)
     private val appUser = App.appUser
-    val completed = MutableLiveData<Resource<Boolean>>()
+    val completed = MutableLiveData<Resource<String>>()
     val list = MutableLiveData<List<String>>()
     val selectedList = MutableLiveData<MutableList<Long>>()
     init {

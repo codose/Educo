@@ -17,7 +17,7 @@ class RegistrationViewModel @Inject constructor() : ViewModel() {
     val registration = MutableLiveData<Resource<Boolean>>()
     val login = MutableLiveData<Resource<Boolean>>()
     val appUser = MutableLiveData<Resource<User>>()
-    val firestoreCreate = MutableLiveData<Resource<Boolean>>()
+    val fireStoreCreate = MutableLiveData<Resource<String>>()
 
     @Inject
     lateinit var userRepo : FirebaseRepository
@@ -50,10 +50,10 @@ class RegistrationViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    fun addToFirestore(user : User){
-        firestoreCreate.value = Resource.Loading()
+    fun addToFireStore(user : User){
+        fireStoreCreate.value = Resource.Loading()
         uiScope.launch {
-            firestoreCreate.value = withContext(Dispatchers.IO){
+            fireStoreCreate.value = withContext(Dispatchers.IO){
                 userRepo.updateUser(user)
             }
         }

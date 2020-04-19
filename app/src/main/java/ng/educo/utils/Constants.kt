@@ -2,6 +2,7 @@ package ng.educo.utils
 
 
 object Constants {
+     val year = listOf("1","2","3","4","5","6")
      const val COLLECTION_USERS = "Users"
      const val COLLECTION_REQUESTS = "Educo"
      val states = listOf(  "Abia",

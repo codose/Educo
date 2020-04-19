@@ -21,5 +21,6 @@ interface MainComponent {
     fun inject(fragment: StudyPartnerFragment)
     fun inject(fragment: StudyGroupFragment)
     fun inject(fragment: SettingsFragment)
+    fun inject(fragment: EditProfileFragment)
 
 }

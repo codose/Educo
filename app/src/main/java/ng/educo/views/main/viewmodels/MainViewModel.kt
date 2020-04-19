@@ -19,7 +19,6 @@ class MainViewModel @Inject constructor(private val firebaseRepository: Firebase
     val studyPartnerData = MutableLiveData<Resource<List<Educo>>>()
     val studyGroupData = MutableLiveData<Resource<List<Educo>>>()
 
-
     init {
         loggedOut.value = false
         getStudyGroupData()

@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.android.synthetic.main.fragment_study_group.*
 
 import ng.educo.R
 import ng.educo.databinding.FragmentStudyPartnerBinding
@@ -49,19 +50,35 @@ class StudyPartnerFragment : BaseFragment<FragmentStudyPartnerBinding>() {
         val adapter = MainAdapter()
         binding.studyPartnerRv.adapter = adapter
 
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            viewModel.getStudyPartnerData()
+        }
+
         viewModel.studyPartnerData.observe(viewLifecycleOwner, Observer {
             when(it){
                 is Resource.Loading -> {
                     showShimmer()
+                    binding.apply {
+                        nothingImage.visibility = GONE
+                        nothingText.visibility = GONE
+                        studyPartnerRv.visibility = GONE
+                    }
                 }
 
                 is Resource.Success ->{
                     hideShimmer()
                     adapter.submitList(it.data)
+                    binding.swipeRefreshLayout.isRefreshing = false
                     if(it.data.isEmpty()){
                         binding.apply {
                             nothingImage.visibility = VISIBLE
                             nothingText.visibility = VISIBLE
+                        }
+                    }else{
+                        binding.apply {
+                            nothingImage.visibility = GONE
+                            nothingText.visibility = GONE
+                            studyPartnerRv.visibility = VISIBLE
                         }
                     }
                 }

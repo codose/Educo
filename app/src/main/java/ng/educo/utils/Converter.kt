@@ -2,6 +2,10 @@ package ng.educo.utils
 
 import ng.educo.models.Educo
 import ng.educo.models.User
+import java.text.DateFormat.getDateInstance
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 fun convertInterestList(user: User) : List<String>{
@@ -57,6 +61,24 @@ fun typeStringToInt(id : String) : Int {
         "Study Partner" -> 1
         else -> 2
     }
+}
+
+fun yearToString(id : String) : String {
+    return when(id){
+        "1" -> "100 Lvl"
+        "2" -> "200 Lvl"
+        "3" -> "300 Lvl"
+        "4" -> "400 Lvl"
+        "5" -> "500 Lvl"
+        else -> "600 Lvl"
+    }
+}
+
+fun formatDateJoined(date : Date) : String {
+    val formattedDate : String
+    val sdf = SimpleDateFormat("LLLL MM, YYYY")
+    formattedDate = sdf.format(date)
+    return "Joined $formattedDate"
 }
 
 fun checkPartnerEduco(educo: Educo) : Boolean{

@@ -116,7 +116,6 @@
                     android:id="@+id/phoneTextInputEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:focusable="false"
                     android:inputType="phone"
                     android:textAppearance="@style/textAppearance.text"
                     android:textSize="14sp" />
@@ -173,7 +172,6 @@
                     android:id="@+id/schoolTextInputEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:focusable="false"
                     android:inputType="textEmailAddress"
                     android:textAppearance="@style/textAppearance.text"
                     android:textSize="14sp" />
@@ -240,7 +238,6 @@
                     android:id="@+id/deptTextInputEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:focusable="false"
                     android:inputType="textEmailAddress"
                     android:textAppearance="@style/textAppearance.text"
                     android:textSize="14sp" />
@@ -283,6 +280,17 @@
                 android:textAppearance="@style/textAppearance.text.RV.desc"
                 app:layout_constraintStart_toStartOf="@+id/guideline14"
                 app:layout_constraintTop_toBottomOf="@id/schoolTextInputLayout" />
+
+            <ProgressBar
+                android:id="@+id/progressBar2"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/doneButton"
+                app:layout_constraintEnd_toEndOf="@+id/doneButton"
+                app:layout_constraintStart_toStartOf="@+id/doneButton"
+                app:layout_constraintTop_toTopOf="@+id/doneButton" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

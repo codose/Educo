@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.VISIBLE
+import android.view.View.*
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -47,6 +47,10 @@ class StudyGroupFragment : BaseFragment<FragmentStudyGroupBinding>() {
 
         viewModel = ViewModelProvider(activity!!, factory)[MainViewModel::class.java]
 
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            viewModel.getStudyGroupData()
+        }
+
         hideShow()
 
         val adapter = MainAdapter()
@@ -57,21 +61,35 @@ class StudyGroupFragment : BaseFragment<FragmentStudyGroupBinding>() {
             when(it){
                 is Resource.Loading -> {
                     showShimmer()
+                    binding.apply {
+                        nothingImage.visibility = GONE
+                        nothingText.visibility = GONE
+                        studyGroupRv.visibility = GONE
+                    }
                 }
 
                 is Resource.Success ->{
                     hideShimmer()
+                    binding.swipeRefreshLayout.isRefreshing = false
                     adapter.submitList(it.data)
                     if(it.data.isEmpty()){
                         binding.apply {
                             nothingImage.visibility = VISIBLE
                             nothingText.visibility = VISIBLE
+                            studyGroupRv.visibility = GONE
+                        }
+                    }else{
+                        binding.apply {
+                            nothingImage.visibility = GONE
+                            nothingText.visibility = GONE
+                            studyGroupRv.visibility = VISIBLE
                         }
                     }
                 }
 
                 is Resource.Failure ->{
                     showToast(it.message)
+                    showSnackBar("Network Error")
                     hideShimmer()
                 }
             }
@@ -82,21 +100,21 @@ class StudyGroupFragment : BaseFragment<FragmentStudyGroupBinding>() {
     }
 
     private fun hideShimmer() {
-        binding.shimmerLayout.visibility = View.GONE
+        binding.shimmerLayout.visibility = GONE
         binding.shimmerLayout.stopShimmer()
     }
 
     private fun showShimmer() {
-        binding.shimmerLayout.visibility = View.VISIBLE
+        binding.shimmerLayout.visibility = VISIBLE
         binding.shimmerLayout.startShimmer()
     }
 
 
     private fun hideShow() {
         val bottomNavigationView : BottomNavigationView = activity!!.findViewById(R.id.bottomNavigationView)
-        bottomNavigationView.visibility = View.VISIBLE
+        bottomNavigationView.visibility = VISIBLE
         val fab = activity?.findViewById<FloatingActionButton>(R.id.search_new_btn)
-        fab?.visibility = View.VISIBLE
+        fab?.visibility = VISIBLE
     }
 
     override fun getLayoutRes(): Int = R.layout.fragment_study_group
