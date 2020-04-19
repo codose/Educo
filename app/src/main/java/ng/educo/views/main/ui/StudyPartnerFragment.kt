@@ -43,7 +43,14 @@ class StudyPartnerFragment : BaseFragment<FragmentStudyPartnerBinding>() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         binding = DataBindingUtil.inflate(layoutInflater,getLayoutRes(),container,false)
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(activity!!,factory)[MainViewModel::class.java]
 //        viewModel.getStudyPartnerData()
         navVisibility()
@@ -89,8 +96,6 @@ class StudyPartnerFragment : BaseFragment<FragmentStudyPartnerBinding>() {
                 }
             }
         })
-
-        return binding.root
     }
 
     private fun hideShimmer() {

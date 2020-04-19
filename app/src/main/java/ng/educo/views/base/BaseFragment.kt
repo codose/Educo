@@ -9,11 +9,13 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import com.github.ybq.android.spinkit.style.FadingCircle
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
+import ng.educo.R
 import ng.educo.models.User
 import ng.educo.utils.App
 import ng.educo.utils.Constants.COLLECTION_USERS
@@ -22,11 +24,14 @@ import java.util.regex.Pattern
 abstract class BaseFragment<DB :ViewDataBinding> : Fragment(){
     open lateinit var binding: DB
     lateinit var auth: FirebaseAuth
+    lateinit var doubleBounce : FadingCircle
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         FirebaseApp.initializeApp(context!!)
         auth = FirebaseAuth.getInstance()
+        doubleBounce = FadingCircle()
+        doubleBounce.color = resources.getColor(R.color.colorPrimary)
 
     }
 

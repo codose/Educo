@@ -45,6 +45,12 @@ class StudyGroupFragment : BaseFragment<FragmentStudyGroupBinding>() {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_study_group, container, false)
 
+        // Inflate the layout for this fragment
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(activity!!, factory)[MainViewModel::class.java]
 
         binding.swipeRefreshLayout.setOnRefreshListener {
@@ -94,9 +100,6 @@ class StudyGroupFragment : BaseFragment<FragmentStudyGroupBinding>() {
                 }
             }
         })
-
-        // Inflate the layout for this fragment
-        return binding.root
     }
 
     private fun hideShimmer() {

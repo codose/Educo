@@ -50,6 +50,8 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
 
         binding.lifecycleOwner = viewLifecycleOwner
 
+        binding.registerProgress.indeterminateDrawable = doubleBounce
+
         binding.fragmentRegisterButton.setOnClickListener {
             if(checkNetworkState()){
                 getEditValues()

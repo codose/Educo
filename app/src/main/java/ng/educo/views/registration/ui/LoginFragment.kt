@@ -45,7 +45,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     ): View? {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_login,container,false)
         //viewModel = ViewModelProvider(this).get(RegistrationViewModel::class.java)
-
+        binding.loginBar.indeterminateDrawable = doubleBounce
         binding.lifecycleOwner = viewLifecycleOwner
 
         binding.frgmentLoginRegisterButton.setOnClickListener {

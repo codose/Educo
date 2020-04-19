@@ -43,6 +43,13 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
         savedInstanceState: Bundle?
     ): View? {
         binding  = DataBindingUtil.inflate(inflater, R.layout.fragment_settings,container,false)
+
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val bottomNavigationView : BottomNavigationView = activity!!.findViewById(R.id.bottomNavigationView)
         bottomNavigationView.visibility = View.VISIBLE
         val fab = activity?.findViewById<FloatingActionButton>(R.id.search_new_btn)
@@ -61,10 +68,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
                 viewModel.loggedOutComplete()
             }
         })
-
-        return binding.root
     }
-
     override fun getLayoutRes(): Int = R.layout.fragment_settings
 
 }

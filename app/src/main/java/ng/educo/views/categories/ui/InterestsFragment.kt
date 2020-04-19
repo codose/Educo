@@ -48,6 +48,9 @@ class InterestsFragment : BaseFragment<FragmentInterestsBinding>() {
     ): View? {
         binding = DataBindingUtil.inflate(layoutInflater,getLayoutRes(),container,false)
 
+
+        binding.completeProgress.indeterminateDrawable = doubleBounce
+
         recyclerView = binding.fragmentsInterestsRv
 
         val adapter = InterestsAdapter()

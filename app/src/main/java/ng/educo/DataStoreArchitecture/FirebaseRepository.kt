@@ -89,6 +89,23 @@ class FirebaseRepository @Inject constructor() {
 
     }
 
+    suspend fun getMyStudies() : Resource<List<Educo>>{
+        return try{
+            val educo = educoRef.get().await()
+            val allPartners = educo.toObjects<Educo>()
+            val otherPartners : ArrayList<Educo> = ArrayList()
+            for(i in allPartners){
+                if(checkUserEduco(i)){
+                    otherPartners.add(i)
+                }
+            }
+            Resource.Success(otherPartners)
+        }catch(e : FirebaseFirestoreException){
+            Resource.Failure(e.message!!)
+        }
+    }
+
+
     fun logOut() : Boolean {
            return try {
                auth.signOut()
@@ -109,4 +126,5 @@ class FirebaseRepository @Inject constructor() {
             return Resource.Failure(e.message!!)
         }
     }
+
 }

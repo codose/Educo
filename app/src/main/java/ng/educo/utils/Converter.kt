@@ -76,7 +76,7 @@ fun yearToString(id : String) : String {
 
 fun formatDateJoined(date : Date) : String {
     val formattedDate : String
-    val sdf = SimpleDateFormat("LLLL MM, YYYY")
+    val sdf = SimpleDateFormat("LLLL dd, YYYY")
     formattedDate = sdf.format(date)
     return "Joined $formattedDate"
 }
@@ -96,6 +96,29 @@ fun checkGroupEduco(educo: Educo) : Boolean{
         && App.appUser?.interest!!.contains(educo.category.toLong())
         && App.appUser!!.state == educo.location
         && educo.type == 2){
+        return true
+    }
+    return false
+}
+
+fun checkUserGroupEduco(educo: Educo) : Boolean{
+    if (educo.uid == App.auth.currentUser?.uid
+        && educo.type == 2){
+        return true
+    }
+    return false
+}
+
+fun checkUserPartnerEduco(educo: Educo) : Boolean{
+    if (educo.uid == App.auth.currentUser?.uid
+        && educo.type == 1){
+        return true
+    }
+    return false
+}
+
+fun checkUserEduco(educo: Educo) : Boolean{
+    if (educo.uid == App.auth.currentUser?.uid){
         return true
     }
     return false

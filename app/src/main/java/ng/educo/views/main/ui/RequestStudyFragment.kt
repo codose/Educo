@@ -15,6 +15,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.github.ybq.android.spinkit.style.FadingCircle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -57,6 +58,10 @@ class RequestStudyFragment : BaseFragment<FragmentRequestStudyBinding>() {
         binding = DataBindingUtil.inflate(inflater, getLayoutRes(),container,false)
 
         viewModel = ViewModelProvider(this, factory)[RequestStudyViewModel::class.java]
+
+
+        binding.requestBar.indeterminateDrawable = doubleBounce
+
         binding.backButton.setOnClickListener {
             activity?.onBackPressed()
         }

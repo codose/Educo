@@ -22,7 +22,9 @@ import kotlinx.android.synthetic.main.fragment_profile.*
 
 import ng.educo.R
 import ng.educo.databinding.FragmentProfileBinding
+import ng.educo.models.Educo
 import ng.educo.utils.Resource
+import ng.educo.utils.checkUserGroupEduco
 import ng.educo.utils.formatDateJoined
 import ng.educo.utils.yearToString
 import ng.educo.views.base.BaseFragment
@@ -44,6 +46,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         (requireActivity() as MainActivity).mainComponent.inject(this)
+
     }
 
     @SuppressLint("SetTextI18n")
@@ -52,9 +55,42 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_profile, container, false)
+
+        return binding.root
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(activity!!, factory)[ProfileViewModel::class.java]
 
+        viewModel.getStudyCount()
         val profileAdapter = ProfileAdapter()
+
+        viewModel.myPartners.observe(viewLifecycleOwner, Observer {
+            when(it){
+                is Resource.Loading ->{
+
+                }
+                is Resource.Success ->{
+                    val studyGroups : ArrayList<Educo> = ArrayList()
+                    val studyPartners : ArrayList<Educo> = ArrayList()
+                    for(i in it.data){
+                        if(checkUserGroupEduco(i)){
+                            studyGroups.add(i)
+                        }else{
+                            studyPartners.add(i)
+                        }
+                    }
+                    binding.groupCount.text = "${studyGroups.size}"
+                    binding.partnerCount.text = "${studyPartners.size}"
+                }
+
+                is Resource.Failure ->{
+
+                }
+            }
+        })
 
         val gridLayoutManager = StaggeredGridLayoutManager(2, HORIZONTAL)
 
@@ -72,20 +108,19 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
         viewModel.getUserProfile.observe(viewLifecycleOwner, Observer {
             profileAdapter.submitList(it.interest)
-            binding.fullNameTxtView.text = it.firstName + " " + it.lastName
-            binding.stateTextView.text = it.state + " state"
+            binding.fullNameTxtView.text = "${it.firstName} ${it.lastName}"
+            binding.stateTextView.text = "${it.state} state"
             binding.titleTextView.text = "${it.school } / ${it.dept} / ${yearToString(it.level)}"
             binding.dateJoinedTextView.text = formatDateJoined(it.accountCreated!!)
             hideProgress()
         })
-        return binding.root
     }
 
     private fun setUpBottomNav() {
         val bottomNavigationView : BottomNavigationView = activity!!.findViewById(R.id.bottomNavigationView)
         bottomNavigationView.visibility = GONE
         val fab = activity?.findViewById<FloatingActionButton>(R.id.search_new_btn)
-        fab?.visibility = GONE
+        fab?.visibility = VISIBLE
     }
 
     private fun showProgress() {

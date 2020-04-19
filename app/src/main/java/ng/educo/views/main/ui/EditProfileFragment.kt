@@ -13,6 +13,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.github.ybq.android.spinkit.style.FadingCircle
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 import ng.educo.R
 import ng.educo.databinding.FragmentEditProfileBinding
@@ -48,7 +49,8 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_edit_profile, container, false)
-
+        val fab = activity?.findViewById<FloatingActionButton>(R.id.search_new_btn)
+        fab?.visibility = GONE
         return binding.root
     }
 

@@ -1,5 +1,6 @@
 package ng.educo.views.categories
 
+import android.content.Intent
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.selection.SelectionTracker
@@ -8,6 +9,7 @@ import ng.educo.DataStoreArchitecture.FirebaseRepository
 import ng.educo.utils.App
 import ng.educo.utils.Constants.interests
 import ng.educo.utils.Resource
+import ng.educo.views.main.MainActivity
 import javax.inject.Inject
 
 

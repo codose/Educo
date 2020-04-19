@@ -40,7 +40,6 @@ class SplashActivity : BaseActivity() {
         doubleBounce.color = resources.getColor(R.color.colorPrimary)
 
         val progressBar = binding.progressBar
-
         progressBar.indeterminateDrawable = doubleBounce
 
         binding.logoImage.animation = heartBeatAnim
