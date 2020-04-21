@@ -23,14 +23,13 @@ import ng.educo.models.User
 import ng.educo.utils.*
 
 
-class MainAdapter(val context : Context) : ListAdapter<Educo, MainAdapter.MyViewHolder>(MainDiffCallback()) {
+class MainAdapter(val context : Context, val clickListener: EducoClickListener) : ListAdapter<Educo, MainAdapter.MyViewHolder>(MainDiffCallback()) {
 
     class MyViewHolder(val binding: ItemRequestItemBinding, val context: Context) : RecyclerView.ViewHolder(binding.root){
         @SuppressLint("SetTextI18n")
-        fun bind(educo: Educo){
-            binding.titleTxtview.text = educo.title
-            binding.descTextView.text = educo.description
-            binding.catTextView.text =  longInterestToString(educo.category)
+        fun bind(educo: Educo, clickListener: EducoClickListener){
+            binding.educo = educo
+            binding.catTextView.text = longInterestToString(educo.category)
             if(educo.type == 1){
                 binding.typeTextView.text = typeIntToString(educo.type)
             }else{
@@ -51,8 +50,7 @@ class MainAdapter(val context : Context) : ListAdapter<Educo, MainAdapter.MyView
                     }
             }
             }
-            binding.locationTextView.text = educo.location
-
+            binding.clickListener = clickListener
             binding.timeStampTxtView.text = getTimeAgo(educo.createdAt!!)
         }
     }
@@ -68,8 +66,12 @@ class MainAdapter(val context : Context) : ListAdapter<Educo, MainAdapter.MyView
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val id = getItem(position)
-            holder.bind(id)
+            holder.bind(id, clickListener)
     }
+}
+
+class EducoClickListener(val clickListener: (id: String) -> Unit){
+    fun onClick(educo: Educo) = clickListener(educo.id)
 }
 
 class MainDiffCallback : DiffUtil.ItemCallback<Educo>(){

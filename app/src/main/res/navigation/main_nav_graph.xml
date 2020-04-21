@@ -9,12 +9,20 @@
         android:id="@+id/studyGroupFragment"
         android:name="ng.educo.views.main.ui.StudyGroupFragment"
         android:label="fragment_study_group"
-        tools:layout="@layout/fragment_study_group" />
+        tools:layout="@layout/fragment_study_group" >
+        <action
+            android:id="@+id/action_studyGroupFragment_to_singleStudyFragment"
+            app:destination="@id/singleStudyFragment" />
+    </fragment>
     <fragment
         android:id="@+id/studyPartnerFragment"
         android:name="ng.educo.views.main.ui.StudyPartnerFragment"
         android:label="fragment_study_partner"
-        tools:layout="@layout/fragment_study_partner" />
+        tools:layout="@layout/fragment_study_partner" >
+        <action
+            android:id="@+id/action_studyPartnerFragment_to_singleStudyFragment"
+            app:destination="@id/singleStudyFragment" />
+    </fragment>
     <fragment
         android:id="@+id/tutorialCentresFragment"
         android:name="ng.educo.views.main.ui.TutorialCentresFragment"
@@ -48,5 +56,14 @@
             android:id="@+id/action_editProfileFragment_to_profileFragment"
             app:destination="@id/profileFragment"
             app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/singleStudyFragment"
+        android:name="ng.educo.views.main.ui.SingleStudyFragment"
+        android:label="SingleStudyFragment" >
+        <argument
+            android:name="id"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
 </navigation>

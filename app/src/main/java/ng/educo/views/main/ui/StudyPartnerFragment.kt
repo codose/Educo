@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.fragment_study_group.*
@@ -20,6 +21,7 @@ import ng.educo.databinding.FragmentStudyPartnerBinding
 import ng.educo.utils.Resource
 import ng.educo.views.base.BaseFragment
 import ng.educo.views.main.MainActivity
+import ng.educo.views.main.adapters.EducoClickListener
 import ng.educo.views.main.adapters.MainAdapter
 import ng.educo.views.main.viewmodels.MainViewModel
 import javax.inject.Inject
@@ -54,7 +56,9 @@ class StudyPartnerFragment : BaseFragment<FragmentStudyPartnerBinding>() {
         viewModel = ViewModelProvider(activity!!,factory)[MainViewModel::class.java]
 //        viewModel.getStudyPartnerData()
         navVisibility()
-        val adapter = MainAdapter(context!!)
+        val adapter = MainAdapter(context!!, EducoClickListener {
+            findNavController().navigate(StudyPartnerFragmentDirections.actionStudyPartnerFragmentToSingleStudyFragment(it))
+        })
         binding.studyPartnerRv.adapter = adapter
 
         binding.swipeRefreshLayout.setOnRefreshListener {

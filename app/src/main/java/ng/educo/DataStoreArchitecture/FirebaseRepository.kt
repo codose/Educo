@@ -34,7 +34,7 @@ class FirebaseRepository @Inject constructor() {
             userRef.document(auth.currentUser!!.uid).set(user, SetOptions.merge()).await()
             App.appUser = user
             Resource.Success("Account Updated Successfully")
-        } catch(e : FirebaseFirestoreException){
+        } catch(e : Exception){
             Resource.Failure(e.message!!)
         }
     }
@@ -43,7 +43,7 @@ class FirebaseRepository @Inject constructor() {
         return try{
             auth.createUserWithEmailAndPassword(email,password).await()
             Resource.Success(true)
-        }catch (e : FirebaseAuthException){
+        }catch (e : Exception){
             Resource.Failure(e.message!!)
         }
     }
@@ -52,7 +52,7 @@ class FirebaseRepository @Inject constructor() {
         return try{
             auth.signInWithEmailAndPassword(email,password).await()
             Resource.Success(true)
-        }catch (e : FirebaseAuthException){
+        }catch (e : Exception){
             Resource.Failure(e.message!!)
         }
     }
@@ -63,7 +63,7 @@ class FirebaseRepository @Inject constructor() {
             educo.id = documentId
             educoRef.document(documentId).set(educo, SetOptions.merge()).await()
             Resource.Success(true)
-        }catch (e : FirebaseFirestoreException){
+        }catch (e : Exception){
             Resource.Failure(e.message!!)
         }
     }
@@ -79,7 +79,7 @@ class FirebaseRepository @Inject constructor() {
                 }
             }
             Resource.Success(otherPartners)
-        }catch(e : FirebaseFirestoreException){
+        }catch(e : Exception){
             Resource.Failure(e.message!!)
         }
 
@@ -96,7 +96,7 @@ class FirebaseRepository @Inject constructor() {
                 }
             }
             Resource.Success(otherPartners)
-        }catch(e : FirebaseFirestoreException){
+        }catch(e : Exception){
             Resource.Failure(e.message!!)
         }
 
@@ -116,18 +116,15 @@ class FirebaseRepository @Inject constructor() {
         }
     }
 
-//    fun getMimeType(context: Context, uri: Uri): String? {
-//        val extension: String?
-//        //Check uri format to avoid null
-//        extension = if (uri.scheme == ContentResolver.SCHEME_CONTENT) { //If scheme is a content
-//            val mime = MimeTypeMap.getSingleton()
-//            mime.getExtensionFromMimeType(context.getContentResolver().getType(uri))
-//        } else { //If scheme is a File
-//            //This will replace white spaces with %20 and also other special characters. This will avoid returning null values on file name with spaces and special characters.
-//            MimeTypeMap.getFileExtensionFromUrl(Uri.fromFile(File(uri.path)).toString())
-//        }
-//        return extension
-//    }
+    suspend fun getSingleStudy(id: String) : Resource<Educo>{
+        return try{
+            val educo = educoRef.document(id).get().await()
+            val mEduco = educo.toObject<Educo>()
+            Resource.Success(mEduco!!)
+        }catch(e:Exception){
+            Resource.Failure(e.message!!)
+        }
+    }
 
     suspend fun getMyStudies() : Resource<List<Educo>>{
         return try{
@@ -140,21 +137,21 @@ class FirebaseRepository @Inject constructor() {
                 }
             }
             Resource.Success(otherPartners)
-        }catch(e : FirebaseFirestoreException){
+        }catch(e : Exception){
             Resource.Failure(e.message!!)
         }
     }
 
 
     fun logOut() : Boolean {
-           return try {
-               auth.signOut()
-               App.appUser = null
-               true
-           } catch (e : Exception){
+       return try {
+           auth.signOut()
+           App.appUser = null
+           true
+       } catch (e : Exception){
 
-               false
-           }
+           false
+       }
     }
 
     suspend fun getOtherUser(uid : String) : Resource<User>{
@@ -162,7 +159,7 @@ class FirebaseRepository @Inject constructor() {
             val user = userRef.document(uid).get().await()
             val mUser = user.toObject<User>()
             Resource.Success(mUser!!)
-        } catch (e: FirebaseFirestoreException){
+        } catch (e: Exception){
             return Resource.Failure(e.message!!)
         }
     }
@@ -172,7 +169,7 @@ class FirebaseRepository @Inject constructor() {
             val user = userRef.document(auth.currentUser!!.uid).get().await()
             val appUser = user.toObject<User>()
             Resource.Success(appUser!!)
-        } catch (e: FirebaseFirestoreException){
+        } catch (e: Exception){
             return Resource.Failure(e.message!!)
         }
     }

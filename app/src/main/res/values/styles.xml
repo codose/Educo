@@ -19,6 +19,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+
+
+    <!-- ******************************-Text Styles******************************************* -->
+
+
     <style name="textAppearance.customHeadline4" parent="TextAppearance.MaterialComponents.Headline4">
         <item name="fontFamily">@font/quicksand_bold</item>
         <item name="android:textColor">@color/colorPrimary</item>
@@ -36,6 +41,13 @@
 
     <style name="textAppearance.main.RV" parent="TextAppearance.MaterialComponents.Headline5">
         <item name="fontFamily">@font/quicksand_bold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/textColorPrimary</item>
+    </style>
+
+    <style name="textAppearance.main.Header" parent="TextAppearance.MaterialComponents.Headline5">
+        <item name="fontFamily">@font/quicksand_bold</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/textColorPrimary</item>
     </style>
 
@@ -52,11 +64,15 @@
 
     <style name="textAppearance.text" parent="TextAppearance.MaterialComponents.Subtitle1">
         <item name="fontFamily">@font/quicksand</item>
+        <item name="android:textSize">13sp</item>
+
         <item name="android:textColor">@color/textColorPrimary</item>
     </style>
 
     <style name="textAppearance.text.RV.desc" parent="textAppearance.text">
         <item name="fontFamily">@font/quicksand_medium</item>
+        <item name="android:maxLines">3</item>
+        <item name="android:ellipsize">end</item>
     </style>
 
     <style name="textAppearance.text.RV.loc" parent="textAppearance.text.RV.desc">
@@ -65,7 +81,7 @@
 
     <style name="textAppearance.text.desc" parent="TextAppearance.MaterialComponents.Subtitle1">
         <item name="fontFamily">@font/quicksand</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">13sp</item>
         <item name="android:textColor">@color/textColorSecondary</item>
         <item name="android:maxLines">3</item>
         <item name="android:ellipsize">end</item>
@@ -75,7 +91,6 @@
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/textColorPrimary</item>
     </style>
-
     <style name="textAppearance.text.Large" parent="textAppearance.text">
         <item name="android:textSize">20sp</item>
         <item name="fontFamily">@font/quicksand</item>
@@ -90,11 +105,27 @@
         <item name="fontFamily">@font/quicksand</item>
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
+
+    <!-- ******************************End - Text Styles******************************************* -->
+
+
+    <!-- ******************************-Bottom Navigation Styles******************************************* -->
+
+
     <style name="MaterialComponents.BottomNav" parent="Widget.MaterialComponents.BottomNavigationView">
         <item name="fontFamily">@font/quicksand</item>
         <item name="itemTextAppearance">@style/textAppearance.nav</item>
 
     </style>
+
+
+    <!-- ******************************End - Bottom Navigation Styles******************************************* -->
+
+
+
+    <!-- ******************************Button Styles******************************************* -->
+
+
     <style name="Button.CustomPrimary" parent="Widget.MaterialComponents.Button">
         <item name="android:textColor">@color/white</item>
         <item name="android:paddingTop">12dp</item>
@@ -146,10 +177,19 @@
         <item name="android:stateListAnimator">@animator/animator_button</item>
     </style>
 
+
+
+    <!-- ******************************End - Button Styles******************************************* -->
+
+
+
+    <!-- ******************************EditText Styles******************************************* -->
+
+
     <style name="TextBox" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxStrokeColor">@color/edit_color</item>
-        <item name="fontFamily">@font/quicksand</item>
-        <item name="errorEnabled">true</item>
+        <item name="android:textAppearance">@style/textAppearance.text</item>
+         <item name="errorEnabled">true</item>
     </style>
 
     <style name="TextBox.Dark" parent="TextBox">
@@ -197,5 +237,9 @@
         <item name="android:textColor">@color/textColorPrimary</item>
         <item name="android:textSize">16sp</item>
     </style>
+
+
+    <!-- ******************************End - EditText Styles******************************************* -->
+
 
 </resources>

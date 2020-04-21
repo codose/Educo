@@ -6,6 +6,7 @@ import kotlinx.coroutines.*
 import ng.educo.DataStoreArchitecture.FirebaseRepository
 import ng.educo.di.scope.ActivityScope
 import ng.educo.models.Educo
+import ng.educo.models.User
 import ng.educo.utils.App
 import ng.educo.utils.Resource
 import javax.inject.Inject
@@ -18,6 +19,10 @@ class MainViewModel @Inject constructor(private val firebaseRepository: Firebase
     val loggedOut = MutableLiveData<Boolean>()
     val studyPartnerData = MutableLiveData<Resource<List<Educo>>>()
     val studyGroupData = MutableLiveData<Resource<List<Educo>>>()
+    val studyGroupSingleData = MutableLiveData<Resource<Educo>>()
+    val userDetails = MutableLiveData<Resource<User>>()
+    private val applicationScope = App.applicationScope
+
 
     init {
         loggedOut.value = false
@@ -27,7 +32,7 @@ class MainViewModel @Inject constructor(private val firebaseRepository: Firebase
 
     fun getStudyPartnerData(){
         studyPartnerData.value = Resource.Loading()
-        App.applicationScope.launch {
+        applicationScope.launch {
             withContext(Dispatchers.IO){
                 val data = firebaseRepository.getAllStudyPartners()
                 studyPartnerData.postValue(data)
@@ -35,12 +40,33 @@ class MainViewModel @Inject constructor(private val firebaseRepository: Firebase
         }
     }
 
+    fun getUserDetails(uid: String){
+        userDetails.value = Resource.Loading()
+        applicationScope.launch {
+            withContext(Dispatchers.IO){
+                val user = firebaseRepository.getOtherUser(uid)
+                userDetails.postValue(user)
+            }
+        }
+    }
+
     fun getStudyGroupData(){
         studyGroupData.value = Resource.Loading()
-        App.applicationScope.launch {
+        applicationScope.launch {
             withContext(Dispatchers.IO){
                 val data = firebaseRepository.getAllStudyGroups()
                 studyGroupData.postValue(data)
+            }
+        }
+    }
+
+    fun getSingleEduco(id : String){
+
+        studyGroupSingleData.value = Resource.Loading()
+
+        applicationScope.launch {
+            withContext(Dispatchers.IO){
+                studyGroupSingleData.postValue(firebaseRepository.getSingleStudy(id))
             }
         }
     }

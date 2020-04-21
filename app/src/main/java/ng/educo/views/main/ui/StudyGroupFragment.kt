@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -18,6 +19,7 @@ import ng.educo.databinding.FragmentStudyGroupBinding
 import ng.educo.utils.Resource
 import ng.educo.views.base.BaseFragment
 import ng.educo.views.main.MainActivity
+import ng.educo.views.main.adapters.EducoClickListener
 import ng.educo.views.main.adapters.MainAdapter
 import ng.educo.views.main.viewmodels.MainViewModel
 import javax.inject.Inject
@@ -59,8 +61,9 @@ class StudyGroupFragment : BaseFragment<FragmentStudyGroupBinding>() {
 
         hideShow()
 
-        val adapter = MainAdapter(context!!)
-
+        val adapter = MainAdapter(context!!, EducoClickListener {
+            openDetails(it)
+        })
         binding.studyGroupRv.adapter = adapter
 
         viewModel.studyGroupData.observe(viewLifecycleOwner, Observer {
@@ -100,6 +103,10 @@ class StudyGroupFragment : BaseFragment<FragmentStudyGroupBinding>() {
                 }
             }
         })
+    }
+
+    private fun openDetails(id:String) {
+        findNavController().navigate(StudyGroupFragmentDirections.actionStudyGroupFragmentToSingleStudyFragment(id))
     }
 
     private fun hideShimmer() {

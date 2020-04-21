@@ -81,6 +81,13 @@ fun formatDateJoined(date : Date) : String {
     return "Joined $formattedDate"
 }
 
+fun formatDateCreated(date : Date) : String {
+    val formattedDate : String
+    val sdf = SimpleDateFormat("LLLL dd, YYYY hh:mm")
+    formattedDate = sdf.format(date)
+    return formattedDate
+}
+
 fun checkPartnerEduco(educo: Educo) : Boolean{
     if (educo.uid != App.auth.currentUser?.uid
         && App.appUser?.interest!!.contains(educo.category.toLong())
