@@ -1,5 +1,7 @@
 package ng.educo.views.main.viewmodels
 
+import android.content.Context
+import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
@@ -16,6 +18,10 @@ import javax.inject.Singleton
 class ProfileViewModel @Inject constructor(private val firebaseRepository: FirebaseRepository) : ViewModel(){
 
     val getUserProfile = MutableLiveData<User>()
+
+    val userImageUri = MutableLiveData<Uri>()
+
+    val uploadImage = MutableLiveData<Resource<String>>()
 
     var myPartners = MutableLiveData<Resource<List<Educo>>>()
 
@@ -34,6 +40,15 @@ class ProfileViewModel @Inject constructor(private val firebaseRepository: Fireb
             }
         }
         getStudyCount()
+    }
+
+    fun uploadImage(context : Context){
+        uploadImage.value = Resource.Loading()
+        App.applicationScope.launch {
+            withContext(Dispatchers.IO){
+                uploadImage.postValue(firebaseRepository.uploadImage(userImageUri.value!!, context))
+            }
+        }
     }
 
 

@@ -54,7 +54,7 @@ class StudyPartnerFragment : BaseFragment<FragmentStudyPartnerBinding>() {
         viewModel = ViewModelProvider(activity!!,factory)[MainViewModel::class.java]
 //        viewModel.getStudyPartnerData()
         navVisibility()
-        val adapter = MainAdapter()
+        val adapter = MainAdapter(context!!)
         binding.studyPartnerRv.adapter = adapter
 
         binding.swipeRefreshLayout.setOnRefreshListener {

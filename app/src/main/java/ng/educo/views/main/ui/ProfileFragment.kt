@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager.HORIZONTAL
 import androidx.recyclerview.widget.StaggeredGridLayoutManager.VERTICAL
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.fragment_profile.*
@@ -23,10 +25,7 @@ import kotlinx.android.synthetic.main.fragment_profile.*
 import ng.educo.R
 import ng.educo.databinding.FragmentProfileBinding
 import ng.educo.models.Educo
-import ng.educo.utils.Resource
-import ng.educo.utils.checkUserGroupEduco
-import ng.educo.utils.formatDateJoined
-import ng.educo.utils.yearToString
+import ng.educo.utils.*
 import ng.educo.views.base.BaseFragment
 import ng.educo.views.main.MainActivity
 import ng.educo.views.main.adapters.ProfileAdapter
@@ -102,6 +101,13 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         binding.apply {
             backButton.setOnClickListener { activity!!.onBackPressed() }
             editButton.setOnClickListener { findNavController().navigate(R.id.action_profileFragment_to_editProfileFragment) }
+        }
+        if(App.appUser?.imageUrl!!.isNotBlank()){
+            Glide.with(this)
+                .load(getAppUser()?.imageUrl)
+                .placeholder(R.drawable.ic_undraw_profile_pic)
+                .diskCacheStrategy(DiskCacheStrategy.DATA)
+                .into(binding.circleImageView2)
         }
 
         setUpBottomNav()

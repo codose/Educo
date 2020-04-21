@@ -1,29 +1,38 @@
 package ng.educo.views.main.ui
 
+import android.R.attr
+import android.app.Activity.RESULT_OK
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import androidx.core.net.toFile
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.github.ybq.android.spinkit.style.FadingCircle
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-
+import com.theartofdev.edmodo.cropper.CropImage
+import id.zelory.compressor.Compressor
 import ng.educo.R
 import ng.educo.databinding.FragmentEditProfileBinding
 import ng.educo.models.User
+import ng.educo.utils.App
 import ng.educo.utils.Constants
 import ng.educo.utils.Resource
 import ng.educo.views.base.BaseFragment
 import ng.educo.views.main.MainActivity
 import ng.educo.views.main.viewmodels.ProfileViewModel
 import javax.inject.Inject
+
 
 /**
  * A simple [Fragment] subclass.
@@ -56,15 +65,17 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val doubleBounce = FadingCircle()
-        doubleBounce.color = resources.getColor(R.color.colorPrimary)
         val progressBar = binding.progressBar2
         progressBar.indeterminateDrawable = doubleBounce
 
-
         user = getAppUser()!!
-
         val oldUser = user
+
+        binding.circleImageView.setOnClickListener{
+            CropImage.activity()
+                .setAspectRatio(1,1)
+                .start(context!!, this)
+        }
 
         viewModel = ViewModelProvider(this,factory)[ProfileViewModel::class.java]
 
@@ -76,7 +87,23 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>() {
                 updateUserData()
             }
         }
+        viewModel.uploadImage.observe(viewLifecycleOwner, Observer {
+            when(it){
+                is Resource.Loading -> disableButton()
 
+                is Resource.Success -> {
+                    user.imageUrl = getAppUser()!!.imageUrl
+                    oldUser.imageUrl = getAppUser()!!.imageUrl
+                    enableButton()
+                    showToast(it.data)
+                }
+
+                is Resource.Failure -> {
+                    enableButton()
+                    showToast(it.message)
+                }
+            }
+        })
         viewModel.userDataUpdated.observe(viewLifecycleOwner, Observer {
             when(it){
                 is Resource.Loading -> disableButton()
@@ -158,6 +185,9 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>() {
     }
 
     private fun setTexts() {
+        if(getAppUser()?.imageUrl!!.isNotBlank()) {
+            loadImage(getAppUser())
+        }
         binding.apply {
             firstNameTextInputEditText.setText(user.firstName)
             lastNameTextInputEditText.setText(user.lastName)
@@ -166,7 +196,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>() {
             deptTextInputEditText.setText(user.dept)
             schoolTextInputEditText.setText(user.school)
             stateSpinner.setText(user.state)
-            levelSpinner.setText("${user.level}")
+            levelSpinner.setText(user.level)
         }
         val mAdapter = ArrayAdapter(requireContext(), R.layout.list_item, Constants.states)
         val sAdapter = ArrayAdapter(requireContext(), R.layout.list_item, Constants.year)
@@ -174,6 +204,32 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>() {
         (binding.levelSpinner as? AutoCompleteTextView)?.setAdapter(sAdapter)
     }
 
+    private fun loadImage(appUser: User?) {
+        Glide.with(this)
+            .load(appUser!!.imageUrl)
+            .placeholder(resources.getDrawable(R.drawable.ic_undraw_profile_pic))
+            .diskCacheStrategy(DiskCacheStrategy.DATA)
+            .into(binding.circleImageView)
+    }
+
     override fun getLayoutRes(): Int = R.layout.fragment_edit_profile
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            val result = CropImage.getActivityResult(data)
+            if (resultCode == RESULT_OK) {
+                viewModel.userImageUri.value = result.uri
+                Glide.with(this)
+                    .load(result.uri)
+                    .placeholder(resources.getDrawable(R.drawable.ic_undraw_profile_pic))
+                    .into(binding.circleImageView)
+                viewModel.uploadImage(context!!)
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                val error = result.error
+                showToast(error.message!!)
+            }
+        }
+    }
 
 }

@@ -1,24 +1,31 @@
 package ng.educo.views.main.adapters
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View.GONE
 import android.view.ViewGroup
+import androidx.lifecycle.liveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import ng.educo.databinding.ItemInterestItemBinding
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+
+import ng.educo.DataStoreArchitecture.FirebaseRepository
+import ng.educo.R
+
 import ng.educo.databinding.ItemRequestItemBinding
 import ng.educo.models.Educo
-import ng.educo.utils.App
-import ng.educo.utils.getTimeAgo
-import ng.educo.utils.longInterestToString
-import ng.educo.utils.typeIntToString
+import ng.educo.models.User
+import ng.educo.utils.*
 
 
-class MainAdapter : ListAdapter<Educo, MainAdapter.MyViewHolder>(MainDiffCallback()) {
+class MainAdapter(val context : Context) : ListAdapter<Educo, MainAdapter.MyViewHolder>(MainDiffCallback()) {
 
-    class MyViewHolder(val binding: ItemRequestItemBinding) : RecyclerView.ViewHolder(binding.root){
+    class MyViewHolder(val binding: ItemRequestItemBinding, val context: Context) : RecyclerView.ViewHolder(binding.root){
         @SuppressLint("SetTextI18n")
         fun bind(educo: Educo){
             binding.titleTxtview.text = educo.title
@@ -28,6 +35,21 @@ class MainAdapter : ListAdapter<Educo, MainAdapter.MyViewHolder>(MainDiffCallbac
                 binding.typeTextView.text = typeIntToString(educo.type)
             }else{
                 binding.typeTextView.text = typeIntToString(educo.type) + " : " + "${educo.users}"
+            }
+            val firebaseRepository = FirebaseRepository()
+            val user = liveData {
+                val user = firebaseRepository.getOtherUser(educo.uid)
+                emit(user)
+            }
+            user.observeForever {
+                when (it){
+                    is Resource.Success -> {
+                        Glide.with(context)
+                            .load(it.data.imageUrl)
+                            .diskCacheStrategy(DiskCacheStrategy.DATA)
+                            .into(binding.profileImage)
+                    }
+            }
             }
             binding.locationTextView.text = educo.location
 
@@ -41,7 +63,7 @@ class MainAdapter : ListAdapter<Educo, MainAdapter.MyViewHolder>(MainDiffCallbac
     private fun from(parent: ViewGroup) : MyViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = ItemRequestItemBinding.inflate(layoutInflater,parent,false)
-        return MyViewHolder(binding)
+        return MyViewHolder(binding, context)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {

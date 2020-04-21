@@ -100,6 +100,10 @@ dependencies {
     //Image cropper
     api 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
 
-    //
+    //CircleImageView
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    //Compressor
+    implementation 'id.zelory:compressor:3.0.0'
+
 }

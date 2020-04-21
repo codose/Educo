@@ -22,10 +22,6 @@ class RequestStudyViewModel @Inject constructor(private val firebaseRepository: 
                 firebaseRepository.createNewRequest(educo)
             }
         }
-
-
-
-
     }
 
 }

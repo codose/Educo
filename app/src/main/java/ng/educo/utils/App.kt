@@ -11,6 +11,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.firestoreSettings
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
 import com.pixplicity.easyprefs.library.Prefs
 import kotlinx.coroutines.*
 import ng.educo.di.components.AppComponent
@@ -22,6 +24,7 @@ open class App : Application() {
 
     companion object {
         lateinit var firestore: FirebaseFirestore
+        lateinit var storage: FirebaseStorage
         var appUser: User? = null
         var job = Job()
         var applicationScope = CoroutineScope(job + Dispatchers.Main)
@@ -37,6 +40,7 @@ open class App : Application() {
         super.onCreate()
         FirebaseApp.initializeApp(this)
         firestore = Firebase.firestore
+        storage = Firebase.storage
         auth = FirebaseAuth.getInstance()
         firestore.firestoreSettings = firestoreSettings {
             isPersistenceEnabled = true

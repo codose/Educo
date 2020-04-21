@@ -59,7 +59,7 @@ class StudyGroupFragment : BaseFragment<FragmentStudyGroupBinding>() {
 
         hideShow()
 
-        val adapter = MainAdapter()
+        val adapter = MainAdapter(context!!)
 
         binding.studyGroupRv.adapter = adapter
 
