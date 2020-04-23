@@ -13,6 +13,6 @@ data class Educo(
     var createdAt : Date? = null,
     var description : String = "",
     var location : String = "",
-    var uid : String = "",
+    var user : User = User(),
     var id : String = ""
 )

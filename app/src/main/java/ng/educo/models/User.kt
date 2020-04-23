@@ -16,5 +16,6 @@ data class User(
     var school : String = "",
     var dept : String = "",
     var level : String = "0",
-    var imageUrl : String = ""
+    var imageUrl : String = "",
+    var uId : String = ""
 )

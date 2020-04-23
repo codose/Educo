@@ -37,7 +37,7 @@ class SplashActivity : BaseActivity() {
             AnimationUtils.loadAnimation(this, R.anim.bounce)
 
         val doubleBounce = FadingCircle()
-        doubleBounce.color = resources.getColor(R.color.colorPrimary)
+        doubleBounce.color = R.color.colorPrimary
 
         val progressBar = binding.progressBar
         progressBar.indeterminateDrawable = doubleBounce

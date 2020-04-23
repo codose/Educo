@@ -207,7 +207,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>() {
     private fun loadImage(appUser: User?) {
         Glide.with(this)
             .load(appUser!!.imageUrl)
-            .placeholder(resources.getDrawable(R.drawable.ic_undraw_profile_pic))
+            .placeholder(R.drawable.ic_undraw_profile_pic)
             .diskCacheStrategy(DiskCacheStrategy.DATA)
             .into(binding.circleImageView)
     }
@@ -222,7 +222,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>() {
                 viewModel.userImageUri.value = result.uri
                 Glide.with(this)
                     .load(result.uri)
-                    .placeholder(resources.getDrawable(R.drawable.ic_undraw_profile_pic))
+                    .placeholder(R.drawable.ic_undraw_profile_pic)
                     .into(binding.circleImageView)
                 viewModel.uploadImage(context!!)
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {

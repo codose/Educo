@@ -6,6 +6,7 @@ import kotlinx.coroutines.*
 import ng.educo.DataStoreArchitecture.FirebaseRepository
 import ng.educo.di.scope.ActivityScope
 import ng.educo.models.Educo
+import ng.educo.models.Request
 import ng.educo.models.User
 import ng.educo.utils.App
 import ng.educo.utils.Resource
@@ -17,6 +18,9 @@ import javax.inject.Singleton
 class MainViewModel @Inject constructor(private val firebaseRepository: FirebaseRepository)  : ViewModel(){
 
     val loggedOut = MutableLiveData<Boolean>()
+    val requestSent = MutableLiveData<Resource<String>>()
+    val received = MutableLiveData<Resource<List<Request>>>()
+    val sent = MutableLiveData<Resource<List<Request>>>()
     val studyPartnerData = MutableLiveData<Resource<List<Educo>>>()
     val studyGroupData = MutableLiveData<Resource<List<Educo>>>()
     val studyGroupSingleData = MutableLiveData<Resource<Educo>>()
@@ -28,6 +32,8 @@ class MainViewModel @Inject constructor(private val firebaseRepository: Firebase
         loggedOut.value = false
         getStudyGroupData()
         getStudyPartnerData()
+        getReceivedDetails()
+        getSentDetails()
     }
 
     fun getStudyPartnerData(){
@@ -39,6 +45,16 @@ class MainViewModel @Inject constructor(private val firebaseRepository: Firebase
             }
         }
     }
+
+    fun sendRequest(receiver:String, request : Request){
+        requestSent.value = Resource.Loading()
+        applicationScope.launch {
+            withContext(Dispatchers.IO){
+                requestSent.postValue(firebaseRepository.applyForStudy(receiver,request))
+            }
+        }
+    }
+
 
     fun getUserDetails(uid: String){
         userDetails.value = Resource.Loading()
@@ -80,5 +96,23 @@ class MainViewModel @Inject constructor(private val firebaseRepository: Firebase
 
     fun loggedOutComplete(){
         loggedOut.value = false
+    }
+
+    private fun getReceivedDetails() {
+        received.value = Resource.Loading()
+        applicationScope.launch {
+            withContext(Dispatchers.IO){
+                received.postValue(firebaseRepository.getReceivedRequests())
+            }
+        }
+    }
+
+    private fun getSentDetails() {
+        sent.value = Resource.Loading()
+        applicationScope.launch {
+            withContext(Dispatchers.IO){
+                sent.postValue(firebaseRepository.getSentRequests())
+            }
+        }
     }
 }

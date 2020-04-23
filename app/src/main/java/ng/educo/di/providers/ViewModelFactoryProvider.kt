@@ -17,6 +17,7 @@ import kotlin.reflect.KClass
 /* Singleton factory that searches generated map for specific provider and
     uses it to get a ViewModel instance */
 
+@Suppress("UNCHECKED_CAST")
 class ViewModelFactory @Inject constructor(private val viewModels: MutableMap<Class<out ViewModel>, Provider<ViewModel>>) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T = viewModels[modelClass]?.get() as T

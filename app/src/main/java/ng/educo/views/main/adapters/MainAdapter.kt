@@ -19,7 +19,6 @@ import ng.educo.R
 
 import ng.educo.databinding.ItemRequestItemBinding
 import ng.educo.models.Educo
-import ng.educo.models.User
 import ng.educo.utils.*
 
 
@@ -35,21 +34,10 @@ class MainAdapter(val context : Context, val clickListener: EducoClickListener) 
             }else{
                 binding.typeTextView.text = typeIntToString(educo.type) + " : " + "${educo.users}"
             }
-            val firebaseRepository = FirebaseRepository()
-            val user = liveData {
-                val user = firebaseRepository.getOtherUser(educo.uid)
-                emit(user)
-            }
-            user.observeForever {
-                when (it){
-                    is Resource.Success -> {
-                        Glide.with(context)
-                            .load(it.data.imageUrl)
-                            .diskCacheStrategy(DiskCacheStrategy.DATA)
-                            .into(binding.profileImage)
-                    }
-            }
-            }
+            Glide.with(context)
+                .load(educo.user.imageUrl)
+                .diskCacheStrategy(DiskCacheStrategy.DATA)
+                .into(binding.profileImage)
             binding.clickListener = clickListener
             binding.timeStampTxtView.text = getTimeAgo(educo.createdAt!!)
         }

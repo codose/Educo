@@ -4,7 +4,10 @@ package ng.educo.utils
 object Constants {
      val year = listOf("1","2","3","4","5","6")
      const val COLLECTION_USERS = "Users"
-     const val COLLECTION_REQUESTS = "Educo"
+     const val COLLECTION_EDUCO = "Educo"
+     const val COLLECTION_RECEIVED = "Received"
+     const val COLLECTION_SENT = "Sent"
+
      val states = listOf(  "Abia",
         "Adamawa",
         "Akwa Ibom",

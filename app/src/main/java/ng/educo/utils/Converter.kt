@@ -89,7 +89,7 @@ fun formatDateCreated(date : Date) : String {
 }
 
 fun checkPartnerEduco(educo: Educo) : Boolean{
-    if (educo.uid != App.auth.currentUser?.uid
+    if (educo.user.uId != App.auth.currentUser?.uid
         && App.appUser?.interest!!.contains(educo.category.toLong())
         && App.appUser!!.state == educo.location
         && educo.type == 1){
@@ -99,7 +99,7 @@ fun checkPartnerEduco(educo: Educo) : Boolean{
 }
 
 fun checkGroupEduco(educo: Educo) : Boolean{
-    if (educo.uid != App.auth.currentUser?.uid
+    if (educo.user.uId != App.auth.currentUser?.uid
         && App.appUser?.interest!!.contains(educo.category.toLong())
         && App.appUser!!.state == educo.location
         && educo.type == 2){
@@ -109,23 +109,16 @@ fun checkGroupEduco(educo: Educo) : Boolean{
 }
 
 fun checkUserGroupEduco(educo: Educo) : Boolean{
-    if (educo.uid == App.auth.currentUser?.uid
+    if (educo.user.uId == App.auth.currentUser?.uid
         && educo.type == 2){
         return true
     }
     return false
 }
 
-fun checkUserPartnerEduco(educo: Educo) : Boolean{
-    if (educo.uid == App.auth.currentUser?.uid
-        && educo.type == 1){
-        return true
-    }
-    return false
-}
 
 fun checkUserEduco(educo: Educo) : Boolean{
-    if (educo.uid == App.auth.currentUser?.uid){
+    if (educo.user.uId == App.auth.currentUser?.uid){
         return true
     }
     return false

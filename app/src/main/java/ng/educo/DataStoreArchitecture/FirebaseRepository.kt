@@ -1,31 +1,32 @@
 package ng.educo.DataStoreArchitecture
 
-import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
-import android.webkit.MimeTypeMap
 import androidx.core.net.toFile
 import androidx.core.net.toUri
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthException
-import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.firestore.ktx.toObjects
 import id.zelory.compressor.Compressor
-import id.zelory.compressor.constraint.resolution
 import kotlinx.coroutines.tasks.await
 import ng.educo.models.Educo
+import ng.educo.models.Request
 import ng.educo.models.User
 import ng.educo.utils.*
-import java.io.File
+import ng.educo.utils.Constants.COLLECTION_EDUCO
+import ng.educo.utils.Constants.COLLECTION_RECEIVED
+import ng.educo.utils.Constants.COLLECTION_SENT
+import ng.educo.utils.Constants.COLLECTION_USERS
 import javax.inject.Inject
 
 class FirebaseRepository @Inject constructor() {
     private val auth = FirebaseAuth.getInstance()
     private val database = App.firestore
-    private val userRef = database.collection(Constants.COLLECTION_USERS)
-    private val educoRef = database.collection(Constants.COLLECTION_REQUESTS)
+    private val userRef = database.collection(COLLECTION_USERS)
+    private val educoRef = database.collection(COLLECTION_EDUCO)
+    private val receivedRef = database.collection(COLLECTION_RECEIVED)
+    private val sentRef = database.collection(COLLECTION_SENT)
     private val storageRef = App.storage.reference
 
 
@@ -80,7 +81,7 @@ class FirebaseRepository @Inject constructor() {
             }
             Resource.Success(otherPartners)
         }catch(e : Exception){
-            Resource.Failure(e.message!!)
+            Resource.Failure("Error occurred")
         }
 
     }
@@ -97,7 +98,7 @@ class FirebaseRepository @Inject constructor() {
             }
             Resource.Success(otherPartners)
         }catch(e : Exception){
-            Resource.Failure(e.message!!)
+            Resource.Failure("Error occurred")
         }
 
     }
@@ -142,6 +143,45 @@ class FirebaseRepository @Inject constructor() {
         }
     }
 
+    suspend fun applyForStudy(receiverId : String, request: Request) : Resource<String>{
+        return try {
+
+            val sent = sentRef.document(App.appUser?.uId!!).collection("Requests").document(request.educo.id).get().await()
+            sent.let {
+                if(it.exists()){
+                    Resource.Success("Request already exists")
+                }else{
+                    val id = receivedRef.document(receiverId).collection("Requests").document().id
+                    request.id = id
+                    receivedRef.document(receiverId).collection("Requests").document(id).set(request).await()
+                    sentRef.document(App.appUser?.uId!!).collection("Requests").document(request.educo.id).set(request).await()
+                    Resource.Success("Request sent Successfully.")
+                }
+            }
+        }catch (e : Exception){
+            Resource.Failure(e.message!!)
+        }
+    }
+
+    suspend fun getReceivedRequests() : Resource<List<Request>>{
+        return try{
+            val requests = receivedRef.document(auth.currentUser!!.uid).collection("Requests").get().await()
+            val allRequest = requests.toObjects<Request>()
+            Resource.Success(allRequest)
+        }catch(e:Exception){
+            Resource.Failure(e.message!!)
+        }
+    }
+
+    suspend fun getSentRequests() : Resource<List<Request>>{
+        return try{
+            val requests = sentRef.document(App.appUser?.uId!!).collection("Requests").get().await()
+            val allRequest = requests.toObjects<Request>()
+            Resource.Success(allRequest)
+        }catch(e:Exception){
+            Resource.Failure(e.message!!)
+        }
+    }
 
     fun logOut() : Boolean {
        return try {

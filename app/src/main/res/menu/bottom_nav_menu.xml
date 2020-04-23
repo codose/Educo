@@ -14,6 +14,17 @@
         android:id="@+id/tutorialCentresFragment"
         android:icon="@drawable/tutor"
         android:title="Tutorial Centres" />
+
+    <item
+        android:id="@+id/requestsFragment"
+        android:icon="@drawable/exchange"
+        android:title="Requests" />
+
+<!--    <item-->
+<!--        android:id="@+id/chatsFragment"-->
+<!--        android:icon="@drawable/ic_message"-->
+<!--        android:title="Chats" />-->
+
     <item
         android:id="@+id/settingsFragment"
         android:icon="@drawable/ic_settings"

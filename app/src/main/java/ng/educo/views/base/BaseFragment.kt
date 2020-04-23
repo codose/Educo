@@ -31,7 +31,7 @@ abstract class BaseFragment<DB :ViewDataBinding> : Fragment(){
         FirebaseApp.initializeApp(context!!)
         auth = FirebaseAuth.getInstance()
         doubleBounce = FadingCircle()
-        doubleBounce.color = resources.getColor(R.color.colorPrimary)
+        doubleBounce.color = R.color.colorPrimary
 
     }
 

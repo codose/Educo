@@ -122,7 +122,7 @@ class RequestStudyFragment : BaseFragment<FragmentRequestStudyBinding>() {
         description = binding.descriptionEditText.text.toString()
         val location = App.appUser?.state
         if(validateInputs()){
-            val educo = Educo(title, longStringToInt(category), typeStringToInt(type), users,null ,description, location!!, auth.currentUser!!.uid)
+            val educo = Educo(title, longStringToInt(category), typeStringToInt(type), users,null ,description, location!!, App.appUser!!)
             viewModel.createNewRequest(educo)
         }
     }
