@@ -7,6 +7,8 @@
     <color name="colorPrimaryExtra">#F9FFFF</color>
     <color name="colorAccentLight">#FFFF85</color>
     <color name="colorAccent">#ffff00</color>
+    <color name="red">#D50000</color>
+    <color name="red_light">#C5A6A6</color>
     <color name="colorAccentDark">#c7cc00</color>
     <color name="textColorPrimary">#212121</color>
     <color name="textColorSecondary">#616161</color>

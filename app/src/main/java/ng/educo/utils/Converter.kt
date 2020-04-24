@@ -2,7 +2,6 @@ package ng.educo.utils
 
 import ng.educo.models.Educo
 import ng.educo.models.User
-import java.text.DateFormat.getDateInstance
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -89,7 +88,7 @@ fun formatDateCreated(date : Date) : String {
 }
 
 fun checkPartnerEduco(educo: Educo) : Boolean{
-    if (educo.user.uId != App.auth.currentUser?.uid
+    if (educo.user.uid != App.appUser?.uid
         && App.appUser?.interest!!.contains(educo.category.toLong())
         && App.appUser!!.state == educo.location
         && educo.type == 1){
@@ -99,7 +98,7 @@ fun checkPartnerEduco(educo: Educo) : Boolean{
 }
 
 fun checkGroupEduco(educo: Educo) : Boolean{
-    if (educo.user.uId != App.auth.currentUser?.uid
+    if (educo.user.uid != App.appUser?.uid
         && App.appUser?.interest!!.contains(educo.category.toLong())
         && App.appUser!!.state == educo.location
         && educo.type == 2){
@@ -109,7 +108,7 @@ fun checkGroupEduco(educo: Educo) : Boolean{
 }
 
 fun checkUserGroupEduco(educo: Educo) : Boolean{
-    if (educo.user.uId == App.auth.currentUser?.uid
+    if (educo.user.uid == App.appUser?.uid
         && educo.type == 2){
         return true
     }
@@ -118,8 +117,20 @@ fun checkUserGroupEduco(educo: Educo) : Boolean{
 
 
 fun checkUserEduco(educo: Educo) : Boolean{
-    if (educo.user.uId == App.auth.currentUser?.uid){
+    if (educo.user.uid == App.appUser?.uid){
         return true
     }
     return false
+}
+
+fun formatTitle(user: User) : String{
+    return "A ${yearToString(user.level)} ${user.school} student studying ${user.dept}"
+}
+
+fun setOneToOneChat(uid1: String, uid2: String): String? { //Check if user1’s id is less than user2's
+    return if (uid1 < uid2) {
+        uid1 + uid2
+    } else {
+        uid2 + uid1
+    }
 }

@@ -2,6 +2,7 @@ package ng.educo.views.main.ui
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 import ng.educo.R
 import ng.educo.databinding.FragmentStudyGroupBinding
+import ng.educo.utils.App
 import ng.educo.utils.Resource
 import ng.educo.views.base.BaseFragment
 import ng.educo.views.main.MainActivity
@@ -47,6 +49,7 @@ class StudyGroupFragment : BaseFragment<FragmentStudyGroupBinding>() {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_study_group, container, false)
 
+
         // Inflate the layout for this fragment
         return binding.root
     }
@@ -62,12 +65,13 @@ class StudyGroupFragment : BaseFragment<FragmentStudyGroupBinding>() {
         hideShow()
 
         val adapter = MainAdapter(context!!, EducoClickListener {
-            openDetails(it)
+            openDetails(it.id)
         })
         binding.studyGroupRv.adapter = adapter
 
         viewModel.studyGroupData.observe(viewLifecycleOwner, Observer {
             when(it){
+
                 is Resource.Loading -> {
                     showShimmer()
                     binding.apply {

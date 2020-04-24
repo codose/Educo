@@ -4,15 +4,17 @@ import android.content.Context
 import android.net.Uri
 import androidx.core.net.toFile
 import androidx.core.net.toUri
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.firestore.ktx.toObjects
 import id.zelory.compressor.Compressor
 import kotlinx.coroutines.tasks.await
-import ng.educo.models.Educo
-import ng.educo.models.Request
-import ng.educo.models.User
+import ng.educo.models.*
 import ng.educo.utils.*
 import ng.educo.utils.Constants.COLLECTION_EDUCO
 import ng.educo.utils.Constants.COLLECTION_RECEIVED
@@ -83,7 +85,6 @@ class FirebaseRepository @Inject constructor() {
         }catch(e : Exception){
             Resource.Failure("Error occurred")
         }
-
     }
 
     suspend fun getAllStudyGroups() : Resource<List<Educo>>{
@@ -146,7 +147,7 @@ class FirebaseRepository @Inject constructor() {
     suspend fun applyForStudy(receiverId : String, request: Request) : Resource<String>{
         return try {
 
-            val sent = sentRef.document(App.appUser?.uId!!).collection("Requests").document(request.educo.id).get().await()
+            val sent = sentRef.document(App.appUser?.uid!!).collection("Requests").document(request.educo.id).get().await()
             sent.let {
                 if(it.exists()){
                     Resource.Success("Request already exists")
@@ -154,7 +155,7 @@ class FirebaseRepository @Inject constructor() {
                     val id = receivedRef.document(receiverId).collection("Requests").document().id
                     request.id = id
                     receivedRef.document(receiverId).collection("Requests").document(id).set(request).await()
-                    sentRef.document(App.appUser?.uId!!).collection("Requests").document(request.educo.id).set(request).await()
+                    sentRef.document(App.appUser?.uid!!).collection("Requests").document(request.educo.id).set(request).await()
                     Resource.Success("Request sent Successfully.")
                 }
             }
@@ -165,7 +166,7 @@ class FirebaseRepository @Inject constructor() {
 
     suspend fun getReceivedRequests() : Resource<List<Request>>{
         return try{
-            val requests = receivedRef.document(auth.currentUser!!.uid).collection("Requests").get().await()
+            val requests = receivedRef.document(App.appUser?.uid!!).collection("Requests").get().await()
             val allRequest = requests.toObjects<Request>()
             Resource.Success(allRequest)
         }catch(e:Exception){
@@ -173,9 +174,19 @@ class FirebaseRepository @Inject constructor() {
         }
     }
 
+    suspend fun deleteReceivedRequests(request: Request) : Resource<String>{
+        return try{
+            receivedRef.document(App.appUser?.uid!!).collection("Requests").document(request.id).delete().await()
+            sentRef.document(request.user.uid).collection("Requests").document(request.educo.id).delete().await()
+            Resource.Success("Request Accepted")
+        }catch(e:Exception){
+            Resource.Failure(e.message!!)
+        }
+    }
+
     suspend fun getSentRequests() : Resource<List<Request>>{
         return try{
-            val requests = sentRef.document(App.appUser?.uId!!).collection("Requests").get().await()
+            val requests = sentRef.document(App.appUser?.uid!!).collection("Requests").get().await()
             val allRequest = requests.toObjects<Request>()
             Resource.Success(allRequest)
         }catch(e:Exception){
@@ -200,7 +211,7 @@ class FirebaseRepository @Inject constructor() {
             val mUser = user.toObject<User>()
             Resource.Success(mUser!!)
         } catch (e: Exception){
-            return Resource.Failure(e.message!!)
+            return Resource.Failure("Error Occurred")
         }
     }
 
@@ -211,6 +222,41 @@ class FirebaseRepository @Inject constructor() {
             Resource.Success(appUser!!)
         } catch (e: Exception){
             return Resource.Failure(e.message!!)
+        }
+    }
+
+    suspend fun getRequest(id: String) : Resource<Request>{
+        return try{
+            val request = receivedRef.document(App.appUser?.uid!!).collection("Requests").document(id).get().await()
+            val mRequest = request.toObject<Request>()
+            Resource.Success(mRequest!!)
+        }catch (e: Exception){
+            Resource.Failure(e.message!!)
+        }
+    }
+
+    suspend fun sendMessage(docId : String, message : Message, user : User) : Resource<String>{
+        return try{
+            val id = database.collection("Chats").document(docId).collection("Chats").document().id
+            val active1 = Active(user, message)
+            val active2 = Active(App.appUser!!, message)
+            message.id = id
+            database.collection("Active Chats").document(message.senderId).collection("Chats").document(message.receiverId).set(active1).await()
+            database.collection("Active Chats").document(message.receiverId).collection("Chats").document(message.senderId).set(active2).await()
+            database.collection("Chats").document(docId).collection("Chats").document(id).set(message).await()
+            Resource.Success("Message sent")
+        }catch(e: Exception){
+            Resource.Failure(e.message!!)
+        }
+    }
+
+    suspend fun getActiveChats(uid : String) : Resource<List<Active>>{
+        return try{
+            val message = database.collection("Active Chats").document(uid).collection("Chats").get().await()
+            val active = message.toObjects<Active>()
+            Resource.Success(active)
+        }catch (e : Exception){
+            Resource.Failure(e.message!!)
         }
     }
 

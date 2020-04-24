@@ -39,15 +39,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/backButton" />
 
-        <Button
+        <ImageButton
             android:id="@+id/backButton"
             style="@style/Button.Transparent.NoOutline"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            app:icon="@drawable/arrow_back_black_24dp"
-            app:iconTint="@android:color/black"
+            android:background="@drawable/circular"
+            android:src="@drawable/arrow_back_black_24dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -93,7 +93,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/titleTextView"
                     app:layout_constraintTop_toBottomOf="@+id/titleTextView"
-                    tools:text="TextView" />
+                    tools:text="@string/long_dummy" />
 
                 <TextView
                     android:id="@+id/textView35"

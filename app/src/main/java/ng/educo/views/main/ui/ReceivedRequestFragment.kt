@@ -5,10 +5,14 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import kotlinx.android.synthetic.main.fragment_received_request.*
 
 import ng.educo.R
 import ng.educo.databinding.FragmentReceivedRequestBinding
@@ -49,17 +53,28 @@ class ReceivedRequestFragment : BaseFragment<FragmentReceivedRequestBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.receivedProgress.indeterminateDrawable = doubleBounce
         val adapter = RequestAdapter(context!!, RequestClickListener {
-            showToast(it)
+            findNavController().navigate(RequestsFragmentDirections.actionRequestsFragmentToSingleRequestFragment(it.id))
         })
         viewModel.received.observe(viewLifecycleOwner, Observer {
             when (it){
+                is Resource.Loading -> showProgress()
                 is Resource.Success -> {
+                    hideProgress()
                     adapter.submitList(it.data)
                 }
             }
         })
         binding.receivedRV.adapter = adapter
+    }
+
+    private fun hideProgress() {
+        receivedProgress.visibility = GONE
+    }
+
+    private fun showProgress() {
+        receivedProgress.visibility = VISIBLE
     }
 
     override fun getLayoutRes(): Int = R.layout.fragment_received_request

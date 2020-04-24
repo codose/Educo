@@ -17,5 +17,5 @@ data class User(
     var dept : String = "",
     var level : String = "0",
     var imageUrl : String = "",
-    var uId : String = ""
+    var uid : String = ""
 )

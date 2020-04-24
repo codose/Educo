@@ -63,7 +63,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
                 is Resource.Loading -> disableButton()
 
                 is Resource.Success -> {
-                    newUser.uId = auth.currentUser!!.uid
+                    newUser.uid = auth.currentUser!!.uid
                     viewModel.addToFireStore(newUser)
                 }
 

@@ -26,4 +26,6 @@ interface MainComponent {
     fun inject(fragment: ReceivedRequestFragment)
     fun inject(fragment: RequestsFragment)
     fun inject(fragment: SentRequestFragment)
+    fun inject(fragment: SingleRequestFragment)
+    fun inject(fragment: ChatsFragment)
 }

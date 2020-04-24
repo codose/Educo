@@ -75,5 +75,33 @@
         android:id="@+id/requestsFragment"
         android:name="ng.educo.views.main.ui.RequestsFragment"
         android:label="fragment_requests"
-        tools:layout="@layout/fragment_requests" />
+        tools:layout="@layout/fragment_requests" >
+        <action
+            android:id="@+id/action_requestsFragment_to_singleRequestFragment"
+            app:destination="@id/singleRequestFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/receivedRequestFragment"
+        android:name="ng.educo.views.main.ui.ReceivedRequestFragment"
+        android:label="ReceivedRequestFragment" >
+        <action
+            android:id="@+id/action_receivedRequestFragment_to_singleRequestFragment"
+            app:destination="@id/singleRequestFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/sentRequestFragment"
+        android:name="ng.educo.views.main.ui.SentRequestFragment"
+        android:label="SentRequestFragment" >
+        <action
+            android:id="@+id/action_sentRequestFragment_to_singleStudyFragment"
+            app:destination="@id/singleStudyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/singleRequestFragment"
+        android:name="ng.educo.views.main.ui.SingleRequestFragment"
+        android:label="SingleRequestFragment" >
+        <argument
+            android:name="requestsId"
+            app:argType="string" />
+    </fragment>
 </navigation>

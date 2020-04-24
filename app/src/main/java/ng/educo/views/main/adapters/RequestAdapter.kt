@@ -40,8 +40,8 @@ class RequestAdapter(val context : Context, val clickListener: RequestClickListe
     }
 }
 
-class RequestClickListener(val clickListener: (id: String) -> Unit){
-    fun onClick(request: Request) = clickListener(request.id)
+class RequestClickListener(val clickListener: (request: Request) -> Unit){
+    fun onClick(request: Request) = clickListener(request)
 }
 
 class RequestDiffCallback : DiffUtil.ItemCallback<Request>(){

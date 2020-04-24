@@ -9,6 +9,9 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import kotlinx.android.synthetic.main.fragment_received_request.*
+import kotlinx.android.synthetic.main.fragment_sent_request.*
 
 import ng.educo.R
 import ng.educo.databinding.FragmentSentRequestBinding
@@ -47,13 +50,16 @@ class SentRequestFragment : BaseFragment<FragmentSentRequestBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.sentProgress.indeterminateDrawable = doubleBounce
         val adapter = SentRequestAdapter(context!!, RequestClickListener {
-
+            findNavController().navigate(SentRequestFragmentDirections.actionSentRequestFragmentToSingleStudyFragment(it.educo.id))
         })
 
         viewModel.sent.observe(viewLifecycleOwner, Observer {
             when (it){
+                is Resource.Loading -> showProgress()
                 is Resource.Success -> {
+                    hideProgress()
                     adapter.submitList(it.data)
                 }
             }
@@ -61,6 +67,14 @@ class SentRequestFragment : BaseFragment<FragmentSentRequestBinding>() {
         binding.sentRecyclerView.adapter = adapter
 
 
+    }
+
+    private fun hideProgress() {
+        sentProgress.visibility = View.GONE
+    }
+
+    private fun showProgress() {
+        sentProgress.visibility = View.VISIBLE
     }
 
     override fun getLayoutRes(): Int = R.layout.fragment_sent_request

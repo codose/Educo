@@ -3,7 +3,6 @@ package ng.educo.views.main.ui
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
@@ -80,6 +79,7 @@ class SingleStudyFragment : BaseFragment<FragmentSingleStudyBinding>() {
                     sender = auth.currentUser!!.uid
                     this.educo = educo
                     setUpData(educo)
+                    hideShimmer()
                 }
 
                 is Resource.Failure ->{
@@ -109,40 +109,23 @@ class SingleStudyFragment : BaseFragment<FragmentSingleStudyBinding>() {
         })
 
 
-        viewModel.userDetails.observe(viewLifecycleOwner, Observer {
-            when(it){
-                is Resource.Loading -> {
-                    showShimmer()
-                }
-
-                is Resource.Success ->{
-                    hideShimmer()
-                    val user = it.data
-                    setUpUser(user)
-                }
-
-                is Resource.Failure ->{
-                    showToast(it.message)
-                    activity!!.onBackPressed()
-                    hideShimmer()
-                }
-            }
-        })
     }
 
     private fun hideProgress() {
-        applyProgress.visibility = INVISIBLE
+        applyProgress.visibility = GONE
         applyButton.isEnabled = true
+        applyButton.visibility = VISIBLE
     }
 
     private fun showProgress() {
         applyProgress.visibility = VISIBLE
         applyButton.isEnabled = false
+        applyButton.visibility = INVISIBLE
     }
 
     private fun applyForStudy() {
         request = Request("Testing0001", 0, App.appUser!!, educo)
-        viewModel.sendRequest(educo.user.uId,request)
+        viewModel.sendRequest(educo.user.uid,request)
     }
 
     @SuppressLint("SetTextI18n")
@@ -155,11 +138,17 @@ class SingleStudyFragment : BaseFragment<FragmentSingleStudyBinding>() {
             .into(binding.userImageView)
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setUpData(educo: Educo) {
         binding.educo = educo
         binding.catTextView.text = longInterestToString(educo.category)
         binding.dateCreatedTextView.text = formatDateCreated(educo.createdAt!!)
-        viewModel.getUserDetails(educo.user.uId)
+        binding.textUserTitle.text = formatTitle(educo.user)
+        binding.textFullName.text = "${educo.user.firstName} ${educo.user.lastName}"
+        Glide.with(context!!)
+            .load(educo.user.imageUrl)
+            .placeholder(R.drawable.ic_undraw_profile_pic)
+            .into(binding.userImageView)
     }
 
     private fun hideShimmer() {

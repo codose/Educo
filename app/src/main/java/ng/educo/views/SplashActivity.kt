@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.animation.AnimationUtils
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.github.ybq.android.spinkit.style.ChasingDots
 import com.github.ybq.android.spinkit.style.DoubleBounce
@@ -37,7 +38,7 @@ class SplashActivity : BaseActivity() {
             AnimationUtils.loadAnimation(this, R.anim.bounce)
 
         val doubleBounce = FadingCircle()
-        doubleBounce.color = R.color.colorPrimary
+        doubleBounce.color = ContextCompat.getColor(this, R.color.colorPrimary)
 
         val progressBar = binding.progressBar
         progressBar.indeterminateDrawable = doubleBounce

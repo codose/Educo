@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.fragment_study_group.*
 
 import ng.educo.R
 import ng.educo.databinding.FragmentStudyPartnerBinding
+import ng.educo.utils.App
 import ng.educo.utils.Resource
 import ng.educo.views.base.BaseFragment
 import ng.educo.views.main.MainActivity
@@ -57,7 +58,7 @@ class StudyPartnerFragment : BaseFragment<FragmentStudyPartnerBinding>() {
 //        viewModel.getStudyPartnerData()
         navVisibility()
         val adapter = MainAdapter(context!!, EducoClickListener {
-            findNavController().navigate(StudyPartnerFragmentDirections.actionStudyPartnerFragmentToSingleStudyFragment(it))
+            findNavController().navigate(StudyPartnerFragmentDirections.actionStudyPartnerFragmentToSingleStudyFragment(it.id))
         })
         binding.studyPartnerRv.adapter = adapter
 

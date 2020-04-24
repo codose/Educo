@@ -58,8 +58,8 @@ class MainAdapter(val context : Context, val clickListener: EducoClickListener) 
     }
 }
 
-class EducoClickListener(val clickListener: (id: String) -> Unit){
-    fun onClick(educo: Educo) = clickListener(educo.id)
+class EducoClickListener(val clickListener: (educo: Educo) -> Unit){
+    fun onClick(educo: Educo) = clickListener(educo)
 }
 
 class MainDiffCallback : DiffUtil.ItemCallback<Educo>(){
