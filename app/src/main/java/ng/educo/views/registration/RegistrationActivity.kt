@@ -2,12 +2,16 @@ package ng.educo.views.registration
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 import ng.educo.R
 import ng.educo.di.components.RegistrationComponent
 import ng.educo.utils.App
 import ng.educo.views.registration.viewModels.RegistrationViewModel
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
+@InternalCoroutinesApi
 class RegistrationActivity : AppCompatActivity() {
 
     lateinit var registrationComponent: RegistrationComponent

@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
 import ng.educo.DataStoreArchitecture.FirebaseRepository
 import ng.educo.models.Educo
 import ng.educo.models.User
@@ -15,6 +16,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 
+@InternalCoroutinesApi
+@ExperimentalCoroutinesApi
 class ProfileViewModel @Inject constructor(private val firebaseRepository: FirebaseRepository) : ViewModel(){
 
     val getUserProfile = MutableLiveData<User>()
@@ -56,7 +59,9 @@ class ProfileViewModel @Inject constructor(private val firebaseRepository: Fireb
     fun getStudyCount(){
         App.applicationScope.launch {
             withContext(Dispatchers.IO){
-                myPartners.postValue(firebaseRepository.getMyStudies())
+                firebaseRepository.getMyStudies().collect {
+                    myPartners.postValue(it)
+                }
             }
         }
     }

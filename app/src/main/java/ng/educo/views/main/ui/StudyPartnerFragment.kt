@@ -15,6 +15,8 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.fragment_study_group.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 
 import ng.educo.R
 import ng.educo.databinding.FragmentStudyPartnerBinding
@@ -30,6 +32,8 @@ import javax.inject.Inject
 /**
  * A simple [Fragment] subclass.
  */
+@ExperimentalCoroutinesApi
+@InternalCoroutinesApi
 class StudyPartnerFragment : BaseFragment<FragmentStudyPartnerBinding>() {
 
     @Inject

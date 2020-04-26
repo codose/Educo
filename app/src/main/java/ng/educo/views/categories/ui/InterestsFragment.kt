@@ -15,6 +15,8 @@ import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.selection.StableIdKeyProvider
 import androidx.recyclerview.selection.StorageStrategy
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 
 import ng.educo.R
 import ng.educo.databinding.FragmentInterestsBinding
@@ -26,6 +28,8 @@ import ng.educo.views.main.MainActivity
 import javax.inject.Inject
 
 
+@ExperimentalCoroutinesApi
+@InternalCoroutinesApi
 class InterestsFragment : BaseFragment<FragmentInterestsBinding>() {
 
     @Inject

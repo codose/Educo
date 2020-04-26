@@ -11,6 +11,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.fragment_location_select.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 
 import ng.educo.R
 import ng.educo.databinding.FragmentLocationSelectBinding
@@ -19,6 +21,8 @@ import ng.educo.utils.Constants.year
 import ng.educo.views.base.BaseFragment
 
 
+@ExperimentalCoroutinesApi
+@UseExperimental(InternalCoroutinesApi::class)
 class LocationSelectFragment : BaseFragment<FragmentLocationSelectBinding>() {
 
     override fun onCreateView(

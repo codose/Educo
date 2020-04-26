@@ -3,6 +3,7 @@ package ng.educo.views.main.viewmodels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
 import ng.educo.DataStoreArchitecture.FirebaseRepository
 import ng.educo.di.scope.ActivityScope
 import ng.educo.models.Educo
@@ -15,6 +16,8 @@ import javax.inject.Singleton
 
 
 
+@ExperimentalCoroutinesApi
+@InternalCoroutinesApi
 class MainViewModel @Inject constructor(private val firebaseRepository: FirebaseRepository)  : ViewModel(){
 
     val loggedOut = MutableLiveData<Boolean>()
@@ -40,8 +43,9 @@ class MainViewModel @Inject constructor(private val firebaseRepository: Firebase
         studyPartnerData.value = Resource.Loading()
         applicationScope.launch {
             withContext(Dispatchers.IO){
-                val data = firebaseRepository.getAllStudyPartners()
-                studyPartnerData.postValue(data)
+                firebaseRepository.getAllStudyPartnersFlow().collect {
+                    studyPartnerData.postValue(it)
+                }
             }
         }
     }
@@ -70,8 +74,9 @@ class MainViewModel @Inject constructor(private val firebaseRepository: Firebase
         studyGroupData.value = Resource.Loading()
         applicationScope.launch {
             withContext(Dispatchers.IO){
-                val data = firebaseRepository.getAllStudyGroups()
-                studyGroupData.postValue(data)
+                firebaseRepository.getAllStudyGroupsFlow().collect {
+                    studyGroupData.postValue(it)
+                }
             }
         }
     }
@@ -102,7 +107,9 @@ class MainViewModel @Inject constructor(private val firebaseRepository: Firebase
         received.value = Resource.Loading()
         applicationScope.launch {
             withContext(Dispatchers.IO){
-                received.postValue(firebaseRepository.getReceivedRequests())
+                firebaseRepository.getReceivedRequestFlow().collect {
+                    received.postValue(it)
+                }
             }
         }
     }
@@ -111,7 +118,9 @@ class MainViewModel @Inject constructor(private val firebaseRepository: Firebase
         sent.value = Resource.Loading()
         applicationScope.launch {
             withContext(Dispatchers.IO){
-                sent.postValue(firebaseRepository.getSentRequests())
+                firebaseRepository.getSentRequestFlow().collect {
+                    sent.postValue(it)
+                }
             }
         }
     }

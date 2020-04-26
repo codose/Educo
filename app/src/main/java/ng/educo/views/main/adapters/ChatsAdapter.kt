@@ -21,6 +21,7 @@ class ChatsAdapter(val context : Context, val clickListener: ChatsClickListener)
         @SuppressLint("SetTextI18n")
         fun bind(active: Active , clickListener: ChatsClickListener){
             binding.clickListener = clickListener
+            binding.active = active
             binding.nameText.text = "${active.user.firstName} ${active.user.lastName}"
             binding.lastMessage.text = active.message.messageText
             binding.lastMessageTime.text = getTimeAgo(active.lastMsg!!)

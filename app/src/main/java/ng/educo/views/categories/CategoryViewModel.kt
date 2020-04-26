@@ -13,6 +13,8 @@ import ng.educo.views.main.MainActivity
 import javax.inject.Inject
 
 
+@ExperimentalCoroutinesApi
+@InternalCoroutinesApi
 class CategoryViewModel @Inject constructor(private val firebaseRepository: FirebaseRepository) : ViewModel() {
     private val job = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + job)

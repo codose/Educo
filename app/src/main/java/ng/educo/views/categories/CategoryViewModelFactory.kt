@@ -21,6 +21,8 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -29,6 +31,8 @@ import javax.inject.Provider
  *
  * Provides the SleepDatabaseDao and context to the ViewModel.
  */
+@ExperimentalCoroutinesApi
+@InternalCoroutinesApi
 class CategoryViewModelFactory @Inject constructor(private val viewModelProvider: Provider<CategoryViewModel>) : ViewModelProvider.Factory {
     @Suppress("unchecked_cast")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {

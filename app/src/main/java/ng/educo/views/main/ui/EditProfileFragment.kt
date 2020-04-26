@@ -22,6 +22,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.theartofdev.edmodo.cropper.CropImage
 import id.zelory.compressor.Compressor
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 import ng.educo.R
 import ng.educo.databinding.FragmentEditProfileBinding
 import ng.educo.models.User
@@ -37,6 +39,8 @@ import javax.inject.Inject
 /**
  * A simple [Fragment] subclass.
  */
+@ExperimentalCoroutinesApi
+@InternalCoroutinesApi
 class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>() {
 
     @Inject

@@ -70,7 +70,11 @@
         android:id="@+id/chatsFragment"
         android:name="ng.educo.views.main.ui.ChatsFragment"
         android:label="fragment_chats"
-        tools:layout="@layout/fragment_chats" />
+        tools:layout="@layout/fragment_chats" >
+        <action
+            android:id="@+id/action_chatsFragment_to_singleChatsFragment"
+            app:destination="@id/singleChatsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/requestsFragment"
         android:name="ng.educo.views.main.ui.RequestsFragment"
@@ -79,6 +83,9 @@
         <action
             android:id="@+id/action_requestsFragment_to_singleRequestFragment"
             app:destination="@id/singleRequestFragment" />
+        <action
+            android:id="@+id/action_requestsFragment_to_singleStudyFragment"
+            app:destination="@id/singleStudyFragment" />
     </fragment>
     <fragment
         android:id="@+id/receivedRequestFragment"
@@ -102,6 +109,19 @@
         android:label="SingleRequestFragment" >
         <argument
             android:name="requestsId"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/singleChatsFragment"
+        android:name="ng.educo.views.main.ui.SingleChatsFragment"
+        android:label="SingleChatsFragment" >
+        <argument
+            android:name="id"
+            app:argType="string" />
+        <argument android:name="userId"
+            app:argType="string" />
+        <argument
+            android:name="fullName"
             app:argType="string" />
     </fragment>
 </navigation>

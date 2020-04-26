@@ -1,5 +1,8 @@
 package ng.educo.utils
 
+import android.annotation.SuppressLint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 import ng.educo.models.Educo
 import ng.educo.models.User
 import java.text.SimpleDateFormat
@@ -73,6 +76,7 @@ fun yearToString(id : String) : String {
     }
 }
 
+@SuppressLint("SimpleDateFormat")
 fun formatDateJoined(date : Date) : String {
     val formattedDate : String
     val sdf = SimpleDateFormat("LLLL dd, YYYY")
@@ -80,13 +84,17 @@ fun formatDateJoined(date : Date) : String {
     return "Joined $formattedDate"
 }
 
+@SuppressLint("SimpleDateFormat")
 fun formatDateCreated(date : Date) : String {
     val formattedDate : String
-    val sdf = SimpleDateFormat("LLLL dd, YYYY hh:mm")
+    val sdf = SimpleDateFormat("LLLL dd, YYYY HH:mm")
     formattedDate = sdf.format(date)
     return formattedDate
 }
 
+
+@InternalCoroutinesApi
+@ExperimentalCoroutinesApi
 fun checkPartnerEduco(educo: Educo) : Boolean{
     if (educo.user.uid != App.appUser?.uid
         && App.appUser?.interest!!.contains(educo.category.toLong())
@@ -97,6 +105,8 @@ fun checkPartnerEduco(educo: Educo) : Boolean{
     return false
 }
 
+@InternalCoroutinesApi
+@ExperimentalCoroutinesApi
 fun checkGroupEduco(educo: Educo) : Boolean{
     if (educo.user.uid != App.appUser?.uid
         && App.appUser?.interest!!.contains(educo.category.toLong())
@@ -107,6 +117,8 @@ fun checkGroupEduco(educo: Educo) : Boolean{
     return false
 }
 
+@InternalCoroutinesApi
+@ExperimentalCoroutinesApi
 fun checkUserGroupEduco(educo: Educo) : Boolean{
     if (educo.user.uid == App.appUser?.uid
         && educo.type == 2){
@@ -116,6 +128,8 @@ fun checkUserGroupEduco(educo: Educo) : Boolean{
 }
 
 
+@ExperimentalCoroutinesApi
+@InternalCoroutinesApi
 fun checkUserEduco(educo: Educo) : Boolean{
     if (educo.user.uid == App.appUser?.uid){
         return true

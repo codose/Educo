@@ -12,6 +12,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.fragment_received_request.*
 import kotlinx.android.synthetic.main.fragment_sent_request.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 
 import ng.educo.R
 import ng.educo.databinding.FragmentSentRequestBinding
@@ -25,6 +27,8 @@ import ng.educo.views.main.adapters.SentRequestAdapter
 import ng.educo.views.main.viewmodels.MainViewModel
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
+@InternalCoroutinesApi
 class SentRequestFragment : BaseFragment<FragmentSentRequestBinding>() {
 
     @Inject
@@ -52,7 +56,7 @@ class SentRequestFragment : BaseFragment<FragmentSentRequestBinding>() {
         super.onViewCreated(view, savedInstanceState)
         binding.sentProgress.indeterminateDrawable = doubleBounce
         val adapter = SentRequestAdapter(context!!, RequestClickListener {
-            findNavController().navigate(SentRequestFragmentDirections.actionSentRequestFragmentToSingleStudyFragment(it.educo.id))
+            findNavController().navigate(RequestsFragmentDirections.actionRequestsFragmentToSingleStudyFragment(it.educo.id))
         })
 
         viewModel.sent.observe(viewLifecycleOwner, Observer {

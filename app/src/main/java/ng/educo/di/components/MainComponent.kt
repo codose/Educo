@@ -1,11 +1,15 @@
 package ng.educo.di.components
 
 import dagger.Subcomponent
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 import ng.educo.di.scope.ActivityScope
 import ng.educo.views.main.MainActivity
 import ng.educo.views.main.ui.*
 
 
+@ExperimentalCoroutinesApi
+@InternalCoroutinesApi
 @ActivityScope
 @Subcomponent
 interface MainComponent {
@@ -28,4 +32,5 @@ interface MainComponent {
     fun inject(fragment: SentRequestFragment)
     fun inject(fragment: SingleRequestFragment)
     fun inject(fragment: ChatsFragment)
+    fun inject(fragment: SingleChatsFragment)
 }

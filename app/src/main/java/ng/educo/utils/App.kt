@@ -19,6 +19,8 @@ import ng.educo.di.components.AppComponent
 import ng.educo.di.components.DaggerAppComponent
 import ng.educo.models.User
 
+@ExperimentalCoroutinesApi
+@InternalCoroutinesApi
 open class App : Application() {
 
 

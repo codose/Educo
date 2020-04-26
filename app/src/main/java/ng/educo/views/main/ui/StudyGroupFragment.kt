@@ -14,6 +14,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 
 import ng.educo.R
 import ng.educo.databinding.FragmentStudyGroupBinding
@@ -29,12 +31,15 @@ import javax.inject.Inject
 /**
  * A simple [Fragment] subclass.
  */
+@InternalCoroutinesApi
+@ExperimentalCoroutinesApi
 class StudyGroupFragment : BaseFragment<FragmentStudyGroupBinding>() {
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory
 
     lateinit var viewModel : MainViewModel
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

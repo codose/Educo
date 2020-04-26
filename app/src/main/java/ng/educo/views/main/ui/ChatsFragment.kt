@@ -11,9 +11,14 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 
 import ng.educo.R
 import ng.educo.databinding.FragmentChatsBinding
+import ng.educo.utils.App
 import ng.educo.utils.Resource
 import ng.educo.views.base.BaseFragment
 import ng.educo.views.main.MainActivity
@@ -25,6 +30,8 @@ import javax.inject.Inject
 /**
  * A simple [Fragment] subclass.
  */
+@ExperimentalCoroutinesApi
+@InternalCoroutinesApi
 class ChatsFragment : BaseFragment<FragmentChatsBinding>() {
 
     @Inject
@@ -51,14 +58,26 @@ class ChatsFragment : BaseFragment<FragmentChatsBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val fab = activity?.findViewById<FloatingActionButton>(R.id.search_new_btn)
+
+        fab?.visibility = GONE
+
 
         val adapter = ChatsAdapter(context!!, ChatsClickListener {
+            val id = it.chatId
+            val uid : String = if(it.message.receiverId == App.appUser?.uid){
+                it.message.senderId
+            }else{
+                it.message.receiverId
+            }
 
+            val fullName = "${it.user.firstName} ${it.user.lastName}"
+            findNavController().navigate(ChatsFragmentDirections.actionChatsFragmentToSingleChatsFragment(id!!,uid,fullName))
         })
         binding.chatsProgress.indeterminateDrawable = doubleBounce
         binding.chatsRv.adapter = adapter
 
-        viewModel.getMessages()
+        viewModel.getActiveChats()
 
         viewModel.actives.observe(viewLifecycleOwner, Observer {
             when (it){

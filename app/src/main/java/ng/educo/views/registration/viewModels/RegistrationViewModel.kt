@@ -10,6 +10,8 @@ import ng.educo.utils.Resource
 import javax.inject.Inject
 
 
+@ExperimentalCoroutinesApi
+@InternalCoroutinesApi
 @ActivityScope
 class RegistrationViewModel @Inject constructor() : ViewModel() {
     private val job = Job()

@@ -10,6 +10,8 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.badge.BadgeDrawable
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 import ng.educo.R
 import ng.educo.databinding.FragmentRequestsBinding
 import ng.educo.utils.Resource
@@ -20,6 +22,8 @@ import ng.educo.views.main.viewmodels.MainViewModel
 import javax.inject.Inject
 
 
+@ExperimentalCoroutinesApi
+@InternalCoroutinesApi
 class RequestsFragment : BaseFragment<FragmentRequestsBinding>() {
 
     @Inject

@@ -1,5 +1,6 @@
 package ng.educo.utils
 
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -7,6 +8,11 @@ private const val SECOND_MILLIS = 1000
 private const val MINUTE_MILLIS = 60 * SECOND_MILLIS
 private const val HOUR_MILLIS = 60 * MINUTE_MILLIS
 private const val DAY_MILLIS = 24 * HOUR_MILLIS
+
+private val sdf1 = SimpleDateFormat("LLLL dd, YYYY HH:mm")
+
+private val sdf = SimpleDateFormat("HH:mm")
+
 
 private fun currentDate(): Date {
     val calendar: Calendar = Calendar.getInstance()
@@ -44,6 +50,23 @@ fun getTimeAgo(date: Date): String? {
         }
         else -> {
             "${diff / DAY_MILLIS} days ago"
+        }
+    }
+}
+
+fun getChatTime(date: Date): String? {
+    var time: Long = date.time
+    if (time < 1000000000000L) {
+        time *= 1000
+    }
+    val now: Long = currentDate().time
+    val diff = now - time
+    return when {
+        diff < 24 * HOUR_MILLIS -> {
+            sdf.format(date)
+        }
+        else -> {
+            sdf1.format(date)
         }
     }
 }

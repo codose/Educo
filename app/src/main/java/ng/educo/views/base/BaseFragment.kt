@@ -16,12 +16,16 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 import ng.educo.R
 import ng.educo.models.User
 import ng.educo.utils.App
 import ng.educo.utils.Constants.COLLECTION_USERS
 import java.util.regex.Pattern
 
+@ExperimentalCoroutinesApi
+@InternalCoroutinesApi
 abstract class BaseFragment<DB :ViewDataBinding> : Fragment(){
     open lateinit var binding: DB
     lateinit var auth: FirebaseAuth

@@ -11,6 +11,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 
 import ng.educo.R
 import ng.educo.databinding.FragmentLoginBinding
@@ -26,6 +28,8 @@ import javax.inject.Inject
 /**
  * A simple [Fragment] subclass.
  */
+@ExperimentalCoroutinesApi
+@InternalCoroutinesApi
 class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     private lateinit var email : String

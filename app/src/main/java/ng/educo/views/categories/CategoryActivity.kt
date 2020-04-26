@@ -3,11 +3,15 @@ package ng.educo.views.categories
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 import ng.educo.R
 import ng.educo.di.components.CategoryComponent
 import ng.educo.utils.App
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
+@InternalCoroutinesApi
 class CategoryActivity : AppCompatActivity() {
 
     @Inject

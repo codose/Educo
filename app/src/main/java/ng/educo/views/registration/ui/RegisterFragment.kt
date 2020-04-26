@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 import ng.educo.views.base.BaseFragment
 import ng.educo.R
 import ng.educo.databinding.FragmentRegisterBinding
@@ -22,6 +24,8 @@ import javax.inject.Inject
 /**
  * A simple [Fragment] subclass.
  */
+@ExperimentalCoroutinesApi
+@InternalCoroutinesApi
 class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
     private lateinit var firstName :String
     private lateinit var lastName :String

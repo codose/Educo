@@ -12,6 +12,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_single_study.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 
 import ng.educo.R
 import ng.educo.databinding.FragmentSingleStudyBinding
@@ -24,6 +26,8 @@ import ng.educo.views.main.MainActivity
 import ng.educo.views.main.viewmodels.MainViewModel
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
+@InternalCoroutinesApi
 class SingleStudyFragment : BaseFragment<FragmentSingleStudyBinding>() {
 
     @Inject
@@ -96,9 +100,10 @@ class SingleStudyFragment : BaseFragment<FragmentSingleStudyBinding>() {
                     showProgress()
                 }
 
-                is Resource.Success ->{
+                is Resource.Success -> {
                     hideProgress()
                     showToast(it.data)
+                    activity!!.onBackPressed()
                 }
 
                 is Resource.Failure ->{
@@ -107,7 +112,6 @@ class SingleStudyFragment : BaseFragment<FragmentSingleStudyBinding>() {
                 }
             }
         })
-
 
     }
 
@@ -126,16 +130,6 @@ class SingleStudyFragment : BaseFragment<FragmentSingleStudyBinding>() {
     private fun applyForStudy() {
         request = Request("Testing0001", 0, App.appUser!!, educo)
         viewModel.sendRequest(educo.user.uid,request)
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun setUpUser(user: User) {
-        binding.textUserTitle.text = "A ${yearToString(user.level)} ${user.school} student studying ${user.dept}"
-        binding.textFullName.text = "${user.firstName} ${user.lastName}"
-        Glide.with(context!!)
-            .load(user.imageUrl)
-            .placeholder(R.drawable.ic_undraw_profile_pic)
-            .into(binding.userImageView)
     }
 
     @SuppressLint("SetTextI18n")

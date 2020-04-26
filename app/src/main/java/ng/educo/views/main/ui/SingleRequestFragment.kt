@@ -14,6 +14,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 
 import ng.educo.R
 import ng.educo.databinding.FragmentSingleRequestBinding
@@ -32,6 +34,8 @@ import javax.inject.Inject
 /**
  * A simple [Fragment] subclass.
  */
+@ExperimentalCoroutinesApi
+@InternalCoroutinesApi
 class SingleRequestFragment : BaseFragment<FragmentSingleRequestBinding>() {
 
     @Inject
@@ -42,8 +46,6 @@ class SingleRequestFragment : BaseFragment<FragmentSingleRequestBinding>() {
     private lateinit var educo : Educo
 
     private lateinit var user : User
-
-
 
     val viewModel by lazy {
         ViewModelProvider(this,factory)[RequestStudyViewModel::class.java]
@@ -79,7 +81,6 @@ class SingleRequestFragment : BaseFragment<FragmentSingleRequestBinding>() {
                 }
                 is Resource.Success -> {
                     viewModel.deleteRequest(request)
-                    showToast(it.data)
                 }
 
                 is Resource.Failure -> {
@@ -97,6 +98,7 @@ class SingleRequestFragment : BaseFragment<FragmentSingleRequestBinding>() {
                 is Resource.Success -> {
                     hideProgress()
                     showToast(it.data)
+                    activity!!.onBackPressed()
                 }
 
                 is Resource.Failure -> {
@@ -128,7 +130,7 @@ class SingleRequestFragment : BaseFragment<FragmentSingleRequestBinding>() {
                             .placeholder(R.drawable.ic_undraw_profile_pic)
                             .into(binding.userImage)
                     }
-                    val message = Message("Request Accepted", user.uid, getAppUser()!!.uid)
+                    val message = Message("${educo.title} Request Accepted", user.uid, getAppUser()!!.uid)
 
                     binding.acceptButton.setOnClickListener {
                         viewModel.sendMessage(setOneToOneChat(getAppUser()!!.uid , user.uid)!!, message, user)

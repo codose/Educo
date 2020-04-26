@@ -21,6 +21,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.fragment_profile.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 
 import ng.educo.R
 import ng.educo.databinding.FragmentProfileBinding
@@ -35,6 +37,8 @@ import javax.inject.Inject
 /**
  * A simple [Fragment] subclass.
  */
+@ExperimentalCoroutinesApi
+@InternalCoroutinesApi
 class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
     @Inject
@@ -63,7 +67,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(activity!!, factory)[ProfileViewModel::class.java]
 
-        viewModel.getStudyCount()
         val profileAdapter = ProfileAdapter()
 
         viewModel.myPartners.observe(viewLifecycleOwner, Observer {
@@ -102,13 +105,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
             backButton.setOnClickListener { activity!!.onBackPressed() }
             editButton.setOnClickListener { findNavController().navigate(R.id.action_profileFragment_to_editProfileFragment) }
         }
-        if(App.appUser?.imageUrl!!.isNotBlank()){
-            Glide.with(this)
-                .load(getAppUser()?.imageUrl)
-                .placeholder(R.drawable.ic_undraw_profile_pic)
-                .diskCacheStrategy(DiskCacheStrategy.DATA)
-                .into(binding.circleImageView2)
-        }
 
         setUpBottomNav()
 
@@ -118,6 +114,13 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
             binding.stateTextView.text = "${it.state} state"
             binding.titleTextView.text = "${it.school } / ${it.dept} / ${yearToString(it.level)}"
             binding.dateJoinedTextView.text = formatDateJoined(it.accountCreated!!)
+            if(it.imageUrl.isNotBlank()){
+                Glide.with(this)
+                    .load(getAppUser()?.imageUrl)
+                    .placeholder(R.drawable.ic_undraw_profile_pic)
+                    .diskCacheStrategy(DiskCacheStrategy.DATA)
+                    .into(binding.circleImageView2)
+            }
             hideProgress()
         })
     }

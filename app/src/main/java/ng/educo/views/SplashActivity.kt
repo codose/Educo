@@ -10,9 +10,7 @@ import com.github.ybq.android.spinkit.style.ChasingDots
 import com.github.ybq.android.spinkit.style.DoubleBounce
 import com.github.ybq.android.spinkit.style.FadingCircle
 import com.pixplicity.easyprefs.library.Prefs
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import ng.educo.DataStoreArchitecture.FirebaseRepository
 import ng.educo.R
 import ng.educo.databinding.ActivitySplashBinding
@@ -23,6 +21,8 @@ import ng.educo.views.categories.CategoryActivity
 import ng.educo.views.main.MainActivity
 import ng.educo.views.registration.RegistrationActivity
 
+@ExperimentalCoroutinesApi
+@InternalCoroutinesApi
 class SplashActivity : BaseActivity() {
 
     private val APP_OPEN_FIRST_TIME = "ng.educo.APP_OPEN_FIRST_TIME"

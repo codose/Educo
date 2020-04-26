@@ -3,11 +3,15 @@ package ng.educo.di.components
 import android.content.Context
 import dagger.BindsInstance
 import dagger.Component
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 import ng.educo.di.modules.AppModule
 import ng.educo.di.modules.ViewModelModule
 import javax.inject.Singleton
 
 
+@InternalCoroutinesApi
+@ExperimentalCoroutinesApi
 @Singleton
 @Component(modules = [AppSubComponents::class, AppModule::class, ViewModelModule::class, AppModule::class])
 interface AppComponent{

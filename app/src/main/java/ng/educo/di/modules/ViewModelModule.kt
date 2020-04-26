@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModelProvider
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 import ng.educo.di.providers.ViewModelFactory
 import ng.educo.di.providers.ViewModelKey
 import ng.educo.di.scope.ActivityScope
@@ -14,6 +16,8 @@ import ng.educo.views.main.viewmodels.ProfileViewModel
 import ng.educo.views.main.viewmodels.RequestStudyViewModel
 
 
+@ExperimentalCoroutinesApi
+@InternalCoroutinesApi
 @Module
 abstract class ViewModelModule {
 

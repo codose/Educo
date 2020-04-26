@@ -4,15 +4,19 @@ import android.content.Context
 import android.net.Uri
 import androidx.core.net.toFile
 import androidx.core.net.toUri
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestoreException
-import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.DocumentSnapshot.ServerTimestampBehavior
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.Query.Direction
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.firestore.ktx.toObjects
 import id.zelory.compressor.Compressor
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import ng.educo.models.*
 import ng.educo.utils.*
@@ -20,8 +24,13 @@ import ng.educo.utils.Constants.COLLECTION_EDUCO
 import ng.educo.utils.Constants.COLLECTION_RECEIVED
 import ng.educo.utils.Constants.COLLECTION_SENT
 import ng.educo.utils.Constants.COLLECTION_USERS
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
+
+@ExperimentalCoroutinesApi
+@InternalCoroutinesApi
 class FirebaseRepository @Inject constructor() {
     private val auth = FirebaseAuth.getInstance()
     private val database = App.firestore
@@ -30,7 +39,6 @@ class FirebaseRepository @Inject constructor() {
     private val receivedRef = database.collection(COLLECTION_RECEIVED)
     private val sentRef = database.collection(COLLECTION_SENT)
     private val storageRef = App.storage.reference
-
 
     suspend fun updateUser(user : User) : Resource<String> {
         return try {
@@ -71,37 +79,76 @@ class FirebaseRepository @Inject constructor() {
         }
     }
 
-    suspend fun getAllStudyPartners() : Resource<List<Educo>>{
-        return try{
-            val educo = educoRef.get().await()
-            val allPartners = educo.toObjects<Educo>()
-            val otherPartners : ArrayList<Educo> = ArrayList()
-            for(i in allPartners){
-                if(checkPartnerEduco(i)){
-                    otherPartners.add(i)
+//    suspend fun getAllStudyPartners() : Resource<List<Educo>>{
+//        return try{
+//            val educo = educoRef.orderBy("createdAt", Direction.DESCENDING).get().await()
+//            val allPartners = educo.toObjects<Educo>()
+//            val otherPartners : ArrayList<Educo> = ArrayList()
+//            for(i in allPartners){
+//                if(checkPartnerEduco(i)){
+//                    otherPartners.add(i)
+//                }
+//            }
+//            Resource.Success(otherPartners)
+//        }catch(e : Exception){
+//            Resource.Failure("Error occurred")
+//        }
+//    }
+//
+//    suspend fun getAllStudyGroups() : Resource<List<Educo>>{
+//        return try{
+//            val educo = educoRef.orderBy("createdAt", Direction.DESCENDING).get().await()
+//            val allPartners = educo.toObjects<Educo>()
+//            val otherPartners : ArrayList<Educo> = ArrayList()
+//            for(i in allPartners){
+//                if(checkGroupEduco(i)){
+//                    otherPartners.add(i)
+//                }
+//            }
+//            Resource.Success(otherPartners)
+//        }catch(e : Exception){
+//            Resource.Failure("Error occurred")
+//        }
+//
+//    }
+
+    suspend fun getAllStudyPartnersFlow() : Flow<Resource<List<Educo>>> = callbackFlow {
+        val educo = educoRef.orderBy("createdAt", Direction.DESCENDING)
+        val subscription = educo.addSnapshotListener{ querySnapshot, _ ->
+            try {
+                val allPartners = querySnapshot!!.toObjects<Educo>()
+                val otherPartners : ArrayList<Educo> = ArrayList()
+                for(i in allPartners){
+                    if(checkPartnerEduco(i)){
+                        otherPartners.add(i)
+                    }
                 }
+                offer(Resource.Success(otherPartners))
+            }catch (e : Exception){
+                offer(Resource.Failure(e.message!!))
             }
-            Resource.Success(otherPartners)
-        }catch(e : Exception){
-            Resource.Failure("Error occurred")
         }
+        awaitClose{subscription.remove()}
     }
 
-    suspend fun getAllStudyGroups() : Resource<List<Educo>>{
-        return try{
-            val educo = educoRef.get().await()
-            val allPartners = educo.toObjects<Educo>()
-            val otherPartners : ArrayList<Educo> = ArrayList()
-            for(i in allPartners){
-                if(checkGroupEduco(i)){
-                    otherPartners.add(i)
+    suspend fun getAllStudyGroupsFlow() : Flow<Resource<List<Educo>>> = callbackFlow {
+        val educo = educoRef.orderBy("createdAt", Direction.DESCENDING)
+        val subscription = educo.addSnapshotListener{ querySnapshot, _ ->
+            try {
+                val allPartners = querySnapshot!!.toObjects<Educo>()
+                val otherPartners : ArrayList<Educo> = ArrayList()
+                for(i in allPartners){
+                    if(checkGroupEduco(i)){
+                        otherPartners.add(i)
+                    }
                 }
+                offer(Resource.Success(otherPartners))
+            }catch (e : Exception){
+                offer(Resource.Failure(e.message!!))
             }
-            Resource.Success(otherPartners)
-        }catch(e : Exception){
-            Resource.Failure("Error occurred")
-        }
 
+        }
+        awaitClose{subscription.remove()}
     }
 
     suspend fun uploadImage(uri: Uri, context: Context) : Resource<String>{
@@ -128,25 +175,28 @@ class FirebaseRepository @Inject constructor() {
         }
     }
 
-    suspend fun getMyStudies() : Resource<List<Educo>>{
-        return try{
-            val educo = educoRef.get().await()
-            val allPartners = educo.toObjects<Educo>()
-            val otherPartners : ArrayList<Educo> = ArrayList()
-            for(i in allPartners){
-                if(checkUserEduco(i)){
-                    otherPartners.add(i)
+    suspend fun getMyStudies() : Flow<Resource<List<Educo>>> = callbackFlow {
+        try{
+            val educo = educoRef.orderBy("createdAt", Direction.DESCENDING)
+            val subscription = educo.addSnapshotListener { querySnapshot, _ ->
+                val allPartners = querySnapshot!!.toObjects<Educo>()
+                val otherPartners : ArrayList<Educo> = ArrayList()
+                for(i in allPartners){
+                    if(checkUserEduco(i)){
+                        otherPartners.add(i)
+                    }
                 }
+                offer(Resource.Success(otherPartners))
             }
-            Resource.Success(otherPartners)
+            awaitClose { subscription.remove() }
+
         }catch(e : Exception){
-            Resource.Failure(e.message!!)
+            offer(Resource.Failure(e.message!!))
         }
     }
 
     suspend fun applyForStudy(receiverId : String, request: Request) : Resource<String>{
         return try {
-
             val sent = sentRef.document(App.appUser?.uid!!).collection("Requests").document(request.educo.id).get().await()
             sent.let {
                 if(it.exists()){
@@ -164,35 +214,65 @@ class FirebaseRepository @Inject constructor() {
         }
     }
 
-    suspend fun getReceivedRequests() : Resource<List<Request>>{
-        return try{
-            val requests = receivedRef.document(App.appUser?.uid!!).collection("Requests").get().await()
-            val allRequest = requests.toObjects<Request>()
-            Resource.Success(allRequest)
-        }catch(e:Exception){
-            Resource.Failure(e.message!!)
+//    suspend fun getReceivedRequests() : Resource<List<Request>>{
+//        return try{
+//            val requests = receivedRef.document(App.appUser?.uid!!).collection("Requests").get().await()
+//            val allRequest = requests.toObjects<Request>()
+//            Resource.Success(allRequest)
+//        }catch(e:Exception){
+//            Resource.Failure(e.message!!)
+//        }
+//    }
+
+    suspend fun getReceivedRequestFlow() : Flow<Resource<List<Request>>> = callbackFlow {
+        try{
+            val request = receivedRef.document(App.appUser?.uid!!).collection("Requests").orderBy("timeSent",Direction.DESCENDING)
+            var allRequest: List<Request>
+            val subscription = request.addSnapshotListener { querySnapshot, _  ->
+                allRequest = querySnapshot!!.toObjects()
+                offer(Resource.Success(allRequest))
+            }
+            awaitClose{subscription.remove()}
+        }catch (e : Exception){
+            offer(Resource.Failure(e.message!!))
         }
+
+
     }
 
     suspend fun deleteReceivedRequests(request: Request) : Resource<String>{
         return try{
             receivedRef.document(App.appUser?.uid!!).collection("Requests").document(request.id).delete().await()
             sentRef.document(request.user.uid).collection("Requests").document(request.educo.id).delete().await()
-            Resource.Success("Request Accepted")
+            Resource.Success("${request.educo.title} request accepted")
         }catch(e:Exception){
             Resource.Failure(e.message!!)
         }
     }
 
-    suspend fun getSentRequests() : Resource<List<Request>>{
-        return try{
-            val requests = sentRef.document(App.appUser?.uid!!).collection("Requests").get().await()
-            val allRequest = requests.toObjects<Request>()
-            Resource.Success(allRequest)
-        }catch(e:Exception){
-            Resource.Failure(e.message!!)
+    suspend fun getSentRequestFlow() : Flow<Resource<List<Request>>> = callbackFlow {
+        try{
+            val request = sentRef.document(App.appUser?.uid!!).collection("Requests").orderBy("timeSent",Direction.DESCENDING)
+            var allRequest = listOf<Request>()
+            val subscription = request.addSnapshotListener { querySnapshot, _  ->
+                allRequest = querySnapshot!!.toObjects()
+                offer(Resource.Success(allRequest))
+            }
+            awaitClose{subscription.remove()}
+        }catch (e : Exception){
+            offer(Resource.Failure(e.message!!))
         }
     }
+
+//    suspend fun getSentRequests() : Resource<List<Request>>{
+//        return try{
+//            val requests = sentRef.document(App.appUser?.uid!!).collection("Requests").get().await()
+//            val allRequest = requests.toObjects<Request>()
+//            Resource.Success(allRequest)
+//        }catch(e:Exception){
+//            Resource.Failure(e.message!!)
+//        }
+//    }
 
     fun logOut() : Boolean {
        return try {
@@ -238,8 +318,8 @@ class FirebaseRepository @Inject constructor() {
     suspend fun sendMessage(docId : String, message : Message, user : User) : Resource<String>{
         return try{
             val id = database.collection("Chats").document(docId).collection("Chats").document().id
-            val active1 = Active(user, message)
-            val active2 = Active(App.appUser!!, message)
+            val active1 = Active(docId, user, message)
+            val active2 = Active(docId, App.appUser!!, message)
             message.id = id
             database.collection("Active Chats").document(message.senderId).collection("Chats").document(message.receiverId).set(active1).await()
             database.collection("Active Chats").document(message.receiverId).collection("Chats").document(message.senderId).set(active2).await()
@@ -250,14 +330,43 @@ class FirebaseRepository @Inject constructor() {
         }
     }
 
-    suspend fun getActiveChats(uid : String) : Resource<List<Active>>{
-        return try{
-            val message = database.collection("Active Chats").document(uid).collection("Chats").get().await()
-            val active = message.toObjects<Active>()
-            Resource.Success(active)
+    suspend fun getActiveChats() : Flow<Resource<List<Active>>> = callbackFlow {
+        try{
+            val message = database.collection("Active Chats").document(App.appUser?.uid!!).collection("Chats").orderBy("lastMsg", Direction.DESCENDING)
+            var active = listOf<Active>()
+            val subscription = message.addSnapshotListener { querySnapshot, _ ->
+                active = querySnapshot!!.toObjects()
+                offer(Resource.Success(active))
+            }
+            awaitClose{ subscription.remove() }
         }catch (e : Exception){
-            Resource.Failure(e.message!!)
+            offer(Resource.Failure(e.message!!))
         }
     }
+
+//    suspend fun getMessages(docId: String) : Resource<List<Message>>{
+//        return try{
+//            val message = database.collection("Chats").document(docId).collection("Chats").get().await()
+//            val allMessage = message.toObjects<Message>()
+//            Resource.Success(allMessage)
+//        }catch (e : Exception){
+//            Resource.Failure(e.message!!)
+//        }
+//    }
+
+
+    suspend fun getMessagesFlow(docId : String): Flow<Resource<List<Message>>> = callbackFlow {
+        val ref = database.collection("Chats").document(docId).collection("Chats").orderBy("timestamp")
+        val subscription = ref.addSnapshotListener{ querySnapshot, _ ->
+                val allMessage = querySnapshot!!.toObjects<Message>()
+                offer(Resource.Success(allMessage))
+        }
+
+        awaitClose{subscription.remove()}
+    }
+
+
+
+
 
 }

@@ -8,6 +8,7 @@ class Message(
     var receiverId : String = "",
     var senderId : String = "",
     @ServerTimestamp
-    var timestamp: Date? = null,
+    var timestamp : Date? = null,
+    val localTime : Date? = Date(System.currentTimeMillis()),
     var id : String = ""
 )
