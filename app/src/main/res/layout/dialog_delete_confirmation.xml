@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <com.google.android.material.card.MaterialCardView
-        android:layout_width="300dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:cardCornerRadius="12dp"
         app:cardElevation="0dp">
@@ -16,7 +16,7 @@
 
             <TextView
                 android:id="@+id/textView41"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
@@ -24,6 +24,7 @@
                 android:text="Are you sure you want to \ndelete this request"
                 android:textAlignment="center"
                 android:textAppearance="@style/textAppearance.main.Header"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -43,6 +44,7 @@
                 android:paddingBottom="0dp"
                 android:text="Yes"
                 android:textColor="@color/red"
+                android:textSize="12sp"
                 app:cornerRadius="4dp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline17"
                 app:layout_constraintStart_toStartOf="@+id/textView41"
@@ -71,6 +73,7 @@
                 android:paddingBottom="0dp"
                 android:text="No"
                 android:textColor="@color/colorPrimary"
+                android:textSize="12sp"
                 app:cornerRadius="4dp"
                 app:layout_constraintBottom_toBottomOf="@+id/deleteButton"
                 app:layout_constraintEnd_toEndOf="parent"
