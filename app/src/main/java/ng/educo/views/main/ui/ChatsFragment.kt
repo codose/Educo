@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -51,17 +52,13 @@ class ChatsFragment : BaseFragment<FragmentChatsBinding>() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, getLayoutRes(), container, false)
-
         // Inflate the layout for this fragment
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val fab = activity?.findViewById<FloatingActionButton>(R.id.search_new_btn)
-
-        fab?.visibility = GONE
-
+        setUpBottomNav()
 
         val adapter = ChatsAdapter(context!!, ChatsClickListener {
             val id = it.chatId
@@ -98,9 +95,15 @@ class ChatsFragment : BaseFragment<FragmentChatsBinding>() {
         })
     }
 
+    private fun setUpBottomNav() {
+        val fab = activity?.findViewById<FloatingActionButton>(R.id.search_new_btn)
+        fab?.visibility = GONE
+        val bottomNavigationView : BottomNavigationView = activity!!.findViewById(R.id.bottomNavigationView)
+        bottomNavigationView.visibility = VISIBLE
+    }
+
     private fun hideProgress() {
         binding.chatsProgress.visibility = GONE
-
     }
 
     private fun showProgress() {

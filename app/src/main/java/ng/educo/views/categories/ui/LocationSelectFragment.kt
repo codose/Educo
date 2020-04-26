@@ -21,8 +21,8 @@ import ng.educo.utils.Constants.year
 import ng.educo.views.base.BaseFragment
 
 
+@InternalCoroutinesApi
 @ExperimentalCoroutinesApi
-@UseExperimental(InternalCoroutinesApi::class)
 class LocationSelectFragment : BaseFragment<FragmentLocationSelectBinding>() {
 
     override fun onCreateView(

@@ -28,7 +28,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:paddingEnd="0dp"
-            app:icon="@drawable/arrow_back_black_24dp"
+            app:icon="@drawable/back_arrow"
             app:iconTint="@android:color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

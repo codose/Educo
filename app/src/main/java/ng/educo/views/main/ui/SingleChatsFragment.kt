@@ -15,6 +15,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.fragment_single_chats.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -73,6 +75,8 @@ class SingleChatsFragment : BaseFragment<FragmentSingleChatsBinding>() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        setUpBottomNav()
 
         binding.messageProgress.indeterminateDrawable = doubleBounce
 
@@ -159,6 +163,11 @@ class SingleChatsFragment : BaseFragment<FragmentSingleChatsBinding>() {
             activity!!.onBackPressed()
         }
 
+    }
+
+    private fun setUpBottomNav() {
+        val bottomNavigationView : BottomNavigationView = activity!!.findViewById(R.id.bottomNavigationView)
+        bottomNavigationView.visibility = GONE
     }
 
     private fun hideProgress() {

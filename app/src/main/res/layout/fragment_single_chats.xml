@@ -36,24 +36,24 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:backgroundTint="@android:color/transparent"
+            android:elevation="0dp"
             app:icon="@drawable/send"
             app:iconTint="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textInputLayout"
-            app:rippleColor="@color/colorPrimaryExtraLight" />
+            app:layout_constraintTop_toTopOf="@+id/textInputLayout" />
 
 
-        <Button
+        <ImageButton
             android:id="@+id/backButton"
-            style="@style/Widget.App.Button.OutlinedButton.IconOnly"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            style="@style/Widget.MaterialComponents.MaterialCalendar.HeaderToggleButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:backgroundTint="@android:color/transparent"
-            app:icon="@drawable/arrow_back_black_24dp"
-            app:iconTint="@color/textColorPrimary"
+            android:src="@drawable/back_arrow"
+            android:tint="@color/textColorPrimary"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

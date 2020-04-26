@@ -30,6 +30,8 @@ import ng.educo.models.Educo
 import ng.educo.utils.*
 import ng.educo.views.base.BaseFragment
 import ng.educo.views.main.MainActivity
+import ng.educo.views.main.adapters.EducoClickListener
+import ng.educo.views.main.adapters.MainAdapter
 import ng.educo.views.main.adapters.ProfileAdapter
 import ng.educo.views.main.viewmodels.ProfileViewModel
 import javax.inject.Inject
@@ -69,12 +71,19 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
         val profileAdapter = ProfileAdapter()
 
+        val mainAdapter = MainAdapter(context!!, EducoClickListener {
+            findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToSingleStudyFragment(it.id))
+        })
+
+        binding.recentsRecyclerView.adapter = mainAdapter
+
         viewModel.myPartners.observe(viewLifecycleOwner, Observer {
             when(it){
                 is Resource.Loading ->{
 
                 }
                 is Resource.Success ->{
+                    mainAdapter.submitList(it.data)
                     val studyGroups : ArrayList<Educo> = ArrayList()
                     val studyPartners : ArrayList<Educo> = ArrayList()
                     for(i in it.data){
@@ -82,6 +91,17 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                             studyGroups.add(i)
                         }else{
                             studyPartners.add(i)
+                        }
+                    }
+                    if(it.data.isEmpty()){
+                        binding.apply {
+                            emptyImage.visibility = VISIBLE
+                            emptyText.visibility = VISIBLE
+                        }
+                    }else{
+                        binding.apply {
+                            emptyImage.visibility = GONE
+                            emptyText.visibility = GONE
                         }
                     }
                     binding.groupCount.text = "${studyGroups.size}"

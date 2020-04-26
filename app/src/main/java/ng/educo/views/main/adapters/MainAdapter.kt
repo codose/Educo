@@ -27,6 +27,10 @@ class MainAdapter(val context : Context, val clickListener: EducoClickListener) 
     class MyViewHolder(val binding: ItemRequestItemBinding, val context: Context) : RecyclerView.ViewHolder(binding.root){
         @SuppressLint("SetTextI18n")
         fun bind(educo: Educo, clickListener: EducoClickListener){
+            val time = when {
+                educo.createdAt != null -> getTimeAgo(educo.createdAt!!)
+                else -> getTimeAgo(educo.createdAtLocal!!)
+            }
             binding.educo = educo
             binding.catTextView.text = longInterestToString(educo.category)
             if(educo.type == 1){
@@ -39,7 +43,7 @@ class MainAdapter(val context : Context, val clickListener: EducoClickListener) 
                 .diskCacheStrategy(DiskCacheStrategy.DATA)
                 .into(binding.profileImage)
             binding.clickListener = clickListener
-            binding.timeStampTxtView.text = getTimeAgo(educo.createdAt!!)
+            binding.timeStampTxtView.text = time
         }
     }
 

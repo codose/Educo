@@ -14,5 +14,6 @@ data class Educo(
     var description : String = "",
     var location : String = "",
     var user : User = User(),
-    var id : String = ""
+    var id : String = "",
+    var createdAtLocal: Date? = Date(System.currentTimeMillis())
 )

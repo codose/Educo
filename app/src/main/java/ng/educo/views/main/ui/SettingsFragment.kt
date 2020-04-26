@@ -48,7 +48,6 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
     ): View? {
         binding  = DataBindingUtil.inflate(inflater, R.layout.fragment_settings,container,false)
 
-
         return binding.root
     }
 

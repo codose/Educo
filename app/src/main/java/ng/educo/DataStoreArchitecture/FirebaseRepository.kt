@@ -40,6 +40,7 @@ class FirebaseRepository @Inject constructor() {
     private val sentRef = database.collection(COLLECTION_SENT)
     private val storageRef = App.storage.reference
 
+
     suspend fun updateUser(user : User) : Resource<String> {
         return try {
             userRef.document(auth.currentUser!!.uid).set(user, SetOptions.merge()).await()
@@ -78,39 +79,6 @@ class FirebaseRepository @Inject constructor() {
             Resource.Failure(e.message!!)
         }
     }
-
-//    suspend fun getAllStudyPartners() : Resource<List<Educo>>{
-//        return try{
-//            val educo = educoRef.orderBy("createdAt", Direction.DESCENDING).get().await()
-//            val allPartners = educo.toObjects<Educo>()
-//            val otherPartners : ArrayList<Educo> = ArrayList()
-//            for(i in allPartners){
-//                if(checkPartnerEduco(i)){
-//                    otherPartners.add(i)
-//                }
-//            }
-//            Resource.Success(otherPartners)
-//        }catch(e : Exception){
-//            Resource.Failure("Error occurred")
-//        }
-//    }
-//
-//    suspend fun getAllStudyGroups() : Resource<List<Educo>>{
-//        return try{
-//            val educo = educoRef.orderBy("createdAt", Direction.DESCENDING).get().await()
-//            val allPartners = educo.toObjects<Educo>()
-//            val otherPartners : ArrayList<Educo> = ArrayList()
-//            for(i in allPartners){
-//                if(checkGroupEduco(i)){
-//                    otherPartners.add(i)
-//                }
-//            }
-//            Resource.Success(otherPartners)
-//        }catch(e : Exception){
-//            Resource.Failure("Error occurred")
-//        }
-//
-//    }
 
     suspend fun getAllStudyPartnersFlow() : Flow<Resource<List<Educo>>> = callbackFlow {
         val educo = educoRef.orderBy("createdAt", Direction.DESCENDING)
@@ -214,16 +182,6 @@ class FirebaseRepository @Inject constructor() {
         }
     }
 
-//    suspend fun getReceivedRequests() : Resource<List<Request>>{
-//        return try{
-//            val requests = receivedRef.document(App.appUser?.uid!!).collection("Requests").get().await()
-//            val allRequest = requests.toObjects<Request>()
-//            Resource.Success(allRequest)
-//        }catch(e:Exception){
-//            Resource.Failure(e.message!!)
-//        }
-//    }
-
     suspend fun getReceivedRequestFlow() : Flow<Resource<List<Request>>> = callbackFlow {
         try{
             val request = receivedRef.document(App.appUser?.uid!!).collection("Requests").orderBy("timeSent",Direction.DESCENDING)
@@ -236,8 +194,6 @@ class FirebaseRepository @Inject constructor() {
         }catch (e : Exception){
             offer(Resource.Failure(e.message!!))
         }
-
-
     }
 
     suspend fun deleteReceivedRequests(request: Request) : Resource<String>{
@@ -253,7 +209,7 @@ class FirebaseRepository @Inject constructor() {
     suspend fun getSentRequestFlow() : Flow<Resource<List<Request>>> = callbackFlow {
         try{
             val request = sentRef.document(App.appUser?.uid!!).collection("Requests").orderBy("timeSent",Direction.DESCENDING)
-            var allRequest = listOf<Request>()
+            var allRequest: List<Request>
             val subscription = request.addSnapshotListener { querySnapshot, _  ->
                 allRequest = querySnapshot!!.toObjects()
                 offer(Resource.Success(allRequest))
@@ -263,16 +219,6 @@ class FirebaseRepository @Inject constructor() {
             offer(Resource.Failure(e.message!!))
         }
     }
-
-//    suspend fun getSentRequests() : Resource<List<Request>>{
-//        return try{
-//            val requests = sentRef.document(App.appUser?.uid!!).collection("Requests").get().await()
-//            val allRequest = requests.toObjects<Request>()
-//            Resource.Success(allRequest)
-//        }catch(e:Exception){
-//            Resource.Failure(e.message!!)
-//        }
-//    }
 
     fun logOut() : Boolean {
        return try {
@@ -333,7 +279,7 @@ class FirebaseRepository @Inject constructor() {
     suspend fun getActiveChats() : Flow<Resource<List<Active>>> = callbackFlow {
         try{
             val message = database.collection("Active Chats").document(App.appUser?.uid!!).collection("Chats").orderBy("lastMsg", Direction.DESCENDING)
-            var active = listOf<Active>()
+            var active: List<Active>
             val subscription = message.addSnapshotListener { querySnapshot, _ ->
                 active = querySnapshot!!.toObjects()
                 offer(Resource.Success(active))
@@ -343,17 +289,6 @@ class FirebaseRepository @Inject constructor() {
             offer(Resource.Failure(e.message!!))
         }
     }
-
-//    suspend fun getMessages(docId: String) : Resource<List<Message>>{
-//        return try{
-//            val message = database.collection("Chats").document(docId).collection("Chats").get().await()
-//            val allMessage = message.toObjects<Message>()
-//            Resource.Success(allMessage)
-//        }catch (e : Exception){
-//            Resource.Failure(e.message!!)
-//        }
-//    }
-
 
     suspend fun getMessagesFlow(docId : String): Flow<Resource<List<Message>>> = callbackFlow {
         val ref = database.collection("Chats").document(docId).collection("Chats").orderBy("timestamp")
@@ -365,8 +300,13 @@ class FirebaseRepository @Inject constructor() {
         awaitClose{subscription.remove()}
     }
 
-
-
-
+    suspend fun deleteEduco(id: String): Resource<String> {
+        return try{
+            educoRef.document(id).delete().await()
+            Resource.Success("Deleted successfully")
+        }catch(e:Exception){
+            Resource.Failure(e.message!!)
+        }
+    }
 
 }

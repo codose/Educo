@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.Gravity
 import android.view.LayoutInflater
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
@@ -17,7 +19,6 @@ import ng.educo.databinding.ItemSingleMessageItemBinding
 import ng.educo.models.Active
 import ng.educo.models.Message
 import ng.educo.utils.App
-import ng.educo.utils.formatDateCreated
 import ng.educo.utils.getChatTime
 
 
@@ -29,13 +30,30 @@ class MessageAdapter(val context : Context, val clickListener: MessageClickListe
     @InternalCoroutinesApi
     class MyViewHolder(val binding: ItemSingleMessageItemBinding, val context: Context) : RecyclerView.ViewHolder(binding.root){
         @SuppressLint("SetTextI18n")
-        fun bind(message: Message , clickListener: MessageClickListener){
-
+        fun bind(
+            message: Message,
+            clickListener: MessageClickListener,
+            message2 : Message?
+        ){
+            val time1 = when {
+                message.timestamp != null -> getChatTime(message.timestamp!!)
+                else -> getChatTime(message.localTime!!)
+            }
+            val time2 = when {
+                message2!!.timestamp != null -> getChatTime(message2.timestamp!!)
+                else -> getChatTime(message2.localTime!!)
+            }
             val endParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             ).apply {
                 gravity = Gravity.END
+            }
+            if(time1 == time2){
+                binding.timeStampTextView.visibility = GONE
+            }else{
+                binding.timeStampTextView.visibility = VISIBLE
+                binding.timeStampTextView.text = time1
             }
 
             val startParams = LinearLayout.LayoutParams(
@@ -46,10 +64,7 @@ class MessageAdapter(val context : Context, val clickListener: MessageClickListe
             }
             binding.messageTextView.text = message.messageText
 
-            binding.timeStampTextView.text = when {
-                message.timestamp != null -> getChatTime(message.timestamp!!)
-                else -> getChatTime(message.localTime!!)
-            }
+
             if(App.appUser?.uid == message.senderId){
                 binding.apply {
                     messageTextView.background = ContextCompat.getDrawable(context, R.drawable.btn_curves)
@@ -58,7 +73,6 @@ class MessageAdapter(val context : Context, val clickListener: MessageClickListe
                     timeStampTextView.layoutParams = endParams
                 }
             }else{
-
                 binding.apply {
                     messageTextView.background = ContextCompat.getDrawable(context, R.drawable.btn_curves_ii)
                     messageTextView.setTextColor(ContextCompat.getColor(context, R.color.textColorPrimary))
@@ -81,7 +95,13 @@ class MessageAdapter(val context : Context, val clickListener: MessageClickListe
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val request = getItem(position)
-            holder.bind(request, clickListener)
+        var message2 : Message? = Message()
+        if(position - 1 > -1){
+            if(getItem(position - 1) != null){
+                message2 = getItem(position-1)
+            }
+        }
+        holder.bind(request, clickListener, message2)
     }
 }
 

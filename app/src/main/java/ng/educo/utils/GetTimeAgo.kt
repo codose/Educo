@@ -63,7 +63,11 @@ fun getChatTime(date: Date): String? {
     val diff = now - time
     return when {
         diff < 24 * HOUR_MILLIS -> {
-            sdf.format(date)
+            if(currentDate().day == date.day){
+                sdf.format(date)
+            }else{
+                sdf1.format(date)
+            }
         }
         else -> {
             sdf1.format(date)

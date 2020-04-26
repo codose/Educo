@@ -22,6 +22,7 @@ class MainViewModel @Inject constructor(private val firebaseRepository: Firebase
 
     val loggedOut = MutableLiveData<Boolean>()
     val requestSent = MutableLiveData<Resource<String>>()
+    val educoDelete = MutableLiveData<Resource<String>>()
     val received = MutableLiveData<Resource<List<Request>>>()
     val sent = MutableLiveData<Resource<List<Request>>>()
     val studyPartnerData = MutableLiveData<Resource<List<Educo>>>()
@@ -55,6 +56,15 @@ class MainViewModel @Inject constructor(private val firebaseRepository: Firebase
         applicationScope.launch {
             withContext(Dispatchers.IO){
                 requestSent.postValue(firebaseRepository.applyForStudy(receiver,request))
+            }
+        }
+    }
+
+    fun deleteEduco(id: String){
+        educoDelete.value = Resource.Loading()
+        applicationScope.launch {
+            withContext(Dispatchers.IO){
+                educoDelete.postValue(firebaseRepository.deleteEduco(id))
             }
         }
     }
